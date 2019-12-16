@@ -1,0 +1,25 @@
+{
+  "env": {
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "space-before-function-paren": "warn",
+    "arrow-parens": ["warn", "as-needed"],
+    "quotes": ["warn", "single"],
+    "eol-last": "warn",
+    "comma-dangle": ["warn"]
+  }
+}

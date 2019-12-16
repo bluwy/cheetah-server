@@ -1,15 +1,13 @@
 {
   "name": "e-job-server",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
+    "dev": "ts-node-dev src/index.ts",
+    "start": "ts-node src/index.ts",
     "lint": "eslint --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ignore-path .gitignore ."
   },
-  "author": "Bjorn Lu",
-  "license": "MIT",
   "dependencies": {
     "@prisma/photon": "^2.0.0-preview018.2",
     "apollo-server": "^2.9.13",
@@ -20,12 +18,13 @@
     "mailgun-js": "^0.22.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^8.3.5",
+    "@types/mailgun-js": "^0.22.3",
+    "@typescript-eslint/eslint-plugin": "^2.11.0",
+    "@typescript-eslint/parser": "^2.11.0",
     "eslint": "^6.6.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^9.2.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "nodemon": "^2.0.2"
+    "ts-node": "^8.5.4",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.7.3"
   }
 }
