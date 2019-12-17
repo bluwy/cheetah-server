@@ -3,23 +3,32 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "ts-node-dev src/index.ts",
+    "dev": "ts-node-dev --no-notify --respawn --transpile-only src/index.ts",
     "start": "ts-node src/index.ts",
+    "generate:prisma": "prisma2 generate",
+    "generate:nexus": "cross-env NODE_ENV=development ts-node --transpile-only src/gen-schema.ts",
+    "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
+    "postinstall": "npm -s run generate",
     "lint": "eslint --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ignore-path .gitignore ."
   },
   "dependencies": {
     "@prisma/photon": "^2.0.0-preview018.2",
     "apollo-server": "^2.9.13",
+    "cross-env": "^6.0.3",
     "dotenv": "^8.2.0",
     "graphql": "^14.5.8",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
-    "mailgun-js": "^0.22.0"
+    "mailgun-js": "^0.22.0",
+    "nexus": "^0.12.0-rc.5",
+    "nexus-prisma": "^0.6.1",
+    "pluralize": "^8.0.0"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.3.5",
     "@types/mailgun-js": "^0.22.3",
+    "@types/pluralize": "0.0.29",
     "@typescript-eslint/eslint-plugin": "^2.11.0",
     "@typescript-eslint/parser": "^2.11.0",
     "eslint": "^6.6.0",
