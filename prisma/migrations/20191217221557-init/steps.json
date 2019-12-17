@@ -1,0 +1,794 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "stepType": "CreateEnum",
+      "enum": "AdminPrivilege",
+      "values": [
+        "FULL",
+        "BASIC"
+      ]
+    },
+    {
+      "stepType": "CreateEnum",
+      "enum": "TaskType",
+      "values": [
+        "SERVICE",
+        "COMPLAINT",
+        "DELIVERY",
+        "TRANSPORT",
+        "OTHERS"
+      ]
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Admin"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Admin",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Admin",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Admin",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Admin",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Admin",
+      "field": "username",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Admin",
+      "field": "username",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Admin",
+      "field": "privilege",
+      "type": "AdminPrivilege",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Admin",
+      "field": "privilege",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Admin",
+      "field": "privilege",
+      "directive": "default",
+      "argument": "",
+      "value": "BASIC"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Admin",
+      "field": "hash",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Staff"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Staff",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Staff",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Staff",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Staff",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Staff",
+      "field": "username",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Staff",
+      "field": "username",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Staff",
+      "field": "fullName",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Staff",
+      "field": "hash",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Staff",
+      "field": "passwordForgotten",
+      "type": "Boolean",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Staff",
+      "field": "customerPrimaries",
+      "type": "Customer",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Staff",
+      "field": "customerPrimaries",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Staff",
+      "field": "customerPrimaries",
+      "directive": "relation",
+      "argument": "",
+      "value": "\"StaffPrimaryByCustomer\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Staff",
+      "field": "customerSecondaries",
+      "type": "Customer",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Staff",
+      "field": "customerSecondaries",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Staff",
+      "field": "customerSecondaries",
+      "directive": "relation",
+      "argument": "",
+      "value": "\"StaffSecondaryByCustomer\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Staff",
+      "field": "assignmentPrimaries",
+      "type": "Assignment",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Staff",
+      "field": "assignmentPrimaries",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Staff",
+      "field": "assignmentPrimaries",
+      "directive": "relation",
+      "argument": "",
+      "value": "\"StaffPrimaryByAssignment\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Staff",
+      "field": "assignmentSecondaries",
+      "type": "Assignment",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Staff",
+      "field": "assignmentSecondaries",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Staff",
+      "field": "assignmentSecondaries",
+      "directive": "relation",
+      "argument": "",
+      "value": "\"StaffSecondaryByAssignment\""
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Company"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Company",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Company",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Company",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Company",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Company",
+      "field": "name",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Company",
+      "field": "name",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Company",
+      "field": "alias",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Company",
+      "field": "alias",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Address"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Address",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Address",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Address",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Address",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Address",
+      "field": "text",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Customer"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Customer",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Customer",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Customer",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "code",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Customer",
+      "field": "code",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "name",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Customer",
+      "field": "name",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "email",
+      "type": "String",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "addresses",
+      "type": "Address",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "phoneNumber",
+      "type": "String",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "companyBelong",
+      "type": "Company",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "temporary",
+      "type": "Boolean",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Customer",
+      "field": "temporary",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Customer",
+      "field": "temporary",
+      "directive": "default",
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "active",
+      "type": "Boolean",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Customer",
+      "field": "active",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Customer",
+      "field": "active",
+      "directive": "default",
+      "argument": "",
+      "value": "true"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "staffPrimary",
+      "type": "Staff",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Customer",
+      "field": "staffPrimary",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Customer",
+      "field": "staffPrimary",
+      "directive": "relation",
+      "argument": "",
+      "value": "\"StaffPrimaryByCustomer\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Customer",
+      "field": "staffSecondary",
+      "type": "Staff",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Customer",
+      "field": "staffSecondary",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Customer",
+      "field": "staffSecondary",
+      "directive": "relation",
+      "argument": "",
+      "value": "\"StaffSecondaryByCustomer\""
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Job"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Job",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Job",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Job",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Job",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Job",
+      "field": "dateIssued",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Job",
+      "field": "dateIssued",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Job",
+      "field": "dateIssued",
+      "directive": "default",
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Job",
+      "field": "customer",
+      "type": "Customer",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Job",
+      "field": "assignments",
+      "type": "Assignment",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Job",
+      "field": "needsFollowUp",
+      "type": "Boolean",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Job",
+      "field": "needsFollowUp",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Job",
+      "field": "needsFollowUp",
+      "directive": "default",
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Assignment"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Assignment",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Assignment",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Assignment",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Assignment",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Assignment",
+      "field": "address",
+      "type": "Address",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Assignment",
+      "field": "preferTime",
+      "type": "DateTime",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Assignment",
+      "field": "checkIn",
+      "type": "DateTime",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Assignment",
+      "field": "checkOut",
+      "type": "DateTime",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Assignment",
+      "field": "staffPrimary",
+      "type": "Staff",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Assignment",
+      "field": "staffPrimary",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Assignment",
+      "field": "staffPrimary",
+      "directive": "relation",
+      "argument": "",
+      "value": "\"StaffPrimaryByAssignment\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Assignment",
+      "field": "staffSecondary",
+      "type": "Staff",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Assignment",
+      "field": "staffSecondary",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Assignment",
+      "field": "staffSecondary",
+      "directive": "relation",
+      "argument": "",
+      "value": "\"StaffSecondaryByAssignment\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Assignment",
+      "field": "tasks",
+      "type": "Task",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Assignment",
+      "field": "actions",
+      "type": "Action",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Task"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Task",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Task",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Task",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Task",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Task",
+      "field": "type",
+      "type": "TaskType",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Task",
+      "field": "remarks",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateModel",
+      "model": "Action"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Action",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Action",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Action",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Action",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Action",
+      "field": "remarks",
+      "type": "String",
+      "arity": "required"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+generator photon {
+  provider = "photonjs"
+}
+
+model Admin {
+  id        String         @default(cuid()) @id
+  username  String         @unique
+  privilege AdminPrivilege @default(BASIC)
+  hash      String
+}
+
+model Staff {
+  id                    String       @default(cuid()) @id
+  username              String       @unique
+  fullName              String
+  hash                  String
+  passwordForgotten     Boolean
+  customerPrimaries     Customer[]   @relation("StaffPrimaryByCustomer")
+  customerSecondaries   Customer[]   @relation("StaffSecondaryByCustomer")
+  assignmentPrimaries   Assignment[] @relation("StaffPrimaryByAssignment")
+  assignmentSecondaries Assignment[] @relation("StaffSecondaryByAssignment")
+}
+
+model Company {
+  id    String @default(cuid()) @id
+  name  String @unique
+  alias String @unique
+}
+
+model Address {
+  id   String @default(cuid()) @id
+  text String
+}
+
+model Customer {
+  id             String    @default(cuid()) @id
+  code           String    @unique
+  name           String    @unique
+  email          String?
+  addresses      Address[]
+  phoneNumber    String?
+  companyBelong  Company?
+  temporary      Boolean   @default(false)
+  active         Boolean   @default(true)
+  staffPrimary   Staff     @relation("StaffPrimaryByCustomer")
+  staffSecondary Staff?    @relation("StaffSecondaryByCustomer")
+}
+
+model Job {
+  id            String       @default(cuid()) @id
+  dateIssued    DateTime     @default(now())
+  customer      Customer
+  assignments   Assignment[]
+  needsFollowUp Boolean      @default(false)
+}
+
+model Assignment {
+  id             String    @default(cuid()) @id
+  address        Address
+  preferTime     DateTime?
+  checkIn        DateTime?
+  checkOut       DateTime?
+  staffPrimary   Staff     @relation("StaffPrimaryByAssignment")
+  staffSecondary Staff?    @relation("StaffSecondaryByAssignment")
+  tasks          Task[]
+  actions        Action[]
+}
+
+model Task {
+  id      String   @default(cuid()) @id
+  type    TaskType
+  remarks String
+}
+
+model Action {
+  id      String @default(cuid()) @id
+  remarks String
+}
+
+enum AdminPrivilege {
+  FULL
+  BASIC
+}
+
+enum TaskType {
+  SERVICE
+  COMPLAINT
+  DELIVERY
+  TRANSPORT
+  OTHERS
+}
