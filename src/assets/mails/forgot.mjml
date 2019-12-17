@@ -1,0 +1,41 @@
+<mjml>
+  <mj-head>
+    <mj-title>Xecom Job Admin | Forgot</mj-title>
+    <mj-attributes>
+      <mj-all font-family="Roboto, Arial" color="#12161f" font-size="16px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body>
+    <mj-section background-color="#B8CDF8">
+      <mj-column>
+        <mj-image src="https://imgur.com/aL1oofY.png" alt="" align="center" width="160px" />
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="white">
+      <mj-column>
+        <mj-text align="center" color="#01295F" font-size="20px" font-weight="bold">
+          Forgot password?
+        </mj-text>
+        <mj-text align="center">
+          Hello, {{ username }}. Not to worry! Click the button below to reset your password.
+        </mj-text>
+        <mj-button href="{{ verifyLink }}" background-color="#01295F" color="white">
+          RESET PASSWORD
+        </mj-button>
+        <mj-spacer height="16px" />
+        <mj-divider border-color="#01295F" border-width="1px" />
+        <mj-spacer height="16px" />
+        <mj-text>
+          If you didn't request a password reset, you don't have to do anything. Just ignore me.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#B8CDF8">
+      <mj-column>
+        <mj-text align="right">
+          Xecom &copy; 2019
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
