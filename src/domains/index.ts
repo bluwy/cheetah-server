@@ -2,6 +2,7 @@ import fs from 'fs'
 import { shield } from 'graphql-shield'
 import { merge } from 'lodash'
 import path from 'path'
+import '../generated/nexus'
 
 const domainNames = fs.readdirSync(__dirname, { withFileTypes: true }).filter(v => v.isDirectory()).map(v => v.name)
 
