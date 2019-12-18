@@ -5,17 +5,17 @@ import * as auth from './services/auth'
 import * as mail from './services/mail'
 
 export interface Context {
-  user: auth.UserContext;
-  auth: typeof auth;
-  mail: typeof mail;
-  photon: Photon;
+  user: auth.UserContext
+  auth: typeof auth
+  mail: typeof mail
+  photon: Photon
 }
 
 const context: ApolloServerExpressConfig['context'] = async ({ req }): Promise<Context> => {
   let user: auth.UserContext | undefined
-  const token = req.headers.authorization ?? ''
+  const token = req.headers.authorization
 
-  if (token) {
+  if (token != null) {
     try {
       const decoded = await auth.verifyJwt(token)
 
@@ -27,7 +27,7 @@ const context: ApolloServerExpressConfig['context'] = async ({ req }): Promise<C
     }
   }
 
-  if (user == undefined) {
+  if (user == null) {
     user = new auth.UserContext()
   }
 

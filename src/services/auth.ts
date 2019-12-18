@@ -13,8 +13,8 @@ export enum AdminPrivilege {
 }
 
 export interface UserPayload {
-  readonly role: UserRole;
-  readonly id: string;
+  readonly role: UserRole
+  readonly id: string
 }
 
 export class StaffPayload implements UserPayload {
@@ -56,7 +56,7 @@ export class UserContext {
   constructor (userPayload?: UserPayload) {
     if (userPayload != null) {
       this.role = userPayload.role
-  
+
       if (isPayloadAdmin(userPayload)) {
         this.privilege = userPayload.privilege
       }
@@ -64,7 +64,7 @@ export class UserContext {
   }
 
   isVerified (): boolean {
-    return !!this.role
+    return this.role != null
   }
 
   isStaff (): boolean {
@@ -78,16 +78,16 @@ export class UserContext {
   isAdminBasic (): boolean {
     return this.isAdmin() && this.privilege === AdminPrivilege.Basic
   }
-  
+
   isAdminFull (): boolean {
     return this.isAdmin() && this.privilege === AdminPrivilege.Full
   }
 }
 
-export const signJwt = (payload: string | object | Buffer, options: SignOptions = {}): Promise<string> => {
+export const signJwt = async (payload: string | object | Buffer, options: SignOptions = {}): Promise<string> => {
   return new Promise((resolve, reject) => {
     sign(payload, secret, options, (err, enc) => {
-      if (err) {
+      if (err != null) {
         reject(err)
       } else {
         resolve(enc)
@@ -96,10 +96,10 @@ export const signJwt = (payload: string | object | Buffer, options: SignOptions 
   })
 }
 
-export const verifyJwt = (token: string, options?: VerifyOptions): Promise<string | object> => {
+export const verifyJwt = async (token: string, options?: VerifyOptions): Promise<string | object> => {
   return new Promise((resolve, reject) => {
     verify(token, secret, options, (err, dec) => {
-      if (err) {
+      if (err != null) {
         reject(err)
       } else {
         resolve(dec)

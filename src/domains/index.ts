@@ -8,12 +8,12 @@ const domainNames = fs.readdirSync(__dirname, { withFileTypes: true }).filter(v 
 const domainPermissions: NodeRequire[] = []
 const domainSchemas: NodeRequire[] = []
 
-domainNames.forEach(domainName => {
+domainNames.forEach((domainName) => {
   const readFileData = (fileName: string): NodeRequire | undefined =>
     fs.existsSync(path.join(__dirname, domainName, fileName)) ? require(`./${domainName}/${fileName}`) : undefined
 
   const tryPush = (fileName: string, requireArray: NodeRequire[]): number =>
-    requireArray.push(...[readFileData(fileName)].filter((v): v is NodeRequire => v != undefined))
+    requireArray.push(...[readFileData(fileName)].filter((v): v is NodeRequire => v != null))
 
   tryPush('permission.ts', domainPermissions)
   tryPush('schema.ts', domainSchemas)

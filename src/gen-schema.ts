@@ -1,4 +1,3 @@
-require('dotenv').config()
 import { makeSchema } from 'nexus'
 import { nexusPrismaPlugin } from 'nexus-prisma'
 import path from 'path'
