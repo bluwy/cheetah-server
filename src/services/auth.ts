@@ -1,6 +1,7 @@
-import { Secret, sign, SignOptions, verify, VerifyOptions } from 'jsonwebtoken'
+import argon2 from 'argon2'
+import jwt from 'jsonwebtoken'
 
-const secret = process.env.JWT_SECRET ?? '' as Secret
+const secret = process.env.JWT_SECRET ?? '' as jwt.Secret
 
 export enum UserRole {
   Staff = 'STAFF',
@@ -84,9 +85,9 @@ export class UserContext {
   }
 }
 
-export const signJwt = async (payload: string | object | Buffer, options: SignOptions = {}): Promise<string> => {
+export const signJwt = async (payload: string | object | Buffer, options: jwt.SignOptions = {}): Promise<string> => {
   return new Promise((resolve, reject) => {
-    sign(payload, secret, options, (err, enc) => {
+    jwt.sign(payload, secret, options, (err, enc) => {
       if (err != null) {
         reject(err)
       } else {
@@ -96,9 +97,9 @@ export const signJwt = async (payload: string | object | Buffer, options: SignOp
   })
 }
 
-export const verifyJwt = async (token: string, options?: VerifyOptions): Promise<string | object> => {
+export const verifyJwt = async (token: string, options?: jwt.VerifyOptions): Promise<string | object> => {
   return new Promise((resolve, reject) => {
-    verify(token, secret, options, (err, dec) => {
+    jwt.verify(token, secret, options, (err, dec) => {
       if (err != null) {
         reject(err)
       } else {
@@ -107,3 +108,7 @@ export const verifyJwt = async (token: string, options?: VerifyOptions): Promise
     })
   })
 }
+
+export const hashPassword = async (password: string): Promise<string> => argon2.hash(password)
+
+export const verifyPassword = async (hash: string, password: string): Promise<boolean> => argon2.verify(hash, password)
