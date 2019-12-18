@@ -1,4 +1,4 @@
-import { isAdmin, isAdminFull } from './rules'
+import { isAdmin, isAdminFull } from '../rules'
 
 export const Query = {
   admin: isAdmin,

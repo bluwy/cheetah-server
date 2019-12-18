@@ -2,8 +2,8 @@ require('dotenv').config()
 import { ApolloServer } from 'apollo-server'
 import { applyMiddleware } from 'graphql-middleware'
 import context from './context'
+import { permissions } from './domains'
 import { schema as genSchema } from './gen-schema'
-import { permissions } from './permissions'
 
 const schema = applyMiddleware(genSchema, permissions)
 

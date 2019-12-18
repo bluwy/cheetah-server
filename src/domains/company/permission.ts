@@ -1,4 +1,4 @@
-import { isAdminFull, isVerified } from './rules'
+import { isAdminFull, isVerified } from '../rules'
 
 export const Query = {
   company: isVerified,

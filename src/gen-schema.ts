@@ -3,7 +3,7 @@ import { makeSchema } from 'nexus'
 import { nexusPrismaPlugin } from 'nexus-prisma'
 import path from 'path'
 import pluralize from 'pluralize'
-import allTypes from './schema'
+import { schema as allTypes } from './domains'
 
 pluralize.addIrregularRule('staff', 'staffs')
 

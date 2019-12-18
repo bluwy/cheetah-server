@@ -1,5 +1,5 @@
 import { enumType, extendType, inputObjectType, objectType } from 'nexus'
-import { AdminPrivilege as EnumAdminPrivilege } from '../services/auth'
+import { AdminPrivilege as EnumAdminPrivilege } from '../../services/auth'
 
 export const Query = extendType({
   type: 'Query',
