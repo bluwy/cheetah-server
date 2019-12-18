@@ -5,7 +5,8 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2018,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "plugins": [
     "@typescript-eslint"
@@ -13,13 +14,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  "rules": {
-    "space-before-function-paren": "warn",
-    "arrow-parens": ["warn", "as-needed"],
-    "quotes": ["warn", "single"],
-    "eol-last": "warn",
-    "comma-dangle": ["warn"]
-  }
+    "plugin:@typescript-eslint/recommended",
+    "standard-with-typescript"
+  ]
 }
