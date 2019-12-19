@@ -1,4 +1,4 @@
-import { extendType, objectType } from 'nexus'
+import { extendType, objectType, inputObjectType } from 'nexus'
 
 export const Query = extendType({
   type: 'Query',
@@ -11,9 +11,9 @@ export const Query = extendType({
 export const Mutation = extendType({
   type: 'Mutation',
   definition (t) {
-    t.crud.createOneCompany()
-    t.crud.updateOneCompany()
-    t.crud.deleteOneCompany()
+    t.crud.createOneCompany({ alias: 'createCompany' })
+    t.crud.updateOneCompany({ alias: 'updateCompany' })
+    t.crud.deleteOneCompany({ alias: 'deleteCompany' })
   }
 })
 
@@ -23,5 +23,21 @@ export const Company = objectType({
     t.model.id()
     t.model.name()
     t.model.alias()
+  }
+})
+
+export const CompanyCreateInput = inputObjectType({
+  name: 'CompanyCreateInput',
+  definition (t) {
+    t.string('name', { required: true })
+    t.string('alias', { required: true })
+  }
+})
+
+export const CompanyUpdateInput = inputObjectType({
+  name: 'CompanyUpdateInput',
+  definition (t) {
+    t.string('name')
+    t.string('alias')
   }
 })

@@ -6,7 +6,7 @@ export const Query = {
 }
 
 export const Mutation = {
-  createOneCompany: isAdminFull,
-  updateOneCompany: isAdminFull,
-  deleteOneCompany: isAdminFull
+  createCompany: isAdminFull,
+  updateCompany: isAdminFull,
+  deleteCompany: isAdminFull
 }

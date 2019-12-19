@@ -522,8 +522,6 @@ type Company {
 
 input CompanyCreateInput {
   alias: String!
-  customers: CustomerCreateManyWithoutCustomersInput
-  id: ID
   name: String!
 }
 
@@ -540,8 +538,6 @@ input CompanyCreateWithoutCustomersInput {
 
 input CompanyUpdateInput {
   alias: String
-  customers: CustomerUpdateManyWithoutCompanyBelongInput
-  id: ID
   name: String
 }
 
@@ -620,11 +616,6 @@ input CustomerCreateManyWithoutCustomerSecondariesInput {
   create: [CustomerCreateWithoutStaffSecondaryInput!]
 }
 
-input CustomerCreateManyWithoutCustomersInput {
-  connect: [CustomerWhereUniqueInput!]
-  create: [CustomerCreateWithoutCompanyBelongInput!]
-}
-
 input CustomerCreateOneWithoutCustomerInput {
   connect: CustomerWhereUniqueInput
   create: CustomerCreateWithoutAddressesInput
@@ -634,20 +625,6 @@ input CustomerCreateWithoutAddressesInput {
   active: Boolean
   code: String!
   companyBelong: CompanyCreateOneWithoutCompanyBelongInput
-  email: String
-  id: ID
-  jobs: JobCreateManyWithoutJobsInput
-  name: String!
-  phoneNumber: String
-  staffPrimary: StaffCreateOneWithoutStaffPrimaryInput!
-  staffSecondary: StaffCreateOneWithoutStaffSecondaryInput
-  temporary: Boolean
-}
-
-input CustomerCreateWithoutCompanyBelongInput {
-  active: Boolean
-  addresses: AddressCreateManyWithoutAddressesInput
-  code: String!
   email: String
   id: ID
   jobs: JobCreateManyWithoutJobsInput
@@ -756,18 +733,6 @@ input CustomerUpdateManyDataInput {
   temporary: Boolean
 }
 
-input CustomerUpdateManyWithoutCompanyBelongInput {
-  connect: [CustomerWhereUniqueInput!]
-  create: [CustomerCreateWithoutCompanyBelongInput!]
-  delete: [CustomerWhereUniqueInput!]
-  deleteMany: [CustomerScalarWhereInput!]
-  disconnect: [CustomerWhereUniqueInput!]
-  set: [CustomerWhereUniqueInput!]
-  update: [CustomerUpdateWithWhereUniqueWithoutCompanyBelongInput!]
-  updateMany: [CustomerUpdateManyWithWhereNestedInput!]
-  upsert: [CustomerUpsertWithWhereUniqueWithoutCompanyBelongInput!]
-}
-
 input CustomerUpdateManyWithoutStaffPrimaryInput {
   connect: [CustomerWhereUniqueInput!]
   create: [CustomerCreateWithoutStaffPrimaryInput!]
@@ -827,20 +792,6 @@ input CustomerUpdateWithoutAddressesDataInput {
   temporary: Boolean
 }
 
-input CustomerUpdateWithoutCompanyBelongDataInput {
-  active: Boolean
-  addresses: AddressUpdateManyWithoutCustomerInput
-  code: String
-  email: String
-  id: ID
-  jobs: JobUpdateManyWithoutCustomerInput
-  name: String
-  phoneNumber: String
-  staffPrimary: StaffUpdateOneRequiredWithoutCustomerPrimariesInput
-  staffSecondary: StaffUpdateOneWithoutCustomerSecondariesInput
-  temporary: Boolean
-}
-
 input CustomerUpdateWithoutJobsDataInput {
   active: Boolean
   addresses: AddressUpdateManyWithoutCustomerInput
@@ -883,11 +834,6 @@ input CustomerUpdateWithoutStaffSecondaryDataInput {
   temporary: Boolean
 }
 
-input CustomerUpdateWithWhereUniqueWithoutCompanyBelongInput {
-  data: CustomerUpdateWithoutCompanyBelongDataInput!
-  where: CustomerWhereUniqueInput!
-}
-
 input CustomerUpdateWithWhereUniqueWithoutStaffPrimaryInput {
   data: CustomerUpdateWithoutStaffPrimaryDataInput!
   where: CustomerWhereUniqueInput!
@@ -906,12 +852,6 @@ input CustomerUpsertWithoutAddressesInput {
 input CustomerUpsertWithoutJobsInput {
   create: CustomerCreateWithoutJobsInput!
   update: CustomerUpdateWithoutJobsDataInput!
-}
-
-input CustomerUpsertWithWhereUniqueWithoutCompanyBelongInput {
-  create: CustomerCreateWithoutCompanyBelongInput!
-  update: CustomerUpdateWithoutCompanyBelongDataInput!
-  where: CustomerWhereUniqueInput!
 }
 
 input CustomerUpsertWithWhereUniqueWithoutStaffPrimaryInput {
@@ -1112,12 +1052,12 @@ input JobWhereUniqueInput {
 
 type Mutation {
   createAdmin(data: AdminCreateInput!): Admin!
-  createOneCompany(data: CompanyCreateInput!): Company!
+  createCompany(data: CompanyCreateInput!): Company!
   createOneCustomer(data: CustomerCreateInput!): Customer!
   createOneJob(data: JobCreateInput!): Job!
   createStaff(data: StaffCreateInput!): Staff!
   deleteAdmin(where: AdminWhereUniqueInput!): Admin
-  deleteOneCompany(where: CompanyWhereUniqueInput!): Company
+  deleteCompany(where: CompanyWhereUniqueInput!): Company
   deleteOneCustomer(where: CustomerWhereUniqueInput!): Customer
   deleteOneJob(where: JobWhereUniqueInput!): Job
   deleteStaff(where: StaffWhereUniqueInput!): Staff
@@ -1129,7 +1069,7 @@ type Mutation {
   resetStaffPassword(newPassword: String!, where: StaffWhereUniqueInput!): Boolean!
   updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
   updateAdminPassword(newPassword: String!, oldPassword: String!, where: AdminWhereUniqueInput!): Boolean!
-  updateOneCompany(data: CompanyUpdateInput!, where: CompanyWhereUniqueInput!): Company
+  updateCompany(data: CompanyUpdateInput!, where: CompanyWhereUniqueInput!): Company
   updateOneCustomer(data: CustomerUpdateInput!, where: CustomerWhereUniqueInput!): Customer
   updateOneJob(data: JobUpdateInput!, where: JobWhereUniqueInput!): Job
   updateStaff(data: StaffUpdateInput!, where: StaffWhereUniqueInput!): Staff
