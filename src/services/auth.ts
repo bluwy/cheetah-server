@@ -2,10 +2,13 @@ import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 
 const secret = process.env.JWT_SECRET ?? '' as jwt.Secret
+export const staffLoginDuration = '810h'
+export const adminLoginDuration = '810h'
+export const adminForgotDuration = '2d'
 
 export enum UserRole {
   Staff = 'STAFF',
-  Admin = 'ADMiN'
+  Admin = 'ADMIN'
 }
 
 export enum AdminPrivilege {
@@ -13,53 +16,44 @@ export enum AdminPrivilege {
   Basic = 'BASIC'
 }
 
-export interface UserPayload {
-  readonly role: UserRole
+export interface StaffPayload {
+  readonly role: UserRole.Staff
   readonly id: string
 }
 
-export class StaffPayload implements UserPayload {
-  readonly role: UserRole = UserRole.Staff
-  readonly id: string
-
-  constructor (id: string) {
-    this.id = id
-  }
-}
-
-export class AdminPayload implements UserPayload {
-  readonly role: UserRole = UserRole.Admin
+export interface AdminPayload {
+  readonly role: UserRole.Admin
   readonly id: string
   readonly privilege: AdminPrivilege
-
-  constructor (id: string, privilege: AdminPrivilege) {
-    this.id = id
-    this.privilege = privilege
-  }
 }
 
-export const isPayloadUser = (obj: object): obj is UserPayload => {
-  return ['role', 'id'].every(v => v in obj)
+export interface AdminForgotPasswordPayload {
+  readonly id: string
 }
 
-export const isPayloadStaff = (payload: UserPayload): payload is StaffPayload => {
-  return payload.role === UserRole.Staff
+export const isStaffPayload = (obj: object): obj is StaffPayload => {
+  return 'role' in obj && (obj as { role: UserRole }).role === UserRole.Staff
 }
 
-export const isPayloadAdmin = (payload: UserPayload): payload is AdminPayload => {
-  return payload.role === UserRole.Admin
+export const isAdminPayload = (obj: object): obj is AdminPayload => {
+  return 'role' in obj && (obj as { role: UserRole }).role === UserRole.Admin
+}
+
+export const isForgotAdminPayload = (obj: object): obj is AdminForgotPasswordPayload => {
+  return 'id' in obj
 }
 
 export class UserContext {
   readonly role?: UserRole
   readonly privilege?: AdminPrivilege
 
-  constructor (userPayload?: UserPayload) {
-    if (userPayload != null) {
-      this.role = userPayload.role
-
-      if (isPayloadAdmin(userPayload)) {
-        this.privilege = userPayload.privilege
+  constructor (obj?: object) {
+    if (obj != null) {
+      if (isStaffPayload(obj)) {
+        this.role = obj.role
+      } else if (isAdminPayload(obj)) {
+        this.role = obj.role
+        this.privilege = obj.privilege
       }
     }
   }

@@ -3,6 +3,7 @@ import { applyMiddleware } from 'graphql-middleware'
 import context from './context'
 import { permissions } from './domains'
 import { schema as genSchema } from './gen-schema'
+import './generated/nexus'
 
 const schema = applyMiddleware(genSchema, permissions)
 

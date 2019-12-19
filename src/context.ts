@@ -19,7 +19,7 @@ const context: ApolloServerExpressConfig['context'] = async ({ req }): Promise<C
     try {
       const decoded = await auth.verifyJwt(token)
 
-      if (typeof decoded === 'object' && auth.isPayloadUser(decoded)) {
+      if (typeof decoded === 'object') {
         user = new auth.UserContext(decoded)
       }
     } catch {

@@ -202,7 +202,15 @@ type Admin {
 }
 
 input AdminCreateInput {
-  username: String
+  password: String!
+  privilege: AdminPrivilege!
+  username: String!
+}
+
+type AdminLoginResponse {
+  adminId: String!
+  adminPrivilege: AdminPrivilege!
+  token: String!
 }
 
 input AdminOrderByInput {
@@ -213,8 +221,8 @@ input AdminOrderByInput {
 }
 
 enum AdminPrivilege {
-  Basic
-  Full
+  BASIC
+  FULL
 }
 
 input AdminUpdateInput {
@@ -1103,21 +1111,28 @@ input JobWhereUniqueInput {
 }
 
 type Mutation {
-  createOneAdmin(data: AdminCreateInput!): Admin!
+  createAdmin(data: AdminCreateInput!): Admin!
   createOneCompany(data: CompanyCreateInput!): Company!
   createOneCustomer(data: CustomerCreateInput!): Customer!
   createOneJob(data: JobCreateInput!): Job!
-  createOneStaff(data: StaffCreateInput!): Staff!
-  deleteOneAdmin(where: AdminWhereUniqueInput!): Admin
+  createStaff(data: StaffCreateInput!): Staff!
+  deleteAdmin(where: AdminWhereUniqueInput!): Admin
   deleteOneCompany(where: CompanyWhereUniqueInput!): Company
   deleteOneCustomer(where: CustomerWhereUniqueInput!): Customer
   deleteOneJob(where: JobWhereUniqueInput!): Job
-  deleteOneStaff(where: StaffWhereUniqueInput!): Staff
-  updateOneAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
+  deleteStaff(where: StaffWhereUniqueInput!): Staff
+  forgotAdminPassword(username: String!): Boolean!
+  forgotStaffPassword(where: StaffWhereUniqueInput!): Boolean!
+  loginAdmin(password: String!, username: String!): AdminLoginResponse!
+  loginStaff(password: String!, username: String!): StaffLoginResponse!
+  resetAdminPassword(newPassword: String!, token: String!): Boolean!
+  resetStaffPassword(newPassword: String!, where: StaffWhereUniqueInput!): Boolean!
+  updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
+  updateAdminPassword(newPassword: String!, oldPassword: String!, where: AdminWhereUniqueInput!): Boolean!
   updateOneCompany(data: CompanyUpdateInput!, where: CompanyWhereUniqueInput!): Company
   updateOneCustomer(data: CustomerUpdateInput!, where: CustomerWhereUniqueInput!): Customer
   updateOneJob(data: JobUpdateInput!, where: JobWhereUniqueInput!): Job
-  updateOneStaff(data: StaffUpdateInput!, where: StaffWhereUniqueInput!): Staff
+  updateStaff(data: StaffUpdateInput!, where: StaffWhereUniqueInput!): Staff
 }
 
 input NullableDateTimeFilter {
@@ -1166,12 +1181,14 @@ type Query {
 type Staff {
   fullName: String!
   id: ID!
+  passwordForgotten: Boolean!
   username: String!
 }
 
 input StaffCreateInput {
-  fullName: String
-  username: String
+  fullName: String!
+  password: String!
+  username: String!
 }
 
 input StaffCreateOneWithoutStaffPrimaryInput {
@@ -1191,7 +1208,7 @@ input StaffCreateWithoutAssignmentPrimariesInput {
   fullName: String!
   hash: String!
   id: ID
-  passwordForgotten: Boolean!
+  passwordForgotten: Boolean
   username: String!
 }
 
@@ -1202,7 +1219,7 @@ input StaffCreateWithoutAssignmentSecondariesInput {
   fullName: String!
   hash: String!
   id: ID
-  passwordForgotten: Boolean!
+  passwordForgotten: Boolean
   username: String!
 }
 
@@ -1213,7 +1230,7 @@ input StaffCreateWithoutCustomerPrimariesInput {
   fullName: String!
   hash: String!
   id: ID
-  passwordForgotten: Boolean!
+  passwordForgotten: Boolean
   username: String!
 }
 
@@ -1224,8 +1241,13 @@ input StaffCreateWithoutCustomerSecondariesInput {
   fullName: String!
   hash: String!
   id: ID
-  passwordForgotten: Boolean!
+  passwordForgotten: Boolean
   username: String!
+}
+
+type StaffLoginResponse {
+  staffId: String!
+  token: String!
 }
 
 input StaffOrderByInput {
