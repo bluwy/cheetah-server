@@ -1,0 +1,19 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "stepType": "CreateDirective",
+      "model": "Staff",
+      "field": "passwordForgotten",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Staff",
+      "field": "passwordForgotten",
+      "directive": "default",
+      "argument": "",
+      "value": "false"
+    }
+  ]
+}
