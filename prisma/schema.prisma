@@ -32,17 +32,12 @@ model Company {
   alias String @unique
 }
 
-model Address {
-  id   String @default(cuid()) @id
-  text String
-}
-
 model Customer {
   id             String    @default(cuid()) @id
   code           String    @unique
   name           String    @unique
   email          String?
-  addresses      Address[]
+  addresses      String[]
   phoneNumber    String?
   companyBelong  Company?
   temporary      Boolean   @default(false)
@@ -61,7 +56,7 @@ model Job {
 
 model Assignment {
   id             String    @default(cuid()) @id
-  address        Address
+  address        String
   preferTime     DateTime?
   checkIn        DateTime?
   checkOut       DateTime?
@@ -75,6 +70,7 @@ model Task {
   id      String   @default(cuid()) @id
   type    TaskType
   remarks String
+  done    Boolean  @default(false)
 }
 
 model Action {
