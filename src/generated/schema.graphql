@@ -82,124 +82,6 @@ input ActionWhereUniqueInput {
   id: ID
 }
 
-type Address {
-  id: ID!
-  text: String!
-}
-
-input AddressCreateManyWithoutAddressesInput {
-  connect: [AddressWhereUniqueInput!]
-  create: [AddressCreateWithoutCustomerInput!]
-}
-
-input AddressCreateOneWithoutAddressInput {
-  connect: AddressWhereUniqueInput
-  create: AddressCreateWithoutAssignmentsInput
-}
-
-input AddressCreateWithoutAssignmentsInput {
-  customer: CustomerCreateOneWithoutCustomerInput
-  id: ID
-  text: String!
-}
-
-input AddressCreateWithoutCustomerInput {
-  assignments: AssignmentCreateManyWithoutAssignmentsInput
-  id: ID
-  text: String!
-}
-
-input AddressFilter {
-  every: AddressWhereInput
-  none: AddressWhereInput
-  some: AddressWhereInput
-}
-
-input AddressScalarWhereInput {
-  AND: [AddressScalarWhereInput!]
-  assignments: AssignmentFilter
-  id: StringFilter
-  NOT: [AddressScalarWhereInput!]
-  OR: [AddressScalarWhereInput!]
-  text: StringFilter
-}
-
-input AddressUpdateInput {
-  create: [String!]
-  disconnect: [AddressWhereUniqueInput!]
-}
-
-input AddressUpdateManyDataInput {
-  id: ID
-  text: String
-}
-
-input AddressUpdateManyWithoutCustomerInput {
-  connect: [AddressWhereUniqueInput!]
-  create: [AddressCreateWithoutCustomerInput!]
-  delete: [AddressWhereUniqueInput!]
-  deleteMany: [AddressScalarWhereInput!]
-  disconnect: [AddressWhereUniqueInput!]
-  set: [AddressWhereUniqueInput!]
-  update: [AddressUpdateWithWhereUniqueWithoutCustomerInput!]
-  updateMany: [AddressUpdateManyWithWhereNestedInput!]
-  upsert: [AddressUpsertWithWhereUniqueWithoutCustomerInput!]
-}
-
-input AddressUpdateManyWithWhereNestedInput {
-  data: AddressUpdateManyDataInput!
-  where: AddressScalarWhereInput!
-}
-
-input AddressUpdateOneRequiredWithoutAssignmentsInput {
-  connect: AddressWhereUniqueInput
-  create: AddressCreateWithoutAssignmentsInput
-  update: AddressUpdateWithoutAssignmentsDataInput
-  upsert: AddressUpsertWithoutAssignmentsInput
-}
-
-input AddressUpdateWithoutAssignmentsDataInput {
-  customer: CustomerUpdateOneWithoutAddressesInput
-  id: ID
-  text: String
-}
-
-input AddressUpdateWithoutCustomerDataInput {
-  assignments: AssignmentUpdateManyWithoutAddressInput
-  id: ID
-  text: String
-}
-
-input AddressUpdateWithWhereUniqueWithoutCustomerInput {
-  data: AddressUpdateWithoutCustomerDataInput!
-  where: AddressWhereUniqueInput!
-}
-
-input AddressUpsertWithoutAssignmentsInput {
-  create: AddressCreateWithoutAssignmentsInput!
-  update: AddressUpdateWithoutAssignmentsDataInput!
-}
-
-input AddressUpsertWithWhereUniqueWithoutCustomerInput {
-  create: AddressCreateWithoutCustomerInput!
-  update: AddressUpdateWithoutCustomerDataInput!
-  where: AddressWhereUniqueInput!
-}
-
-input AddressWhereInput {
-  AND: [AddressWhereInput!]
-  assignments: AssignmentFilter
-  customer: CustomerWhereInput
-  id: StringFilter
-  NOT: [AddressWhereInput!]
-  OR: [AddressWhereInput!]
-  text: StringFilter
-}
-
-input AddressWhereUniqueInput {
-  id: ID
-}
-
 type Admin {
   id: ID!
   privilege: AdminPrivilege!
@@ -251,7 +133,7 @@ input AdminWhereUniqueInput {
 
 type Assignment {
   actions(after: ID, before: ID, first: Int, last: Int, skip: Int): [Action!]!
-  address: Address!
+  address: String!
   checkIn: DateTime
   checkOut: DateTime
   id: ID!
@@ -273,24 +155,12 @@ input AssignmentCreateManyWithoutAssignmentSecondariesInput {
 
 input AssignmentCreateManyWithoutAssignmentsInput {
   connect: [AssignmentWhereUniqueInput!]
-  create: [AssignmentCreateWithoutAddressInput!]
-}
-
-input AssignmentCreateWithoutAddressInput {
-  actions: ActionCreateManyWithoutActionsInput
-  checkIn: DateTime
-  checkOut: DateTime
-  id: ID
-  job: JobCreateOneWithoutJobInput
-  preferTime: DateTime
-  staffPrimary: StaffCreateOneWithoutStaffPrimaryInput!
-  staffSecondary: StaffCreateOneWithoutStaffSecondaryInput
-  tasks: TaskCreateManyWithoutTasksInput
+  create: [AssignmentCreateWithoutJobInput!]
 }
 
 input AssignmentCreateWithoutJobInput {
   actions: ActionCreateManyWithoutActionsInput
-  address: AddressCreateOneWithoutAddressInput!
+  address: String!
   checkIn: DateTime
   checkOut: DateTime
   id: ID
@@ -302,7 +172,7 @@ input AssignmentCreateWithoutJobInput {
 
 input AssignmentCreateWithoutStaffPrimaryInput {
   actions: ActionCreateManyWithoutActionsInput
-  address: AddressCreateOneWithoutAddressInput!
+  address: String!
   checkIn: DateTime
   checkOut: DateTime
   id: ID
@@ -314,7 +184,7 @@ input AssignmentCreateWithoutStaffPrimaryInput {
 
 input AssignmentCreateWithoutStaffSecondaryInput {
   actions: ActionCreateManyWithoutActionsInput
-  address: AddressCreateOneWithoutAddressInput!
+  address: String!
   checkIn: DateTime
   checkOut: DateTime
   id: ID
@@ -332,6 +202,7 @@ input AssignmentFilter {
 
 input AssignmentScalarWhereInput {
   actions: ActionFilter
+  address: StringFilter
   AND: [AssignmentScalarWhereInput!]
   checkIn: NullableDateTimeFilter
   checkOut: NullableDateTimeFilter
@@ -343,22 +214,11 @@ input AssignmentScalarWhereInput {
 }
 
 input AssignmentUpdateManyDataInput {
+  address: String
   checkIn: DateTime
   checkOut: DateTime
   id: ID
   preferTime: DateTime
-}
-
-input AssignmentUpdateManyWithoutAddressInput {
-  connect: [AssignmentWhereUniqueInput!]
-  create: [AssignmentCreateWithoutAddressInput!]
-  delete: [AssignmentWhereUniqueInput!]
-  deleteMany: [AssignmentScalarWhereInput!]
-  disconnect: [AssignmentWhereUniqueInput!]
-  set: [AssignmentWhereUniqueInput!]
-  update: [AssignmentUpdateWithWhereUniqueWithoutAddressInput!]
-  updateMany: [AssignmentUpdateManyWithWhereNestedInput!]
-  upsert: [AssignmentUpsertWithWhereUniqueWithoutAddressInput!]
 }
 
 input AssignmentUpdateManyWithoutJobInput {
@@ -402,21 +262,9 @@ input AssignmentUpdateManyWithWhereNestedInput {
   where: AssignmentScalarWhereInput!
 }
 
-input AssignmentUpdateWithoutAddressDataInput {
-  actions: ActionUpdateManyWithoutAssignmentInput
-  checkIn: DateTime
-  checkOut: DateTime
-  id: ID
-  job: JobUpdateOneWithoutAssignmentsInput
-  preferTime: DateTime
-  staffPrimary: StaffUpdateOneRequiredWithoutAssignmentPrimariesInput
-  staffSecondary: StaffUpdateOneWithoutAssignmentSecondariesInput
-  tasks: TaskUpdateManyWithoutAssignmentInput
-}
-
 input AssignmentUpdateWithoutJobDataInput {
   actions: ActionUpdateManyWithoutAssignmentInput
-  address: AddressUpdateOneRequiredWithoutAssignmentsInput
+  address: String
   checkIn: DateTime
   checkOut: DateTime
   id: ID
@@ -428,7 +276,7 @@ input AssignmentUpdateWithoutJobDataInput {
 
 input AssignmentUpdateWithoutStaffPrimaryDataInput {
   actions: ActionUpdateManyWithoutAssignmentInput
-  address: AddressUpdateOneRequiredWithoutAssignmentsInput
+  address: String
   checkIn: DateTime
   checkOut: DateTime
   id: ID
@@ -440,7 +288,7 @@ input AssignmentUpdateWithoutStaffPrimaryDataInput {
 
 input AssignmentUpdateWithoutStaffSecondaryDataInput {
   actions: ActionUpdateManyWithoutAssignmentInput
-  address: AddressUpdateOneRequiredWithoutAssignmentsInput
+  address: String
   checkIn: DateTime
   checkOut: DateTime
   id: ID
@@ -448,11 +296,6 @@ input AssignmentUpdateWithoutStaffSecondaryDataInput {
   preferTime: DateTime
   staffPrimary: StaffUpdateOneRequiredWithoutAssignmentPrimariesInput
   tasks: TaskUpdateManyWithoutAssignmentInput
-}
-
-input AssignmentUpdateWithWhereUniqueWithoutAddressInput {
-  data: AssignmentUpdateWithoutAddressDataInput!
-  where: AssignmentWhereUniqueInput!
 }
 
 input AssignmentUpdateWithWhereUniqueWithoutJobInput {
@@ -467,12 +310,6 @@ input AssignmentUpdateWithWhereUniqueWithoutStaffPrimaryInput {
 
 input AssignmentUpdateWithWhereUniqueWithoutStaffSecondaryInput {
   data: AssignmentUpdateWithoutStaffSecondaryDataInput!
-  where: AssignmentWhereUniqueInput!
-}
-
-input AssignmentUpsertWithWhereUniqueWithoutAddressInput {
-  create: AssignmentCreateWithoutAddressInput!
-  update: AssignmentUpdateWithoutAddressDataInput!
   where: AssignmentWhereUniqueInput!
 }
 
@@ -496,7 +333,7 @@ input AssignmentUpsertWithWhereUniqueWithoutStaffSecondaryInput {
 
 input AssignmentWhereInput {
   actions: ActionFilter
-  address: AddressWhereInput
+  address: StringFilter
   AND: [AssignmentWhereInput!]
   checkIn: NullableDateTimeFilter
   checkOut: NullableDateTimeFilter
@@ -584,7 +421,7 @@ input CompanyWhereUniqueInput {
 
 type Customer {
   active: Boolean!
-  addresses(after: ID, before: ID, first: Int, last: Int, skip: Int): [Address!]!
+  addresses: [String!]!
   code: String!
   companyBelong: Company
   email: String
@@ -594,6 +431,10 @@ type Customer {
   staffPrimary: Staff!
   staffSecondary: Staff
   temporary: Boolean!
+}
+
+input CustomerCreateaddressesInput {
+  set: [String!]
 }
 
 input CustomerCreateInput {
@@ -621,26 +462,12 @@ input CustomerCreateManyWithoutCustomerSecondariesInput {
 
 input CustomerCreateOneWithoutCustomerInput {
   connect: CustomerWhereUniqueInput
-  create: CustomerCreateWithoutAddressesInput
-}
-
-input CustomerCreateWithoutAddressesInput {
-  active: Boolean
-  code: String!
-  companyBelong: CompanyCreateOneWithoutCompanyBelongInput
-  email: String
-  id: ID
-  jobs: JobCreateManyWithoutJobsInput
-  name: String!
-  phoneNumber: String
-  staffPrimary: StaffCreateOneWithoutStaffPrimaryInput!
-  staffSecondary: StaffCreateOneWithoutStaffSecondaryInput
-  temporary: Boolean
+  create: CustomerCreateWithoutJobsInput
 }
 
 input CustomerCreateWithoutJobsInput {
   active: Boolean
-  addresses: AddressCreateManyWithoutAddressesInput
+  addresses: CustomerCreateaddressesInput
   code: String!
   companyBelong: CompanyCreateOneWithoutCompanyBelongInput
   email: String
@@ -654,7 +481,7 @@ input CustomerCreateWithoutJobsInput {
 
 input CustomerCreateWithoutStaffPrimaryInput {
   active: Boolean
-  addresses: AddressCreateManyWithoutAddressesInput
+  addresses: CustomerCreateaddressesInput
   code: String!
   companyBelong: CompanyCreateOneWithoutCompanyBelongInput
   email: String
@@ -668,7 +495,7 @@ input CustomerCreateWithoutStaffPrimaryInput {
 
 input CustomerCreateWithoutStaffSecondaryInput {
   active: Boolean
-  addresses: AddressCreateManyWithoutAddressesInput
+  addresses: CustomerCreateaddressesInput
   code: String!
   companyBelong: CompanyCreateOneWithoutCompanyBelongInput
   email: String
@@ -698,7 +525,6 @@ input CustomerOrderByInput {
 
 input CustomerScalarWhereInput {
   active: BooleanFilter
-  addresses: AddressFilter
   AND: [CustomerScalarWhereInput!]
   code: StringFilter
   email: NullableStringFilter
@@ -711,9 +537,13 @@ input CustomerScalarWhereInput {
   temporary: BooleanFilter
 }
 
+input CustomerUpdateaddressesInput {
+  set: [String!]
+}
+
 input CustomerUpdateInput {
   active: Boolean
-  addresses: AddressUpdateInput
+  addresses: [String!]
   code: String
   companyBelong: CompanyWhereUniqueInput
   email: String
@@ -726,6 +556,7 @@ input CustomerUpdateInput {
 
 input CustomerUpdateManyDataInput {
   active: Boolean
+  addresses: CustomerUpdateaddressesInput
   code: String
   email: String
   id: ID
@@ -770,32 +601,9 @@ input CustomerUpdateOneRequiredWithoutJobsInput {
   upsert: CustomerUpsertWithoutJobsInput
 }
 
-input CustomerUpdateOneWithoutAddressesInput {
-  connect: CustomerWhereUniqueInput
-  create: CustomerCreateWithoutAddressesInput
-  delete: Boolean
-  disconnect: Boolean
-  update: CustomerUpdateWithoutAddressesDataInput
-  upsert: CustomerUpsertWithoutAddressesInput
-}
-
-input CustomerUpdateWithoutAddressesDataInput {
-  active: Boolean
-  code: String
-  companyBelong: CompanyUpdateOneWithoutCustomersInput
-  email: String
-  id: ID
-  jobs: JobUpdateManyWithoutCustomerInput
-  name: String
-  phoneNumber: String
-  staffPrimary: StaffUpdateOneRequiredWithoutCustomerPrimariesInput
-  staffSecondary: StaffUpdateOneWithoutCustomerSecondariesInput
-  temporary: Boolean
-}
-
 input CustomerUpdateWithoutJobsDataInput {
   active: Boolean
-  addresses: AddressUpdateManyWithoutCustomerInput
+  addresses: CustomerUpdateaddressesInput
   code: String
   companyBelong: CompanyUpdateOneWithoutCustomersInput
   email: String
@@ -809,7 +617,7 @@ input CustomerUpdateWithoutJobsDataInput {
 
 input CustomerUpdateWithoutStaffPrimaryDataInput {
   active: Boolean
-  addresses: AddressUpdateManyWithoutCustomerInput
+  addresses: CustomerUpdateaddressesInput
   code: String
   companyBelong: CompanyUpdateOneWithoutCustomersInput
   email: String
@@ -823,7 +631,7 @@ input CustomerUpdateWithoutStaffPrimaryDataInput {
 
 input CustomerUpdateWithoutStaffSecondaryDataInput {
   active: Boolean
-  addresses: AddressUpdateManyWithoutCustomerInput
+  addresses: CustomerUpdateaddressesInput
   code: String
   companyBelong: CompanyUpdateOneWithoutCustomersInput
   email: String
@@ -845,11 +653,6 @@ input CustomerUpdateWithWhereUniqueWithoutStaffSecondaryInput {
   where: CustomerWhereUniqueInput!
 }
 
-input CustomerUpsertWithoutAddressesInput {
-  create: CustomerCreateWithoutAddressesInput!
-  update: CustomerUpdateWithoutAddressesDataInput!
-}
-
 input CustomerUpsertWithoutJobsInput {
   create: CustomerCreateWithoutJobsInput!
   update: CustomerUpdateWithoutJobsDataInput!
@@ -869,7 +672,6 @@ input CustomerUpsertWithWhereUniqueWithoutStaffSecondaryInput {
 
 input CustomerWhereInput {
   active: BooleanFilter
-  addresses: AddressFilter
   AND: [CustomerWhereInput!]
   code: StringFilter
   companyBelong: CompanyWhereInput
@@ -1134,7 +936,7 @@ input StaffCreateInput {
 
 input StaffCreateOneWithoutStaffPrimaryInput {
   connect: StaffWhereUniqueInput
-  create: StaffCreateWithoutAssignmentPrimariesInput
+  create: StaffCreateWithoutCustomerPrimariesInput
 }
 
 input StaffCreateOneWithoutStaffSecondaryInput {
@@ -1346,6 +1148,7 @@ input TaskCreateManyWithoutTasksInput {
 }
 
 input TaskCreateWithoutAssignmentInput {
+  done: Boolean
   id: ID
   remarks: String!
   type: TaskType!
@@ -1359,6 +1162,7 @@ input TaskFilter {
 
 input TaskScalarWhereInput {
   AND: [TaskScalarWhereInput!]
+  done: BooleanFilter
   id: StringFilter
   NOT: [TaskScalarWhereInput!]
   OR: [TaskScalarWhereInput!]
@@ -1375,6 +1179,7 @@ enum TaskType {
 }
 
 input TaskUpdateManyDataInput {
+  done: Boolean
   id: ID
   remarks: String
   type: TaskType
@@ -1398,6 +1203,7 @@ input TaskUpdateManyWithWhereNestedInput {
 }
 
 input TaskUpdateWithoutAssignmentDataInput {
+  done: Boolean
   id: ID
   remarks: String
   type: TaskType
@@ -1417,6 +1223,7 @@ input TaskUpsertWithWhereUniqueWithoutAssignmentInput {
 input TaskWhereInput {
   AND: [TaskWhereInput!]
   assignment: AssignmentWhereInput
+  done: BooleanFilter
   id: StringFilter
   NOT: [TaskWhereInput!]
   OR: [TaskWhereInput!]

@@ -82,101 +82,6 @@ export interface NexusGenInputs {
   ActionWhereUniqueInput: { // input type
     id?: string | null; // ID
   }
-  AddressCreateManyWithoutAddressesInput: { // input type
-    connect?: NexusGenInputs['AddressWhereUniqueInput'][] | null; // [AddressWhereUniqueInput!]
-    create?: NexusGenInputs['AddressCreateWithoutCustomerInput'][] | null; // [AddressCreateWithoutCustomerInput!]
-  }
-  AddressCreateOneWithoutAddressInput: { // input type
-    connect?: NexusGenInputs['AddressWhereUniqueInput'] | null; // AddressWhereUniqueInput
-    create?: NexusGenInputs['AddressCreateWithoutAssignmentsInput'] | null; // AddressCreateWithoutAssignmentsInput
-  }
-  AddressCreateWithoutAssignmentsInput: { // input type
-    customer?: NexusGenInputs['CustomerCreateOneWithoutCustomerInput'] | null; // CustomerCreateOneWithoutCustomerInput
-    id?: string | null; // ID
-    text: string; // String!
-  }
-  AddressCreateWithoutCustomerInput: { // input type
-    assignments?: NexusGenInputs['AssignmentCreateManyWithoutAssignmentsInput'] | null; // AssignmentCreateManyWithoutAssignmentsInput
-    id?: string | null; // ID
-    text: string; // String!
-  }
-  AddressFilter: { // input type
-    every?: NexusGenInputs['AddressWhereInput'] | null; // AddressWhereInput
-    none?: NexusGenInputs['AddressWhereInput'] | null; // AddressWhereInput
-    some?: NexusGenInputs['AddressWhereInput'] | null; // AddressWhereInput
-  }
-  AddressScalarWhereInput: { // input type
-    AND?: NexusGenInputs['AddressScalarWhereInput'][] | null; // [AddressScalarWhereInput!]
-    assignments?: NexusGenInputs['AssignmentFilter'] | null; // AssignmentFilter
-    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    NOT?: NexusGenInputs['AddressScalarWhereInput'][] | null; // [AddressScalarWhereInput!]
-    OR?: NexusGenInputs['AddressScalarWhereInput'][] | null; // [AddressScalarWhereInput!]
-    text?: NexusGenInputs['StringFilter'] | null; // StringFilter
-  }
-  AddressUpdateInput: { // input type
-    create?: string[] | null; // [String!]
-    disconnect?: NexusGenInputs['AddressWhereUniqueInput'][] | null; // [AddressWhereUniqueInput!]
-  }
-  AddressUpdateManyDataInput: { // input type
-    id?: string | null; // ID
-    text?: string | null; // String
-  }
-  AddressUpdateManyWithWhereNestedInput: { // input type
-    data: NexusGenInputs['AddressUpdateManyDataInput']; // AddressUpdateManyDataInput!
-    where: NexusGenInputs['AddressScalarWhereInput']; // AddressScalarWhereInput!
-  }
-  AddressUpdateManyWithoutCustomerInput: { // input type
-    connect?: NexusGenInputs['AddressWhereUniqueInput'][] | null; // [AddressWhereUniqueInput!]
-    create?: NexusGenInputs['AddressCreateWithoutCustomerInput'][] | null; // [AddressCreateWithoutCustomerInput!]
-    delete?: NexusGenInputs['AddressWhereUniqueInput'][] | null; // [AddressWhereUniqueInput!]
-    deleteMany?: NexusGenInputs['AddressScalarWhereInput'][] | null; // [AddressScalarWhereInput!]
-    disconnect?: NexusGenInputs['AddressWhereUniqueInput'][] | null; // [AddressWhereUniqueInput!]
-    set?: NexusGenInputs['AddressWhereUniqueInput'][] | null; // [AddressWhereUniqueInput!]
-    update?: NexusGenInputs['AddressUpdateWithWhereUniqueWithoutCustomerInput'][] | null; // [AddressUpdateWithWhereUniqueWithoutCustomerInput!]
-    updateMany?: NexusGenInputs['AddressUpdateManyWithWhereNestedInput'][] | null; // [AddressUpdateManyWithWhereNestedInput!]
-    upsert?: NexusGenInputs['AddressUpsertWithWhereUniqueWithoutCustomerInput'][] | null; // [AddressUpsertWithWhereUniqueWithoutCustomerInput!]
-  }
-  AddressUpdateOneRequiredWithoutAssignmentsInput: { // input type
-    connect?: NexusGenInputs['AddressWhereUniqueInput'] | null; // AddressWhereUniqueInput
-    create?: NexusGenInputs['AddressCreateWithoutAssignmentsInput'] | null; // AddressCreateWithoutAssignmentsInput
-    update?: NexusGenInputs['AddressUpdateWithoutAssignmentsDataInput'] | null; // AddressUpdateWithoutAssignmentsDataInput
-    upsert?: NexusGenInputs['AddressUpsertWithoutAssignmentsInput'] | null; // AddressUpsertWithoutAssignmentsInput
-  }
-  AddressUpdateWithWhereUniqueWithoutCustomerInput: { // input type
-    data: NexusGenInputs['AddressUpdateWithoutCustomerDataInput']; // AddressUpdateWithoutCustomerDataInput!
-    where: NexusGenInputs['AddressWhereUniqueInput']; // AddressWhereUniqueInput!
-  }
-  AddressUpdateWithoutAssignmentsDataInput: { // input type
-    customer?: NexusGenInputs['CustomerUpdateOneWithoutAddressesInput'] | null; // CustomerUpdateOneWithoutAddressesInput
-    id?: string | null; // ID
-    text?: string | null; // String
-  }
-  AddressUpdateWithoutCustomerDataInput: { // input type
-    assignments?: NexusGenInputs['AssignmentUpdateManyWithoutAddressInput'] | null; // AssignmentUpdateManyWithoutAddressInput
-    id?: string | null; // ID
-    text?: string | null; // String
-  }
-  AddressUpsertWithWhereUniqueWithoutCustomerInput: { // input type
-    create: NexusGenInputs['AddressCreateWithoutCustomerInput']; // AddressCreateWithoutCustomerInput!
-    update: NexusGenInputs['AddressUpdateWithoutCustomerDataInput']; // AddressUpdateWithoutCustomerDataInput!
-    where: NexusGenInputs['AddressWhereUniqueInput']; // AddressWhereUniqueInput!
-  }
-  AddressUpsertWithoutAssignmentsInput: { // input type
-    create: NexusGenInputs['AddressCreateWithoutAssignmentsInput']; // AddressCreateWithoutAssignmentsInput!
-    update: NexusGenInputs['AddressUpdateWithoutAssignmentsDataInput']; // AddressUpdateWithoutAssignmentsDataInput!
-  }
-  AddressWhereInput: { // input type
-    AND?: NexusGenInputs['AddressWhereInput'][] | null; // [AddressWhereInput!]
-    assignments?: NexusGenInputs['AssignmentFilter'] | null; // AssignmentFilter
-    customer?: NexusGenInputs['CustomerWhereInput'] | null; // CustomerWhereInput
-    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    NOT?: NexusGenInputs['AddressWhereInput'][] | null; // [AddressWhereInput!]
-    OR?: NexusGenInputs['AddressWhereInput'][] | null; // [AddressWhereInput!]
-    text?: NexusGenInputs['StringFilter'] | null; // StringFilter
-  }
-  AddressWhereUniqueInput: { // input type
-    id?: string | null; // ID
-  }
   AdminCreateInput: { // input type
     password: string; // String!
     privilege: NexusGenEnums['AdminPrivilege']; // AdminPrivilege!
@@ -214,22 +119,11 @@ export interface NexusGenInputs {
   }
   AssignmentCreateManyWithoutAssignmentsInput: { // input type
     connect?: NexusGenInputs['AssignmentWhereUniqueInput'][] | null; // [AssignmentWhereUniqueInput!]
-    create?: NexusGenInputs['AssignmentCreateWithoutAddressInput'][] | null; // [AssignmentCreateWithoutAddressInput!]
-  }
-  AssignmentCreateWithoutAddressInput: { // input type
-    actions?: NexusGenInputs['ActionCreateManyWithoutActionsInput'] | null; // ActionCreateManyWithoutActionsInput
-    checkIn?: any | null; // DateTime
-    checkOut?: any | null; // DateTime
-    id?: string | null; // ID
-    job?: NexusGenInputs['JobCreateOneWithoutJobInput'] | null; // JobCreateOneWithoutJobInput
-    preferTime?: any | null; // DateTime
-    staffPrimary: NexusGenInputs['StaffCreateOneWithoutStaffPrimaryInput']; // StaffCreateOneWithoutStaffPrimaryInput!
-    staffSecondary?: NexusGenInputs['StaffCreateOneWithoutStaffSecondaryInput'] | null; // StaffCreateOneWithoutStaffSecondaryInput
-    tasks?: NexusGenInputs['TaskCreateManyWithoutTasksInput'] | null; // TaskCreateManyWithoutTasksInput
+    create?: NexusGenInputs['AssignmentCreateWithoutJobInput'][] | null; // [AssignmentCreateWithoutJobInput!]
   }
   AssignmentCreateWithoutJobInput: { // input type
     actions?: NexusGenInputs['ActionCreateManyWithoutActionsInput'] | null; // ActionCreateManyWithoutActionsInput
-    address: NexusGenInputs['AddressCreateOneWithoutAddressInput']; // AddressCreateOneWithoutAddressInput!
+    address: string; // String!
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
     id?: string | null; // ID
@@ -240,7 +134,7 @@ export interface NexusGenInputs {
   }
   AssignmentCreateWithoutStaffPrimaryInput: { // input type
     actions?: NexusGenInputs['ActionCreateManyWithoutActionsInput'] | null; // ActionCreateManyWithoutActionsInput
-    address: NexusGenInputs['AddressCreateOneWithoutAddressInput']; // AddressCreateOneWithoutAddressInput!
+    address: string; // String!
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
     id?: string | null; // ID
@@ -251,7 +145,7 @@ export interface NexusGenInputs {
   }
   AssignmentCreateWithoutStaffSecondaryInput: { // input type
     actions?: NexusGenInputs['ActionCreateManyWithoutActionsInput'] | null; // ActionCreateManyWithoutActionsInput
-    address: NexusGenInputs['AddressCreateOneWithoutAddressInput']; // AddressCreateOneWithoutAddressInput!
+    address: string; // String!
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
     id?: string | null; // ID
@@ -267,6 +161,7 @@ export interface NexusGenInputs {
   }
   AssignmentScalarWhereInput: { // input type
     actions?: NexusGenInputs['ActionFilter'] | null; // ActionFilter
+    address?: NexusGenInputs['StringFilter'] | null; // StringFilter
     AND?: NexusGenInputs['AssignmentScalarWhereInput'][] | null; // [AssignmentScalarWhereInput!]
     checkIn?: NexusGenInputs['NullableDateTimeFilter'] | null; // NullableDateTimeFilter
     checkOut?: NexusGenInputs['NullableDateTimeFilter'] | null; // NullableDateTimeFilter
@@ -277,6 +172,7 @@ export interface NexusGenInputs {
     tasks?: NexusGenInputs['TaskFilter'] | null; // TaskFilter
   }
   AssignmentUpdateManyDataInput: { // input type
+    address?: string | null; // String
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
     id?: string | null; // ID
@@ -285,17 +181,6 @@ export interface NexusGenInputs {
   AssignmentUpdateManyWithWhereNestedInput: { // input type
     data: NexusGenInputs['AssignmentUpdateManyDataInput']; // AssignmentUpdateManyDataInput!
     where: NexusGenInputs['AssignmentScalarWhereInput']; // AssignmentScalarWhereInput!
-  }
-  AssignmentUpdateManyWithoutAddressInput: { // input type
-    connect?: NexusGenInputs['AssignmentWhereUniqueInput'][] | null; // [AssignmentWhereUniqueInput!]
-    create?: NexusGenInputs['AssignmentCreateWithoutAddressInput'][] | null; // [AssignmentCreateWithoutAddressInput!]
-    delete?: NexusGenInputs['AssignmentWhereUniqueInput'][] | null; // [AssignmentWhereUniqueInput!]
-    deleteMany?: NexusGenInputs['AssignmentScalarWhereInput'][] | null; // [AssignmentScalarWhereInput!]
-    disconnect?: NexusGenInputs['AssignmentWhereUniqueInput'][] | null; // [AssignmentWhereUniqueInput!]
-    set?: NexusGenInputs['AssignmentWhereUniqueInput'][] | null; // [AssignmentWhereUniqueInput!]
-    update?: NexusGenInputs['AssignmentUpdateWithWhereUniqueWithoutAddressInput'][] | null; // [AssignmentUpdateWithWhereUniqueWithoutAddressInput!]
-    updateMany?: NexusGenInputs['AssignmentUpdateManyWithWhereNestedInput'][] | null; // [AssignmentUpdateManyWithWhereNestedInput!]
-    upsert?: NexusGenInputs['AssignmentUpsertWithWhereUniqueWithoutAddressInput'][] | null; // [AssignmentUpsertWithWhereUniqueWithoutAddressInput!]
   }
   AssignmentUpdateManyWithoutJobInput: { // input type
     connect?: NexusGenInputs['AssignmentWhereUniqueInput'][] | null; // [AssignmentWhereUniqueInput!]
@@ -330,10 +215,6 @@ export interface NexusGenInputs {
     updateMany?: NexusGenInputs['AssignmentUpdateManyWithWhereNestedInput'][] | null; // [AssignmentUpdateManyWithWhereNestedInput!]
     upsert?: NexusGenInputs['AssignmentUpsertWithWhereUniqueWithoutStaffSecondaryInput'][] | null; // [AssignmentUpsertWithWhereUniqueWithoutStaffSecondaryInput!]
   }
-  AssignmentUpdateWithWhereUniqueWithoutAddressInput: { // input type
-    data: NexusGenInputs['AssignmentUpdateWithoutAddressDataInput']; // AssignmentUpdateWithoutAddressDataInput!
-    where: NexusGenInputs['AssignmentWhereUniqueInput']; // AssignmentWhereUniqueInput!
-  }
   AssignmentUpdateWithWhereUniqueWithoutJobInput: { // input type
     data: NexusGenInputs['AssignmentUpdateWithoutJobDataInput']; // AssignmentUpdateWithoutJobDataInput!
     where: NexusGenInputs['AssignmentWhereUniqueInput']; // AssignmentWhereUniqueInput!
@@ -346,20 +227,9 @@ export interface NexusGenInputs {
     data: NexusGenInputs['AssignmentUpdateWithoutStaffSecondaryDataInput']; // AssignmentUpdateWithoutStaffSecondaryDataInput!
     where: NexusGenInputs['AssignmentWhereUniqueInput']; // AssignmentWhereUniqueInput!
   }
-  AssignmentUpdateWithoutAddressDataInput: { // input type
-    actions?: NexusGenInputs['ActionUpdateManyWithoutAssignmentInput'] | null; // ActionUpdateManyWithoutAssignmentInput
-    checkIn?: any | null; // DateTime
-    checkOut?: any | null; // DateTime
-    id?: string | null; // ID
-    job?: NexusGenInputs['JobUpdateOneWithoutAssignmentsInput'] | null; // JobUpdateOneWithoutAssignmentsInput
-    preferTime?: any | null; // DateTime
-    staffPrimary?: NexusGenInputs['StaffUpdateOneRequiredWithoutAssignmentPrimariesInput'] | null; // StaffUpdateOneRequiredWithoutAssignmentPrimariesInput
-    staffSecondary?: NexusGenInputs['StaffUpdateOneWithoutAssignmentSecondariesInput'] | null; // StaffUpdateOneWithoutAssignmentSecondariesInput
-    tasks?: NexusGenInputs['TaskUpdateManyWithoutAssignmentInput'] | null; // TaskUpdateManyWithoutAssignmentInput
-  }
   AssignmentUpdateWithoutJobDataInput: { // input type
     actions?: NexusGenInputs['ActionUpdateManyWithoutAssignmentInput'] | null; // ActionUpdateManyWithoutAssignmentInput
-    address?: NexusGenInputs['AddressUpdateOneRequiredWithoutAssignmentsInput'] | null; // AddressUpdateOneRequiredWithoutAssignmentsInput
+    address?: string | null; // String
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
     id?: string | null; // ID
@@ -370,7 +240,7 @@ export interface NexusGenInputs {
   }
   AssignmentUpdateWithoutStaffPrimaryDataInput: { // input type
     actions?: NexusGenInputs['ActionUpdateManyWithoutAssignmentInput'] | null; // ActionUpdateManyWithoutAssignmentInput
-    address?: NexusGenInputs['AddressUpdateOneRequiredWithoutAssignmentsInput'] | null; // AddressUpdateOneRequiredWithoutAssignmentsInput
+    address?: string | null; // String
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
     id?: string | null; // ID
@@ -381,7 +251,7 @@ export interface NexusGenInputs {
   }
   AssignmentUpdateWithoutStaffSecondaryDataInput: { // input type
     actions?: NexusGenInputs['ActionUpdateManyWithoutAssignmentInput'] | null; // ActionUpdateManyWithoutAssignmentInput
-    address?: NexusGenInputs['AddressUpdateOneRequiredWithoutAssignmentsInput'] | null; // AddressUpdateOneRequiredWithoutAssignmentsInput
+    address?: string | null; // String
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
     id?: string | null; // ID
@@ -389,11 +259,6 @@ export interface NexusGenInputs {
     preferTime?: any | null; // DateTime
     staffPrimary?: NexusGenInputs['StaffUpdateOneRequiredWithoutAssignmentPrimariesInput'] | null; // StaffUpdateOneRequiredWithoutAssignmentPrimariesInput
     tasks?: NexusGenInputs['TaskUpdateManyWithoutAssignmentInput'] | null; // TaskUpdateManyWithoutAssignmentInput
-  }
-  AssignmentUpsertWithWhereUniqueWithoutAddressInput: { // input type
-    create: NexusGenInputs['AssignmentCreateWithoutAddressInput']; // AssignmentCreateWithoutAddressInput!
-    update: NexusGenInputs['AssignmentUpdateWithoutAddressDataInput']; // AssignmentUpdateWithoutAddressDataInput!
-    where: NexusGenInputs['AssignmentWhereUniqueInput']; // AssignmentWhereUniqueInput!
   }
   AssignmentUpsertWithWhereUniqueWithoutJobInput: { // input type
     create: NexusGenInputs['AssignmentCreateWithoutJobInput']; // AssignmentCreateWithoutJobInput!
@@ -412,7 +277,7 @@ export interface NexusGenInputs {
   }
   AssignmentWhereInput: { // input type
     actions?: NexusGenInputs['ActionFilter'] | null; // ActionFilter
-    address?: NexusGenInputs['AddressWhereInput'] | null; // AddressWhereInput
+    address?: NexusGenInputs['StringFilter'] | null; // StringFilter
     AND?: NexusGenInputs['AssignmentWhereInput'][] | null; // [AssignmentWhereInput!]
     checkIn?: NexusGenInputs['NullableDateTimeFilter'] | null; // NullableDateTimeFilter
     checkOut?: NexusGenInputs['NullableDateTimeFilter'] | null; // NullableDateTimeFilter
@@ -502,24 +367,11 @@ export interface NexusGenInputs {
   }
   CustomerCreateOneWithoutCustomerInput: { // input type
     connect?: NexusGenInputs['CustomerWhereUniqueInput'] | null; // CustomerWhereUniqueInput
-    create?: NexusGenInputs['CustomerCreateWithoutAddressesInput'] | null; // CustomerCreateWithoutAddressesInput
-  }
-  CustomerCreateWithoutAddressesInput: { // input type
-    active?: boolean | null; // Boolean
-    code: string; // String!
-    companyBelong?: NexusGenInputs['CompanyCreateOneWithoutCompanyBelongInput'] | null; // CompanyCreateOneWithoutCompanyBelongInput
-    email?: string | null; // String
-    id?: string | null; // ID
-    jobs?: NexusGenInputs['JobCreateManyWithoutJobsInput'] | null; // JobCreateManyWithoutJobsInput
-    name: string; // String!
-    phoneNumber?: string | null; // String
-    staffPrimary: NexusGenInputs['StaffCreateOneWithoutStaffPrimaryInput']; // StaffCreateOneWithoutStaffPrimaryInput!
-    staffSecondary?: NexusGenInputs['StaffCreateOneWithoutStaffSecondaryInput'] | null; // StaffCreateOneWithoutStaffSecondaryInput
-    temporary?: boolean | null; // Boolean
+    create?: NexusGenInputs['CustomerCreateWithoutJobsInput'] | null; // CustomerCreateWithoutJobsInput
   }
   CustomerCreateWithoutJobsInput: { // input type
     active?: boolean | null; // Boolean
-    addresses?: NexusGenInputs['AddressCreateManyWithoutAddressesInput'] | null; // AddressCreateManyWithoutAddressesInput
+    addresses?: NexusGenInputs['CustomerCreateaddressesInput'] | null; // CustomerCreateaddressesInput
     code: string; // String!
     companyBelong?: NexusGenInputs['CompanyCreateOneWithoutCompanyBelongInput'] | null; // CompanyCreateOneWithoutCompanyBelongInput
     email?: string | null; // String
@@ -532,7 +384,7 @@ export interface NexusGenInputs {
   }
   CustomerCreateWithoutStaffPrimaryInput: { // input type
     active?: boolean | null; // Boolean
-    addresses?: NexusGenInputs['AddressCreateManyWithoutAddressesInput'] | null; // AddressCreateManyWithoutAddressesInput
+    addresses?: NexusGenInputs['CustomerCreateaddressesInput'] | null; // CustomerCreateaddressesInput
     code: string; // String!
     companyBelong?: NexusGenInputs['CompanyCreateOneWithoutCompanyBelongInput'] | null; // CompanyCreateOneWithoutCompanyBelongInput
     email?: string | null; // String
@@ -545,7 +397,7 @@ export interface NexusGenInputs {
   }
   CustomerCreateWithoutStaffSecondaryInput: { // input type
     active?: boolean | null; // Boolean
-    addresses?: NexusGenInputs['AddressCreateManyWithoutAddressesInput'] | null; // AddressCreateManyWithoutAddressesInput
+    addresses?: NexusGenInputs['CustomerCreateaddressesInput'] | null; // CustomerCreateaddressesInput
     code: string; // String!
     companyBelong?: NexusGenInputs['CompanyCreateOneWithoutCompanyBelongInput'] | null; // CompanyCreateOneWithoutCompanyBelongInput
     email?: string | null; // String
@@ -555,6 +407,9 @@ export interface NexusGenInputs {
     phoneNumber?: string | null; // String
     staffPrimary: NexusGenInputs['StaffCreateOneWithoutStaffPrimaryInput']; // StaffCreateOneWithoutStaffPrimaryInput!
     temporary?: boolean | null; // Boolean
+  }
+  CustomerCreateaddressesInput: { // input type
+    set?: string[] | null; // [String!]
   }
   CustomerFilter: { // input type
     every?: NexusGenInputs['CustomerWhereInput'] | null; // CustomerWhereInput
@@ -572,7 +427,6 @@ export interface NexusGenInputs {
   }
   CustomerScalarWhereInput: { // input type
     active?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
-    addresses?: NexusGenInputs['AddressFilter'] | null; // AddressFilter
     AND?: NexusGenInputs['CustomerScalarWhereInput'][] | null; // [CustomerScalarWhereInput!]
     code?: NexusGenInputs['StringFilter'] | null; // StringFilter
     email?: NexusGenInputs['NullableStringFilter'] | null; // NullableStringFilter
@@ -586,7 +440,7 @@ export interface NexusGenInputs {
   }
   CustomerUpdateInput: { // input type
     active?: boolean | null; // Boolean
-    addresses?: NexusGenInputs['AddressUpdateInput'] | null; // AddressUpdateInput
+    addresses?: string[] | null; // [String!]
     code?: string | null; // String
     companyBelong?: NexusGenInputs['CompanyWhereUniqueInput'] | null; // CompanyWhereUniqueInput
     email?: string | null; // String
@@ -598,6 +452,7 @@ export interface NexusGenInputs {
   }
   CustomerUpdateManyDataInput: { // input type
     active?: boolean | null; // Boolean
+    addresses?: NexusGenInputs['CustomerUpdateaddressesInput'] | null; // CustomerUpdateaddressesInput
     code?: string | null; // String
     email?: string | null; // String
     id?: string | null; // ID
@@ -637,14 +492,6 @@ export interface NexusGenInputs {
     update?: NexusGenInputs['CustomerUpdateWithoutJobsDataInput'] | null; // CustomerUpdateWithoutJobsDataInput
     upsert?: NexusGenInputs['CustomerUpsertWithoutJobsInput'] | null; // CustomerUpsertWithoutJobsInput
   }
-  CustomerUpdateOneWithoutAddressesInput: { // input type
-    connect?: NexusGenInputs['CustomerWhereUniqueInput'] | null; // CustomerWhereUniqueInput
-    create?: NexusGenInputs['CustomerCreateWithoutAddressesInput'] | null; // CustomerCreateWithoutAddressesInput
-    delete?: boolean | null; // Boolean
-    disconnect?: boolean | null; // Boolean
-    update?: NexusGenInputs['CustomerUpdateWithoutAddressesDataInput'] | null; // CustomerUpdateWithoutAddressesDataInput
-    upsert?: NexusGenInputs['CustomerUpsertWithoutAddressesInput'] | null; // CustomerUpsertWithoutAddressesInput
-  }
   CustomerUpdateWithWhereUniqueWithoutStaffPrimaryInput: { // input type
     data: NexusGenInputs['CustomerUpdateWithoutStaffPrimaryDataInput']; // CustomerUpdateWithoutStaffPrimaryDataInput!
     where: NexusGenInputs['CustomerWhereUniqueInput']; // CustomerWhereUniqueInput!
@@ -653,22 +500,9 @@ export interface NexusGenInputs {
     data: NexusGenInputs['CustomerUpdateWithoutStaffSecondaryDataInput']; // CustomerUpdateWithoutStaffSecondaryDataInput!
     where: NexusGenInputs['CustomerWhereUniqueInput']; // CustomerWhereUniqueInput!
   }
-  CustomerUpdateWithoutAddressesDataInput: { // input type
-    active?: boolean | null; // Boolean
-    code?: string | null; // String
-    companyBelong?: NexusGenInputs['CompanyUpdateOneWithoutCustomersInput'] | null; // CompanyUpdateOneWithoutCustomersInput
-    email?: string | null; // String
-    id?: string | null; // ID
-    jobs?: NexusGenInputs['JobUpdateManyWithoutCustomerInput'] | null; // JobUpdateManyWithoutCustomerInput
-    name?: string | null; // String
-    phoneNumber?: string | null; // String
-    staffPrimary?: NexusGenInputs['StaffUpdateOneRequiredWithoutCustomerPrimariesInput'] | null; // StaffUpdateOneRequiredWithoutCustomerPrimariesInput
-    staffSecondary?: NexusGenInputs['StaffUpdateOneWithoutCustomerSecondariesInput'] | null; // StaffUpdateOneWithoutCustomerSecondariesInput
-    temporary?: boolean | null; // Boolean
-  }
   CustomerUpdateWithoutJobsDataInput: { // input type
     active?: boolean | null; // Boolean
-    addresses?: NexusGenInputs['AddressUpdateManyWithoutCustomerInput'] | null; // AddressUpdateManyWithoutCustomerInput
+    addresses?: NexusGenInputs['CustomerUpdateaddressesInput'] | null; // CustomerUpdateaddressesInput
     code?: string | null; // String
     companyBelong?: NexusGenInputs['CompanyUpdateOneWithoutCustomersInput'] | null; // CompanyUpdateOneWithoutCustomersInput
     email?: string | null; // String
@@ -681,7 +515,7 @@ export interface NexusGenInputs {
   }
   CustomerUpdateWithoutStaffPrimaryDataInput: { // input type
     active?: boolean | null; // Boolean
-    addresses?: NexusGenInputs['AddressUpdateManyWithoutCustomerInput'] | null; // AddressUpdateManyWithoutCustomerInput
+    addresses?: NexusGenInputs['CustomerUpdateaddressesInput'] | null; // CustomerUpdateaddressesInput
     code?: string | null; // String
     companyBelong?: NexusGenInputs['CompanyUpdateOneWithoutCustomersInput'] | null; // CompanyUpdateOneWithoutCustomersInput
     email?: string | null; // String
@@ -694,7 +528,7 @@ export interface NexusGenInputs {
   }
   CustomerUpdateWithoutStaffSecondaryDataInput: { // input type
     active?: boolean | null; // Boolean
-    addresses?: NexusGenInputs['AddressUpdateManyWithoutCustomerInput'] | null; // AddressUpdateManyWithoutCustomerInput
+    addresses?: NexusGenInputs['CustomerUpdateaddressesInput'] | null; // CustomerUpdateaddressesInput
     code?: string | null; // String
     companyBelong?: NexusGenInputs['CompanyUpdateOneWithoutCustomersInput'] | null; // CompanyUpdateOneWithoutCustomersInput
     email?: string | null; // String
@@ -704,6 +538,9 @@ export interface NexusGenInputs {
     phoneNumber?: string | null; // String
     staffPrimary?: NexusGenInputs['StaffUpdateOneRequiredWithoutCustomerPrimariesInput'] | null; // StaffUpdateOneRequiredWithoutCustomerPrimariesInput
     temporary?: boolean | null; // Boolean
+  }
+  CustomerUpdateaddressesInput: { // input type
+    set?: string[] | null; // [String!]
   }
   CustomerUpsertWithWhereUniqueWithoutStaffPrimaryInput: { // input type
     create: NexusGenInputs['CustomerCreateWithoutStaffPrimaryInput']; // CustomerCreateWithoutStaffPrimaryInput!
@@ -715,17 +552,12 @@ export interface NexusGenInputs {
     update: NexusGenInputs['CustomerUpdateWithoutStaffSecondaryDataInput']; // CustomerUpdateWithoutStaffSecondaryDataInput!
     where: NexusGenInputs['CustomerWhereUniqueInput']; // CustomerWhereUniqueInput!
   }
-  CustomerUpsertWithoutAddressesInput: { // input type
-    create: NexusGenInputs['CustomerCreateWithoutAddressesInput']; // CustomerCreateWithoutAddressesInput!
-    update: NexusGenInputs['CustomerUpdateWithoutAddressesDataInput']; // CustomerUpdateWithoutAddressesDataInput!
-  }
   CustomerUpsertWithoutJobsInput: { // input type
     create: NexusGenInputs['CustomerCreateWithoutJobsInput']; // CustomerCreateWithoutJobsInput!
     update: NexusGenInputs['CustomerUpdateWithoutJobsDataInput']; // CustomerUpdateWithoutJobsDataInput!
   }
   CustomerWhereInput: { // input type
     active?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
-    addresses?: NexusGenInputs['AddressFilter'] | null; // AddressFilter
     AND?: NexusGenInputs['CustomerWhereInput'][] | null; // [CustomerWhereInput!]
     code?: NexusGenInputs['StringFilter'] | null; // StringFilter
     companyBelong?: NexusGenInputs['CompanyWhereInput'] | null; // CompanyWhereInput
@@ -904,7 +736,7 @@ export interface NexusGenInputs {
   }
   StaffCreateOneWithoutStaffPrimaryInput: { // input type
     connect?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
-    create?: NexusGenInputs['StaffCreateWithoutAssignmentPrimariesInput'] | null; // StaffCreateWithoutAssignmentPrimariesInput
+    create?: NexusGenInputs['StaffCreateWithoutCustomerPrimariesInput'] | null; // StaffCreateWithoutCustomerPrimariesInput
   }
   StaffCreateOneWithoutStaffSecondaryInput: { // input type
     connect?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
@@ -1081,6 +913,7 @@ export interface NexusGenInputs {
     create?: NexusGenInputs['TaskCreateWithoutAssignmentInput'][] | null; // [TaskCreateWithoutAssignmentInput!]
   }
   TaskCreateWithoutAssignmentInput: { // input type
+    done?: boolean | null; // Boolean
     id?: string | null; // ID
     remarks: string; // String!
     type: NexusGenEnums['TaskType']; // TaskType!
@@ -1092,6 +925,7 @@ export interface NexusGenInputs {
   }
   TaskScalarWhereInput: { // input type
     AND?: NexusGenInputs['TaskScalarWhereInput'][] | null; // [TaskScalarWhereInput!]
+    done?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['TaskScalarWhereInput'][] | null; // [TaskScalarWhereInput!]
     OR?: NexusGenInputs['TaskScalarWhereInput'][] | null; // [TaskScalarWhereInput!]
@@ -1099,6 +933,7 @@ export interface NexusGenInputs {
     type?: NexusGenEnums['TaskType'] | null; // TaskType
   }
   TaskUpdateManyDataInput: { // input type
+    done?: boolean | null; // Boolean
     id?: string | null; // ID
     remarks?: string | null; // String
     type?: NexusGenEnums['TaskType'] | null; // TaskType
@@ -1123,6 +958,7 @@ export interface NexusGenInputs {
     where: NexusGenInputs['TaskWhereUniqueInput']; // TaskWhereUniqueInput!
   }
   TaskUpdateWithoutAssignmentDataInput: { // input type
+    done?: boolean | null; // Boolean
     id?: string | null; // ID
     remarks?: string | null; // String
     type?: NexusGenEnums['TaskType'] | null; // TaskType
@@ -1135,6 +971,7 @@ export interface NexusGenInputs {
   TaskWhereInput: { // input type
     AND?: NexusGenInputs['TaskWhereInput'][] | null; // [TaskWhereInput!]
     assignment?: NexusGenInputs['AssignmentWhereInput'] | null; // AssignmentWhereInput
+    done?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['TaskWhereInput'][] | null; // [TaskWhereInput!]
     OR?: NexusGenInputs['TaskWhereInput'][] | null; // [TaskWhereInput!]
@@ -1157,10 +994,6 @@ export interface NexusGenRootTypes {
     id: string; // ID!
     remarks: string; // String!
   }
-  Address: { // root type
-    id: string; // ID!
-    text: string; // String!
-  }
   Admin: { // root type
     id: string; // ID!
     privilege: NexusGenEnums['AdminPrivilege']; // AdminPrivilege!
@@ -1172,6 +1005,7 @@ export interface NexusGenRootTypes {
     token: string; // String!
   }
   Assignment: { // root type
+    address: string; // String!
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
     id: string; // ID!
@@ -1184,6 +1018,7 @@ export interface NexusGenRootTypes {
   }
   Customer: { // root type
     active: boolean; // Boolean!
+    addresses: string[]; // [String!]!
     code: string; // String!
     email?: string | null; // String
     id: string; // ID!
@@ -1234,24 +1069,6 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   ActionUpsertWithWhereUniqueWithoutAssignmentInput: NexusGenInputs['ActionUpsertWithWhereUniqueWithoutAssignmentInput'];
   ActionWhereInput: NexusGenInputs['ActionWhereInput'];
   ActionWhereUniqueInput: NexusGenInputs['ActionWhereUniqueInput'];
-  AddressCreateManyWithoutAddressesInput: NexusGenInputs['AddressCreateManyWithoutAddressesInput'];
-  AddressCreateOneWithoutAddressInput: NexusGenInputs['AddressCreateOneWithoutAddressInput'];
-  AddressCreateWithoutAssignmentsInput: NexusGenInputs['AddressCreateWithoutAssignmentsInput'];
-  AddressCreateWithoutCustomerInput: NexusGenInputs['AddressCreateWithoutCustomerInput'];
-  AddressFilter: NexusGenInputs['AddressFilter'];
-  AddressScalarWhereInput: NexusGenInputs['AddressScalarWhereInput'];
-  AddressUpdateInput: NexusGenInputs['AddressUpdateInput'];
-  AddressUpdateManyDataInput: NexusGenInputs['AddressUpdateManyDataInput'];
-  AddressUpdateManyWithWhereNestedInput: NexusGenInputs['AddressUpdateManyWithWhereNestedInput'];
-  AddressUpdateManyWithoutCustomerInput: NexusGenInputs['AddressUpdateManyWithoutCustomerInput'];
-  AddressUpdateOneRequiredWithoutAssignmentsInput: NexusGenInputs['AddressUpdateOneRequiredWithoutAssignmentsInput'];
-  AddressUpdateWithWhereUniqueWithoutCustomerInput: NexusGenInputs['AddressUpdateWithWhereUniqueWithoutCustomerInput'];
-  AddressUpdateWithoutAssignmentsDataInput: NexusGenInputs['AddressUpdateWithoutAssignmentsDataInput'];
-  AddressUpdateWithoutCustomerDataInput: NexusGenInputs['AddressUpdateWithoutCustomerDataInput'];
-  AddressUpsertWithWhereUniqueWithoutCustomerInput: NexusGenInputs['AddressUpsertWithWhereUniqueWithoutCustomerInput'];
-  AddressUpsertWithoutAssignmentsInput: NexusGenInputs['AddressUpsertWithoutAssignmentsInput'];
-  AddressWhereInput: NexusGenInputs['AddressWhereInput'];
-  AddressWhereUniqueInput: NexusGenInputs['AddressWhereUniqueInput'];
   AdminCreateInput: NexusGenInputs['AdminCreateInput'];
   AdminOrderByInput: NexusGenInputs['AdminOrderByInput'];
   AdminUpdateInput: NexusGenInputs['AdminUpdateInput'];
@@ -1260,7 +1077,6 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   AssignmentCreateManyWithoutAssignmentPrimariesInput: NexusGenInputs['AssignmentCreateManyWithoutAssignmentPrimariesInput'];
   AssignmentCreateManyWithoutAssignmentSecondariesInput: NexusGenInputs['AssignmentCreateManyWithoutAssignmentSecondariesInput'];
   AssignmentCreateManyWithoutAssignmentsInput: NexusGenInputs['AssignmentCreateManyWithoutAssignmentsInput'];
-  AssignmentCreateWithoutAddressInput: NexusGenInputs['AssignmentCreateWithoutAddressInput'];
   AssignmentCreateWithoutJobInput: NexusGenInputs['AssignmentCreateWithoutJobInput'];
   AssignmentCreateWithoutStaffPrimaryInput: NexusGenInputs['AssignmentCreateWithoutStaffPrimaryInput'];
   AssignmentCreateWithoutStaffSecondaryInput: NexusGenInputs['AssignmentCreateWithoutStaffSecondaryInput'];
@@ -1268,19 +1084,15 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   AssignmentScalarWhereInput: NexusGenInputs['AssignmentScalarWhereInput'];
   AssignmentUpdateManyDataInput: NexusGenInputs['AssignmentUpdateManyDataInput'];
   AssignmentUpdateManyWithWhereNestedInput: NexusGenInputs['AssignmentUpdateManyWithWhereNestedInput'];
-  AssignmentUpdateManyWithoutAddressInput: NexusGenInputs['AssignmentUpdateManyWithoutAddressInput'];
   AssignmentUpdateManyWithoutJobInput: NexusGenInputs['AssignmentUpdateManyWithoutJobInput'];
   AssignmentUpdateManyWithoutStaffPrimaryInput: NexusGenInputs['AssignmentUpdateManyWithoutStaffPrimaryInput'];
   AssignmentUpdateManyWithoutStaffSecondaryInput: NexusGenInputs['AssignmentUpdateManyWithoutStaffSecondaryInput'];
-  AssignmentUpdateWithWhereUniqueWithoutAddressInput: NexusGenInputs['AssignmentUpdateWithWhereUniqueWithoutAddressInput'];
   AssignmentUpdateWithWhereUniqueWithoutJobInput: NexusGenInputs['AssignmentUpdateWithWhereUniqueWithoutJobInput'];
   AssignmentUpdateWithWhereUniqueWithoutStaffPrimaryInput: NexusGenInputs['AssignmentUpdateWithWhereUniqueWithoutStaffPrimaryInput'];
   AssignmentUpdateWithWhereUniqueWithoutStaffSecondaryInput: NexusGenInputs['AssignmentUpdateWithWhereUniqueWithoutStaffSecondaryInput'];
-  AssignmentUpdateWithoutAddressDataInput: NexusGenInputs['AssignmentUpdateWithoutAddressDataInput'];
   AssignmentUpdateWithoutJobDataInput: NexusGenInputs['AssignmentUpdateWithoutJobDataInput'];
   AssignmentUpdateWithoutStaffPrimaryDataInput: NexusGenInputs['AssignmentUpdateWithoutStaffPrimaryDataInput'];
   AssignmentUpdateWithoutStaffSecondaryDataInput: NexusGenInputs['AssignmentUpdateWithoutStaffSecondaryDataInput'];
-  AssignmentUpsertWithWhereUniqueWithoutAddressInput: NexusGenInputs['AssignmentUpsertWithWhereUniqueWithoutAddressInput'];
   AssignmentUpsertWithWhereUniqueWithoutJobInput: NexusGenInputs['AssignmentUpsertWithWhereUniqueWithoutJobInput'];
   AssignmentUpsertWithWhereUniqueWithoutStaffPrimaryInput: NexusGenInputs['AssignmentUpsertWithWhereUniqueWithoutStaffPrimaryInput'];
   AssignmentUpsertWithWhereUniqueWithoutStaffSecondaryInput: NexusGenInputs['AssignmentUpsertWithWhereUniqueWithoutStaffSecondaryInput'];
@@ -1300,10 +1112,10 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   CustomerCreateManyWithoutCustomerPrimariesInput: NexusGenInputs['CustomerCreateManyWithoutCustomerPrimariesInput'];
   CustomerCreateManyWithoutCustomerSecondariesInput: NexusGenInputs['CustomerCreateManyWithoutCustomerSecondariesInput'];
   CustomerCreateOneWithoutCustomerInput: NexusGenInputs['CustomerCreateOneWithoutCustomerInput'];
-  CustomerCreateWithoutAddressesInput: NexusGenInputs['CustomerCreateWithoutAddressesInput'];
   CustomerCreateWithoutJobsInput: NexusGenInputs['CustomerCreateWithoutJobsInput'];
   CustomerCreateWithoutStaffPrimaryInput: NexusGenInputs['CustomerCreateWithoutStaffPrimaryInput'];
   CustomerCreateWithoutStaffSecondaryInput: NexusGenInputs['CustomerCreateWithoutStaffSecondaryInput'];
+  CustomerCreateaddressesInput: NexusGenInputs['CustomerCreateaddressesInput'];
   CustomerFilter: NexusGenInputs['CustomerFilter'];
   CustomerOrderByInput: NexusGenInputs['CustomerOrderByInput'];
   CustomerScalarWhereInput: NexusGenInputs['CustomerScalarWhereInput'];
@@ -1313,16 +1125,14 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   CustomerUpdateManyWithoutStaffPrimaryInput: NexusGenInputs['CustomerUpdateManyWithoutStaffPrimaryInput'];
   CustomerUpdateManyWithoutStaffSecondaryInput: NexusGenInputs['CustomerUpdateManyWithoutStaffSecondaryInput'];
   CustomerUpdateOneRequiredWithoutJobsInput: NexusGenInputs['CustomerUpdateOneRequiredWithoutJobsInput'];
-  CustomerUpdateOneWithoutAddressesInput: NexusGenInputs['CustomerUpdateOneWithoutAddressesInput'];
   CustomerUpdateWithWhereUniqueWithoutStaffPrimaryInput: NexusGenInputs['CustomerUpdateWithWhereUniqueWithoutStaffPrimaryInput'];
   CustomerUpdateWithWhereUniqueWithoutStaffSecondaryInput: NexusGenInputs['CustomerUpdateWithWhereUniqueWithoutStaffSecondaryInput'];
-  CustomerUpdateWithoutAddressesDataInput: NexusGenInputs['CustomerUpdateWithoutAddressesDataInput'];
   CustomerUpdateWithoutJobsDataInput: NexusGenInputs['CustomerUpdateWithoutJobsDataInput'];
   CustomerUpdateWithoutStaffPrimaryDataInput: NexusGenInputs['CustomerUpdateWithoutStaffPrimaryDataInput'];
   CustomerUpdateWithoutStaffSecondaryDataInput: NexusGenInputs['CustomerUpdateWithoutStaffSecondaryDataInput'];
+  CustomerUpdateaddressesInput: NexusGenInputs['CustomerUpdateaddressesInput'];
   CustomerUpsertWithWhereUniqueWithoutStaffPrimaryInput: NexusGenInputs['CustomerUpsertWithWhereUniqueWithoutStaffPrimaryInput'];
   CustomerUpsertWithWhereUniqueWithoutStaffSecondaryInput: NexusGenInputs['CustomerUpsertWithWhereUniqueWithoutStaffSecondaryInput'];
-  CustomerUpsertWithoutAddressesInput: NexusGenInputs['CustomerUpsertWithoutAddressesInput'];
   CustomerUpsertWithoutJobsInput: NexusGenInputs['CustomerUpsertWithoutJobsInput'];
   CustomerWhereInput: NexusGenInputs['CustomerWhereInput'];
   CustomerWhereUniqueInput: NexusGenInputs['CustomerWhereUniqueInput'];
@@ -1395,10 +1205,6 @@ export interface NexusGenFieldTypes {
     id: string; // ID!
     remarks: string; // String!
   }
-  Address: { // field return type
-    id: string; // ID!
-    text: string; // String!
-  }
   Admin: { // field return type
     id: string; // ID!
     privilege: NexusGenEnums['AdminPrivilege']; // AdminPrivilege!
@@ -1411,7 +1217,7 @@ export interface NexusGenFieldTypes {
   }
   Assignment: { // field return type
     actions: NexusGenRootTypes['Action'][]; // [Action!]!
-    address: NexusGenRootTypes['Address']; // Address!
+    address: string; // String!
     checkIn: any | null; // DateTime
     checkOut: any | null; // DateTime
     id: string; // ID!
@@ -1427,7 +1233,7 @@ export interface NexusGenFieldTypes {
   }
   Customer: { // field return type
     active: boolean; // Boolean!
-    addresses: NexusGenRootTypes['Address'][]; // [Address!]!
+    addresses: string[]; // [String!]!
     code: string; // String!
     companyBelong: NexusGenRootTypes['Company'] | null; // Company
     email: string | null; // String
@@ -1508,15 +1314,6 @@ export interface NexusGenArgTypes {
       skip?: number | null; // Int
     }
     tasks: { // args
-      after?: string | null; // ID
-      before?: string | null; // ID
-      first?: number | null; // Int
-      last?: number | null; // Int
-      skip?: number | null; // Int
-    }
-  }
-  Customer: {
-    addresses: { // args
       after?: string | null; // ID
       before?: string | null; // ID
       first?: number | null; // Int
@@ -1679,9 +1476,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Action" | "Address" | "Admin" | "AdminLoginResponse" | "Assignment" | "Company" | "Customer" | "Job" | "Mutation" | "Query" | "Staff" | "StaffLoginResponse" | "Task";
+export type NexusGenObjectNames = "Action" | "Admin" | "AdminLoginResponse" | "Assignment" | "Company" | "Customer" | "Job" | "Mutation" | "Query" | "Staff" | "StaffLoginResponse" | "Task";
 
-export type NexusGenInputNames = "ActionCreateManyWithoutActionsInput" | "ActionCreateWithoutAssignmentInput" | "ActionFilter" | "ActionScalarWhereInput" | "ActionUpdateManyDataInput" | "ActionUpdateManyWithWhereNestedInput" | "ActionUpdateManyWithoutAssignmentInput" | "ActionUpdateWithWhereUniqueWithoutAssignmentInput" | "ActionUpdateWithoutAssignmentDataInput" | "ActionUpsertWithWhereUniqueWithoutAssignmentInput" | "ActionWhereInput" | "ActionWhereUniqueInput" | "AddressCreateManyWithoutAddressesInput" | "AddressCreateOneWithoutAddressInput" | "AddressCreateWithoutAssignmentsInput" | "AddressCreateWithoutCustomerInput" | "AddressFilter" | "AddressScalarWhereInput" | "AddressUpdateInput" | "AddressUpdateManyDataInput" | "AddressUpdateManyWithWhereNestedInput" | "AddressUpdateManyWithoutCustomerInput" | "AddressUpdateOneRequiredWithoutAssignmentsInput" | "AddressUpdateWithWhereUniqueWithoutCustomerInput" | "AddressUpdateWithoutAssignmentsDataInput" | "AddressUpdateWithoutCustomerDataInput" | "AddressUpsertWithWhereUniqueWithoutCustomerInput" | "AddressUpsertWithoutAssignmentsInput" | "AddressWhereInput" | "AddressWhereUniqueInput" | "AdminCreateInput" | "AdminOrderByInput" | "AdminUpdateInput" | "AdminWhereInput" | "AdminWhereUniqueInput" | "AssignmentCreateManyWithoutAssignmentPrimariesInput" | "AssignmentCreateManyWithoutAssignmentSecondariesInput" | "AssignmentCreateManyWithoutAssignmentsInput" | "AssignmentCreateWithoutAddressInput" | "AssignmentCreateWithoutJobInput" | "AssignmentCreateWithoutStaffPrimaryInput" | "AssignmentCreateWithoutStaffSecondaryInput" | "AssignmentFilter" | "AssignmentScalarWhereInput" | "AssignmentUpdateManyDataInput" | "AssignmentUpdateManyWithWhereNestedInput" | "AssignmentUpdateManyWithoutAddressInput" | "AssignmentUpdateManyWithoutJobInput" | "AssignmentUpdateManyWithoutStaffPrimaryInput" | "AssignmentUpdateManyWithoutStaffSecondaryInput" | "AssignmentUpdateWithWhereUniqueWithoutAddressInput" | "AssignmentUpdateWithWhereUniqueWithoutJobInput" | "AssignmentUpdateWithWhereUniqueWithoutStaffPrimaryInput" | "AssignmentUpdateWithWhereUniqueWithoutStaffSecondaryInput" | "AssignmentUpdateWithoutAddressDataInput" | "AssignmentUpdateWithoutJobDataInput" | "AssignmentUpdateWithoutStaffPrimaryDataInput" | "AssignmentUpdateWithoutStaffSecondaryDataInput" | "AssignmentUpsertWithWhereUniqueWithoutAddressInput" | "AssignmentUpsertWithWhereUniqueWithoutJobInput" | "AssignmentUpsertWithWhereUniqueWithoutStaffPrimaryInput" | "AssignmentUpsertWithWhereUniqueWithoutStaffSecondaryInput" | "AssignmentWhereInput" | "AssignmentWhereUniqueInput" | "BooleanFilter" | "CompanyCreateInput" | "CompanyCreateOneWithoutCompanyBelongInput" | "CompanyCreateWithoutCustomersInput" | "CompanyUpdateInput" | "CompanyUpdateOneWithoutCustomersInput" | "CompanyUpdateWithoutCustomersDataInput" | "CompanyUpsertWithoutCustomersInput" | "CompanyWhereInput" | "CompanyWhereUniqueInput" | "CustomerCreateInput" | "CustomerCreateManyWithoutCustomerPrimariesInput" | "CustomerCreateManyWithoutCustomerSecondariesInput" | "CustomerCreateOneWithoutCustomerInput" | "CustomerCreateWithoutAddressesInput" | "CustomerCreateWithoutJobsInput" | "CustomerCreateWithoutStaffPrimaryInput" | "CustomerCreateWithoutStaffSecondaryInput" | "CustomerFilter" | "CustomerOrderByInput" | "CustomerScalarWhereInput" | "CustomerUpdateInput" | "CustomerUpdateManyDataInput" | "CustomerUpdateManyWithWhereNestedInput" | "CustomerUpdateManyWithoutStaffPrimaryInput" | "CustomerUpdateManyWithoutStaffSecondaryInput" | "CustomerUpdateOneRequiredWithoutJobsInput" | "CustomerUpdateOneWithoutAddressesInput" | "CustomerUpdateWithWhereUniqueWithoutStaffPrimaryInput" | "CustomerUpdateWithWhereUniqueWithoutStaffSecondaryInput" | "CustomerUpdateWithoutAddressesDataInput" | "CustomerUpdateWithoutJobsDataInput" | "CustomerUpdateWithoutStaffPrimaryDataInput" | "CustomerUpdateWithoutStaffSecondaryDataInput" | "CustomerUpsertWithWhereUniqueWithoutStaffPrimaryInput" | "CustomerUpsertWithWhereUniqueWithoutStaffSecondaryInput" | "CustomerUpsertWithoutAddressesInput" | "CustomerUpsertWithoutJobsInput" | "CustomerWhereInput" | "CustomerWhereUniqueInput" | "DateTimeFilter" | "JobCreateInput" | "JobCreateManyWithoutJobsInput" | "JobCreateOneWithoutJobInput" | "JobCreateWithoutAssignmentsInput" | "JobCreateWithoutCustomerInput" | "JobFilter" | "JobOrderByInput" | "JobScalarWhereInput" | "JobUpdateInput" | "JobUpdateManyDataInput" | "JobUpdateManyWithWhereNestedInput" | "JobUpdateManyWithoutCustomerInput" | "JobUpdateOneWithoutAssignmentsInput" | "JobUpdateWithWhereUniqueWithoutCustomerInput" | "JobUpdateWithoutAssignmentsDataInput" | "JobUpdateWithoutCustomerDataInput" | "JobUpsertWithWhereUniqueWithoutCustomerInput" | "JobUpsertWithoutAssignmentsInput" | "JobWhereInput" | "JobWhereUniqueInput" | "NullableDateTimeFilter" | "NullableStringFilter" | "StaffCreateInput" | "StaffCreateOneWithoutStaffPrimaryInput" | "StaffCreateOneWithoutStaffSecondaryInput" | "StaffCreateWithoutAssignmentPrimariesInput" | "StaffCreateWithoutAssignmentSecondariesInput" | "StaffCreateWithoutCustomerPrimariesInput" | "StaffCreateWithoutCustomerSecondariesInput" | "StaffOrderByInput" | "StaffUpdateInput" | "StaffUpdateOneRequiredWithoutAssignmentPrimariesInput" | "StaffUpdateOneRequiredWithoutCustomerPrimariesInput" | "StaffUpdateOneWithoutAssignmentSecondariesInput" | "StaffUpdateOneWithoutCustomerSecondariesInput" | "StaffUpdateWithoutAssignmentPrimariesDataInput" | "StaffUpdateWithoutAssignmentSecondariesDataInput" | "StaffUpdateWithoutCustomerPrimariesDataInput" | "StaffUpdateWithoutCustomerSecondariesDataInput" | "StaffUpsertWithoutAssignmentPrimariesInput" | "StaffUpsertWithoutAssignmentSecondariesInput" | "StaffUpsertWithoutCustomerPrimariesInput" | "StaffUpsertWithoutCustomerSecondariesInput" | "StaffWhereInput" | "StaffWhereUniqueInput" | "StringFilter" | "TaskCreateManyWithoutTasksInput" | "TaskCreateWithoutAssignmentInput" | "TaskFilter" | "TaskScalarWhereInput" | "TaskUpdateManyDataInput" | "TaskUpdateManyWithWhereNestedInput" | "TaskUpdateManyWithoutAssignmentInput" | "TaskUpdateWithWhereUniqueWithoutAssignmentInput" | "TaskUpdateWithoutAssignmentDataInput" | "TaskUpsertWithWhereUniqueWithoutAssignmentInput" | "TaskWhereInput" | "TaskWhereUniqueInput";
+export type NexusGenInputNames = "ActionCreateManyWithoutActionsInput" | "ActionCreateWithoutAssignmentInput" | "ActionFilter" | "ActionScalarWhereInput" | "ActionUpdateManyDataInput" | "ActionUpdateManyWithWhereNestedInput" | "ActionUpdateManyWithoutAssignmentInput" | "ActionUpdateWithWhereUniqueWithoutAssignmentInput" | "ActionUpdateWithoutAssignmentDataInput" | "ActionUpsertWithWhereUniqueWithoutAssignmentInput" | "ActionWhereInput" | "ActionWhereUniqueInput" | "AdminCreateInput" | "AdminOrderByInput" | "AdminUpdateInput" | "AdminWhereInput" | "AdminWhereUniqueInput" | "AssignmentCreateManyWithoutAssignmentPrimariesInput" | "AssignmentCreateManyWithoutAssignmentSecondariesInput" | "AssignmentCreateManyWithoutAssignmentsInput" | "AssignmentCreateWithoutJobInput" | "AssignmentCreateWithoutStaffPrimaryInput" | "AssignmentCreateWithoutStaffSecondaryInput" | "AssignmentFilter" | "AssignmentScalarWhereInput" | "AssignmentUpdateManyDataInput" | "AssignmentUpdateManyWithWhereNestedInput" | "AssignmentUpdateManyWithoutJobInput" | "AssignmentUpdateManyWithoutStaffPrimaryInput" | "AssignmentUpdateManyWithoutStaffSecondaryInput" | "AssignmentUpdateWithWhereUniqueWithoutJobInput" | "AssignmentUpdateWithWhereUniqueWithoutStaffPrimaryInput" | "AssignmentUpdateWithWhereUniqueWithoutStaffSecondaryInput" | "AssignmentUpdateWithoutJobDataInput" | "AssignmentUpdateWithoutStaffPrimaryDataInput" | "AssignmentUpdateWithoutStaffSecondaryDataInput" | "AssignmentUpsertWithWhereUniqueWithoutJobInput" | "AssignmentUpsertWithWhereUniqueWithoutStaffPrimaryInput" | "AssignmentUpsertWithWhereUniqueWithoutStaffSecondaryInput" | "AssignmentWhereInput" | "AssignmentWhereUniqueInput" | "BooleanFilter" | "CompanyCreateInput" | "CompanyCreateOneWithoutCompanyBelongInput" | "CompanyCreateWithoutCustomersInput" | "CompanyUpdateInput" | "CompanyUpdateOneWithoutCustomersInput" | "CompanyUpdateWithoutCustomersDataInput" | "CompanyUpsertWithoutCustomersInput" | "CompanyWhereInput" | "CompanyWhereUniqueInput" | "CustomerCreateInput" | "CustomerCreateManyWithoutCustomerPrimariesInput" | "CustomerCreateManyWithoutCustomerSecondariesInput" | "CustomerCreateOneWithoutCustomerInput" | "CustomerCreateWithoutJobsInput" | "CustomerCreateWithoutStaffPrimaryInput" | "CustomerCreateWithoutStaffSecondaryInput" | "CustomerCreateaddressesInput" | "CustomerFilter" | "CustomerOrderByInput" | "CustomerScalarWhereInput" | "CustomerUpdateInput" | "CustomerUpdateManyDataInput" | "CustomerUpdateManyWithWhereNestedInput" | "CustomerUpdateManyWithoutStaffPrimaryInput" | "CustomerUpdateManyWithoutStaffSecondaryInput" | "CustomerUpdateOneRequiredWithoutJobsInput" | "CustomerUpdateWithWhereUniqueWithoutStaffPrimaryInput" | "CustomerUpdateWithWhereUniqueWithoutStaffSecondaryInput" | "CustomerUpdateWithoutJobsDataInput" | "CustomerUpdateWithoutStaffPrimaryDataInput" | "CustomerUpdateWithoutStaffSecondaryDataInput" | "CustomerUpdateaddressesInput" | "CustomerUpsertWithWhereUniqueWithoutStaffPrimaryInput" | "CustomerUpsertWithWhereUniqueWithoutStaffSecondaryInput" | "CustomerUpsertWithoutJobsInput" | "CustomerWhereInput" | "CustomerWhereUniqueInput" | "DateTimeFilter" | "JobCreateInput" | "JobCreateManyWithoutJobsInput" | "JobCreateOneWithoutJobInput" | "JobCreateWithoutAssignmentsInput" | "JobCreateWithoutCustomerInput" | "JobFilter" | "JobOrderByInput" | "JobScalarWhereInput" | "JobUpdateInput" | "JobUpdateManyDataInput" | "JobUpdateManyWithWhereNestedInput" | "JobUpdateManyWithoutCustomerInput" | "JobUpdateOneWithoutAssignmentsInput" | "JobUpdateWithWhereUniqueWithoutCustomerInput" | "JobUpdateWithoutAssignmentsDataInput" | "JobUpdateWithoutCustomerDataInput" | "JobUpsertWithWhereUniqueWithoutCustomerInput" | "JobUpsertWithoutAssignmentsInput" | "JobWhereInput" | "JobWhereUniqueInput" | "NullableDateTimeFilter" | "NullableStringFilter" | "StaffCreateInput" | "StaffCreateOneWithoutStaffPrimaryInput" | "StaffCreateOneWithoutStaffSecondaryInput" | "StaffCreateWithoutAssignmentPrimariesInput" | "StaffCreateWithoutAssignmentSecondariesInput" | "StaffCreateWithoutCustomerPrimariesInput" | "StaffCreateWithoutCustomerSecondariesInput" | "StaffOrderByInput" | "StaffUpdateInput" | "StaffUpdateOneRequiredWithoutAssignmentPrimariesInput" | "StaffUpdateOneRequiredWithoutCustomerPrimariesInput" | "StaffUpdateOneWithoutAssignmentSecondariesInput" | "StaffUpdateOneWithoutCustomerSecondariesInput" | "StaffUpdateWithoutAssignmentPrimariesDataInput" | "StaffUpdateWithoutAssignmentSecondariesDataInput" | "StaffUpdateWithoutCustomerPrimariesDataInput" | "StaffUpdateWithoutCustomerSecondariesDataInput" | "StaffUpsertWithoutAssignmentPrimariesInput" | "StaffUpsertWithoutAssignmentSecondariesInput" | "StaffUpsertWithoutCustomerPrimariesInput" | "StaffUpsertWithoutCustomerSecondariesInput" | "StaffWhereInput" | "StaffWhereUniqueInput" | "StringFilter" | "TaskCreateManyWithoutTasksInput" | "TaskCreateWithoutAssignmentInput" | "TaskFilter" | "TaskScalarWhereInput" | "TaskUpdateManyDataInput" | "TaskUpdateManyWithWhereNestedInput" | "TaskUpdateManyWithoutAssignmentInput" | "TaskUpdateWithWhereUniqueWithoutAssignmentInput" | "TaskUpdateWithoutAssignmentDataInput" | "TaskUpsertWithWhereUniqueWithoutAssignmentInput" | "TaskWhereInput" | "TaskWhereUniqueInput";
 
 export type NexusGenEnumNames = "AdminPrivilege" | "OrderByArg" | "TaskType";
 

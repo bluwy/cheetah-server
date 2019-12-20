@@ -26,7 +26,7 @@ export const Mutation = extendType({
             code: data.code,
             name: data.name,
             email: data.email,
-            addresses: { create: data.addresses?.map((v: string) => ({ text: v })) },
+            addresses: { set: data.addresses },
             phoneNumber: data.phoneNumber,
             companyBelong: { connect: data.companyBelong },
             temporary: user.isAdminBasic() ? true : data.temporary,
@@ -35,7 +35,6 @@ export const Mutation = extendType({
             staffSecondary: { connect: data.staffSecondary }
           },
           include: {
-            addresses: true,
             companyBelong: true,
             staffPrimary: true,
             staffSecondary: true
@@ -56,16 +55,18 @@ export const Mutation = extendType({
             code: data.code,
             name: data.name,
             email: data.email,
-            addresses: {
-              create: data.addresses?.create?.map((v: string) => ({ text: v })),
-              disconnect: data.addresses?.disconnect
-            },
+            addresses: { set: data.addresses },
             phoneNumber: data.phoneNumber,
             companyBelong: { connect: data.companyBelong },
             temporary: user.isAdminBasic() ? undefined : data.temporary,
             active: data.active,
             staffPrimary: { connect: data.staffPrimary },
             staffSecondary: { connect: data.staffSecondary }
+          },
+          include: {
+            companyBelong: true,
+            staffPrimary: true,
+            staffSecondary: true
           },
           where
         })
@@ -93,14 +94,6 @@ export const Customer = objectType({
   }
 })
 
-export const Address = objectType({
-  name: 'Address',
-  definition (t) {
-    t.model.id()
-    t.model.text()
-  }
-})
-
 export const CustomerCreateInput = inputObjectType({
   name: 'CustomerCreateInput',
   definition (t) {
@@ -123,20 +116,12 @@ export const CustomerUpdateInput = inputObjectType({
     t.string('code')
     t.string('name')
     t.string('email')
-    t.field('addresses', { type: 'AddressUpdateInput' })
+    t.list.string('addresses')
     t.string('phoneNumber')
     t.field('companyBelong', { type: 'CompanyWhereUniqueInput' })
     t.boolean('temporary')
     t.boolean('active')
     t.field('staffPrimary', { type: 'StaffWhereUniqueInput' })
     t.field('staffSecondary', { type: 'StaffWhereUniqueInput' })
-  }
-})
-
-export const AddressUpdateInput = inputObjectType({
-  name: 'AddressUpdateInput',
-  definition (t) {
-    t.list.string('create')
-    t.list.field('disconnect', { type: 'AddressWhereUniqueInput' })
   }
 })
