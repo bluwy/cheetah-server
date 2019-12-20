@@ -13,7 +13,7 @@
     "lintfix": "eslint --fix src/**/*.ts"
   },
   "dependencies": {
-    "@prisma/photon": "^2.0.0-preview018.2",
+    "@prisma/photon": "^2.0.0-preview019",
     "apollo-server": "^2.9.13",
     "argon2": "^0.25.1",
     "cross-env": "^6.0.3",
