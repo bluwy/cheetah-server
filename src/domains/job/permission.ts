@@ -6,7 +6,15 @@ export const Query = {
 }
 
 export const Mutation = {
-  createOneJob: isAdmin,
-  updateOneJob: isVerified,
-  deleteOneJob: isAdminFull
+  createJob: isAdmin,
+  updateJob: isVerified,
+  deleteJob: isAdminFull,
+  createAssignment: isAdmin,
+  updateAssignment: isAdmin,
+  createTask: isAdmin,
+  updateTask: isVerified,
+  deleteTask: isAdmin,
+  createAction: isVerified,
+  updateAction: isAdmin,
+  deleteAction: isAdmin
 }

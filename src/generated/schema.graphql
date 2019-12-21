@@ -7,13 +7,7 @@ type Action {
   remarks: String!
 }
 
-input ActionCreateManyWithoutActionsInput {
-  connect: [ActionWhereUniqueInput!]
-  create: [ActionCreateWithoutAssignmentInput!]
-}
-
-input ActionCreateWithoutAssignmentInput {
-  id: ID
+input ActionCreateInput {
   remarks: String!
 }
 
@@ -23,50 +17,8 @@ input ActionFilter {
   some: ActionWhereInput
 }
 
-input ActionScalarWhereInput {
-  AND: [ActionScalarWhereInput!]
-  id: StringFilter
-  NOT: [ActionScalarWhereInput!]
-  OR: [ActionScalarWhereInput!]
-  remarks: StringFilter
-}
-
-input ActionUpdateManyDataInput {
-  id: ID
+input ActionUpdateInput {
   remarks: String
-}
-
-input ActionUpdateManyWithoutAssignmentInput {
-  connect: [ActionWhereUniqueInput!]
-  create: [ActionCreateWithoutAssignmentInput!]
-  delete: [ActionWhereUniqueInput!]
-  deleteMany: [ActionScalarWhereInput!]
-  disconnect: [ActionWhereUniqueInput!]
-  set: [ActionWhereUniqueInput!]
-  update: [ActionUpdateWithWhereUniqueWithoutAssignmentInput!]
-  updateMany: [ActionUpdateManyWithWhereNestedInput!]
-  upsert: [ActionUpsertWithWhereUniqueWithoutAssignmentInput!]
-}
-
-input ActionUpdateManyWithWhereNestedInput {
-  data: ActionUpdateManyDataInput!
-  where: ActionScalarWhereInput!
-}
-
-input ActionUpdateWithoutAssignmentDataInput {
-  id: ID
-  remarks: String
-}
-
-input ActionUpdateWithWhereUniqueWithoutAssignmentInput {
-  data: ActionUpdateWithoutAssignmentDataInput!
-  where: ActionWhereUniqueInput!
-}
-
-input ActionUpsertWithWhereUniqueWithoutAssignmentInput {
-  create: ActionCreateWithoutAssignmentInput!
-  update: ActionUpdateWithoutAssignmentDataInput!
-  where: ActionWhereUniqueInput!
 }
 
 input ActionWhereInput {
@@ -143,55 +95,11 @@ type Assignment {
   tasks(after: ID, before: ID, first: Int, last: Int, skip: Int): [Task!]!
 }
 
-input AssignmentCreateManyWithoutAssignmentPrimariesInput {
-  connect: [AssignmentWhereUniqueInput!]
-  create: [AssignmentCreateWithoutStaffPrimaryInput!]
-}
-
-input AssignmentCreateManyWithoutAssignmentSecondariesInput {
-  connect: [AssignmentWhereUniqueInput!]
-  create: [AssignmentCreateWithoutStaffSecondaryInput!]
-}
-
-input AssignmentCreateManyWithoutAssignmentsInput {
-  connect: [AssignmentWhereUniqueInput!]
-  create: [AssignmentCreateWithoutJobInput!]
-}
-
-input AssignmentCreateWithoutJobInput {
-  actions: ActionCreateManyWithoutActionsInput
+input AssignmentCreateInput {
   address: String!
-  checkIn: DateTime
-  checkOut: DateTime
-  id: ID
-  preferTime: DateTime
-  staffPrimary: StaffCreateOneWithoutStaffPrimaryInput!
-  staffSecondary: StaffCreateOneWithoutStaffSecondaryInput
-  tasks: TaskCreateManyWithoutTasksInput
-}
-
-input AssignmentCreateWithoutStaffPrimaryInput {
-  actions: ActionCreateManyWithoutActionsInput
-  address: String!
-  checkIn: DateTime
-  checkOut: DateTime
-  id: ID
-  job: JobCreateOneWithoutJobInput
-  preferTime: DateTime
-  staffSecondary: StaffCreateOneWithoutStaffSecondaryInput
-  tasks: TaskCreateManyWithoutTasksInput
-}
-
-input AssignmentCreateWithoutStaffSecondaryInput {
-  actions: ActionCreateManyWithoutActionsInput
-  address: String!
-  checkIn: DateTime
-  checkOut: DateTime
-  id: ID
-  job: JobCreateOneWithoutJobInput
-  preferTime: DateTime
-  staffPrimary: StaffCreateOneWithoutStaffPrimaryInput!
-  tasks: TaskCreateManyWithoutTasksInput
+  staffPrimary: StaffWhereUniqueInput!
+  staffSecondary: StaffWhereUniqueInput
+  tasks: [TaskCreateInput!]!
 }
 
 input AssignmentFilter {
@@ -200,135 +108,13 @@ input AssignmentFilter {
   some: AssignmentWhereInput
 }
 
-input AssignmentScalarWhereInput {
-  actions: ActionFilter
-  address: StringFilter
-  AND: [AssignmentScalarWhereInput!]
-  checkIn: NullableDateTimeFilter
-  checkOut: NullableDateTimeFilter
-  id: StringFilter
-  NOT: [AssignmentScalarWhereInput!]
-  OR: [AssignmentScalarWhereInput!]
-  preferTime: NullableDateTimeFilter
-  tasks: TaskFilter
-}
-
-input AssignmentUpdateManyDataInput {
+input AssignmentUpdateInput {
   address: String
   checkIn: DateTime
   checkOut: DateTime
-  id: ID
   preferTime: DateTime
-}
-
-input AssignmentUpdateManyWithoutJobInput {
-  connect: [AssignmentWhereUniqueInput!]
-  create: [AssignmentCreateWithoutJobInput!]
-  delete: [AssignmentWhereUniqueInput!]
-  deleteMany: [AssignmentScalarWhereInput!]
-  disconnect: [AssignmentWhereUniqueInput!]
-  set: [AssignmentWhereUniqueInput!]
-  update: [AssignmentUpdateWithWhereUniqueWithoutJobInput!]
-  updateMany: [AssignmentUpdateManyWithWhereNestedInput!]
-  upsert: [AssignmentUpsertWithWhereUniqueWithoutJobInput!]
-}
-
-input AssignmentUpdateManyWithoutStaffPrimaryInput {
-  connect: [AssignmentWhereUniqueInput!]
-  create: [AssignmentCreateWithoutStaffPrimaryInput!]
-  delete: [AssignmentWhereUniqueInput!]
-  deleteMany: [AssignmentScalarWhereInput!]
-  disconnect: [AssignmentWhereUniqueInput!]
-  set: [AssignmentWhereUniqueInput!]
-  update: [AssignmentUpdateWithWhereUniqueWithoutStaffPrimaryInput!]
-  updateMany: [AssignmentUpdateManyWithWhereNestedInput!]
-  upsert: [AssignmentUpsertWithWhereUniqueWithoutStaffPrimaryInput!]
-}
-
-input AssignmentUpdateManyWithoutStaffSecondaryInput {
-  connect: [AssignmentWhereUniqueInput!]
-  create: [AssignmentCreateWithoutStaffSecondaryInput!]
-  delete: [AssignmentWhereUniqueInput!]
-  deleteMany: [AssignmentScalarWhereInput!]
-  disconnect: [AssignmentWhereUniqueInput!]
-  set: [AssignmentWhereUniqueInput!]
-  update: [AssignmentUpdateWithWhereUniqueWithoutStaffSecondaryInput!]
-  updateMany: [AssignmentUpdateManyWithWhereNestedInput!]
-  upsert: [AssignmentUpsertWithWhereUniqueWithoutStaffSecondaryInput!]
-}
-
-input AssignmentUpdateManyWithWhereNestedInput {
-  data: AssignmentUpdateManyDataInput!
-  where: AssignmentScalarWhereInput!
-}
-
-input AssignmentUpdateWithoutJobDataInput {
-  actions: ActionUpdateManyWithoutAssignmentInput
-  address: String
-  checkIn: DateTime
-  checkOut: DateTime
-  id: ID
-  preferTime: DateTime
-  staffPrimary: StaffUpdateOneRequiredWithoutAssignmentPrimariesInput
-  staffSecondary: StaffUpdateOneWithoutAssignmentSecondariesInput
-  tasks: TaskUpdateManyWithoutAssignmentInput
-}
-
-input AssignmentUpdateWithoutStaffPrimaryDataInput {
-  actions: ActionUpdateManyWithoutAssignmentInput
-  address: String
-  checkIn: DateTime
-  checkOut: DateTime
-  id: ID
-  job: JobUpdateOneWithoutAssignmentsInput
-  preferTime: DateTime
-  staffSecondary: StaffUpdateOneWithoutAssignmentSecondariesInput
-  tasks: TaskUpdateManyWithoutAssignmentInput
-}
-
-input AssignmentUpdateWithoutStaffSecondaryDataInput {
-  actions: ActionUpdateManyWithoutAssignmentInput
-  address: String
-  checkIn: DateTime
-  checkOut: DateTime
-  id: ID
-  job: JobUpdateOneWithoutAssignmentsInput
-  preferTime: DateTime
-  staffPrimary: StaffUpdateOneRequiredWithoutAssignmentPrimariesInput
-  tasks: TaskUpdateManyWithoutAssignmentInput
-}
-
-input AssignmentUpdateWithWhereUniqueWithoutJobInput {
-  data: AssignmentUpdateWithoutJobDataInput!
-  where: AssignmentWhereUniqueInput!
-}
-
-input AssignmentUpdateWithWhereUniqueWithoutStaffPrimaryInput {
-  data: AssignmentUpdateWithoutStaffPrimaryDataInput!
-  where: AssignmentWhereUniqueInput!
-}
-
-input AssignmentUpdateWithWhereUniqueWithoutStaffSecondaryInput {
-  data: AssignmentUpdateWithoutStaffSecondaryDataInput!
-  where: AssignmentWhereUniqueInput!
-}
-
-input AssignmentUpsertWithWhereUniqueWithoutJobInput {
-  create: AssignmentCreateWithoutJobInput!
-  update: AssignmentUpdateWithoutJobDataInput!
-  where: AssignmentWhereUniqueInput!
-}
-
-input AssignmentUpsertWithWhereUniqueWithoutStaffPrimaryInput {
-  create: AssignmentCreateWithoutStaffPrimaryInput!
-  update: AssignmentUpdateWithoutStaffPrimaryDataInput!
-  where: AssignmentWhereUniqueInput!
-}
-
-input AssignmentUpsertWithWhereUniqueWithoutStaffSecondaryInput {
-  create: AssignmentCreateWithoutStaffSecondaryInput!
-  update: AssignmentUpdateWithoutStaffSecondaryDataInput!
-  where: AssignmentWhereUniqueInput!
+  staffPrimary: StaffWhereUniqueInput
+  staffSecondary: StaffWhereUniqueInput
 }
 
 input AssignmentWhereInput {
@@ -367,40 +153,9 @@ input CompanyCreateInput {
   name: String!
 }
 
-input CompanyCreateOneWithoutCompanyBelongInput {
-  connect: CompanyWhereUniqueInput
-  create: CompanyCreateWithoutCustomersInput
-}
-
-input CompanyCreateWithoutCustomersInput {
-  alias: String!
-  id: ID
-  name: String!
-}
-
 input CompanyUpdateInput {
   alias: String
   name: String
-}
-
-input CompanyUpdateOneWithoutCustomersInput {
-  connect: CompanyWhereUniqueInput
-  create: CompanyCreateWithoutCustomersInput
-  delete: Boolean
-  disconnect: Boolean
-  update: CompanyUpdateWithoutCustomersDataInput
-  upsert: CompanyUpsertWithoutCustomersInput
-}
-
-input CompanyUpdateWithoutCustomersDataInput {
-  alias: String
-  id: ID
-  name: String
-}
-
-input CompanyUpsertWithoutCustomersInput {
-  create: CompanyCreateWithoutCustomersInput!
-  update: CompanyUpdateWithoutCustomersDataInput!
 }
 
 input CompanyWhereInput {
@@ -433,10 +188,6 @@ type Customer {
   temporary: Boolean!
 }
 
-input CustomerCreateaddressesInput {
-  set: [String!]
-}
-
 input CustomerCreateInput {
   active: Boolean
   addresses: [String!]
@@ -447,63 +198,6 @@ input CustomerCreateInput {
   phoneNumber: String
   staffPrimary: StaffWhereUniqueInput!
   staffSecondary: StaffWhereUniqueInput
-  temporary: Boolean
-}
-
-input CustomerCreateManyWithoutCustomerPrimariesInput {
-  connect: [CustomerWhereUniqueInput!]
-  create: [CustomerCreateWithoutStaffPrimaryInput!]
-}
-
-input CustomerCreateManyWithoutCustomerSecondariesInput {
-  connect: [CustomerWhereUniqueInput!]
-  create: [CustomerCreateWithoutStaffSecondaryInput!]
-}
-
-input CustomerCreateOneWithoutCustomerInput {
-  connect: CustomerWhereUniqueInput
-  create: CustomerCreateWithoutJobsInput
-}
-
-input CustomerCreateWithoutJobsInput {
-  active: Boolean
-  addresses: CustomerCreateaddressesInput
-  code: String!
-  companyBelong: CompanyCreateOneWithoutCompanyBelongInput
-  email: String
-  id: ID
-  name: String!
-  phoneNumber: String
-  staffPrimary: StaffCreateOneWithoutStaffPrimaryInput!
-  staffSecondary: StaffCreateOneWithoutStaffSecondaryInput
-  temporary: Boolean
-}
-
-input CustomerCreateWithoutStaffPrimaryInput {
-  active: Boolean
-  addresses: CustomerCreateaddressesInput
-  code: String!
-  companyBelong: CompanyCreateOneWithoutCompanyBelongInput
-  email: String
-  id: ID
-  jobs: JobCreateManyWithoutJobsInput
-  name: String!
-  phoneNumber: String
-  staffSecondary: StaffCreateOneWithoutStaffSecondaryInput
-  temporary: Boolean
-}
-
-input CustomerCreateWithoutStaffSecondaryInput {
-  active: Boolean
-  addresses: CustomerCreateaddressesInput
-  code: String!
-  companyBelong: CompanyCreateOneWithoutCompanyBelongInput
-  email: String
-  id: ID
-  jobs: JobCreateManyWithoutJobsInput
-  name: String!
-  phoneNumber: String
-  staffPrimary: StaffCreateOneWithoutStaffPrimaryInput!
   temporary: Boolean
 }
 
@@ -523,24 +217,6 @@ input CustomerOrderByInput {
   temporary: OrderByArg
 }
 
-input CustomerScalarWhereInput {
-  active: BooleanFilter
-  AND: [CustomerScalarWhereInput!]
-  code: StringFilter
-  email: NullableStringFilter
-  id: StringFilter
-  jobs: JobFilter
-  name: StringFilter
-  NOT: [CustomerScalarWhereInput!]
-  OR: [CustomerScalarWhereInput!]
-  phoneNumber: NullableStringFilter
-  temporary: BooleanFilter
-}
-
-input CustomerUpdateaddressesInput {
-  set: [String!]
-}
-
 input CustomerUpdateInput {
   active: Boolean
   addresses: [String!]
@@ -552,122 +228,6 @@ input CustomerUpdateInput {
   staffPrimary: StaffWhereUniqueInput
   staffSecondary: StaffWhereUniqueInput
   temporary: Boolean
-}
-
-input CustomerUpdateManyDataInput {
-  active: Boolean
-  addresses: CustomerUpdateaddressesInput
-  code: String
-  email: String
-  id: ID
-  name: String
-  phoneNumber: String
-  temporary: Boolean
-}
-
-input CustomerUpdateManyWithoutStaffPrimaryInput {
-  connect: [CustomerWhereUniqueInput!]
-  create: [CustomerCreateWithoutStaffPrimaryInput!]
-  delete: [CustomerWhereUniqueInput!]
-  deleteMany: [CustomerScalarWhereInput!]
-  disconnect: [CustomerWhereUniqueInput!]
-  set: [CustomerWhereUniqueInput!]
-  update: [CustomerUpdateWithWhereUniqueWithoutStaffPrimaryInput!]
-  updateMany: [CustomerUpdateManyWithWhereNestedInput!]
-  upsert: [CustomerUpsertWithWhereUniqueWithoutStaffPrimaryInput!]
-}
-
-input CustomerUpdateManyWithoutStaffSecondaryInput {
-  connect: [CustomerWhereUniqueInput!]
-  create: [CustomerCreateWithoutStaffSecondaryInput!]
-  delete: [CustomerWhereUniqueInput!]
-  deleteMany: [CustomerScalarWhereInput!]
-  disconnect: [CustomerWhereUniqueInput!]
-  set: [CustomerWhereUniqueInput!]
-  update: [CustomerUpdateWithWhereUniqueWithoutStaffSecondaryInput!]
-  updateMany: [CustomerUpdateManyWithWhereNestedInput!]
-  upsert: [CustomerUpsertWithWhereUniqueWithoutStaffSecondaryInput!]
-}
-
-input CustomerUpdateManyWithWhereNestedInput {
-  data: CustomerUpdateManyDataInput!
-  where: CustomerScalarWhereInput!
-}
-
-input CustomerUpdateOneRequiredWithoutJobsInput {
-  connect: CustomerWhereUniqueInput
-  create: CustomerCreateWithoutJobsInput
-  update: CustomerUpdateWithoutJobsDataInput
-  upsert: CustomerUpsertWithoutJobsInput
-}
-
-input CustomerUpdateWithoutJobsDataInput {
-  active: Boolean
-  addresses: CustomerUpdateaddressesInput
-  code: String
-  companyBelong: CompanyUpdateOneWithoutCustomersInput
-  email: String
-  id: ID
-  name: String
-  phoneNumber: String
-  staffPrimary: StaffUpdateOneRequiredWithoutCustomerPrimariesInput
-  staffSecondary: StaffUpdateOneWithoutCustomerSecondariesInput
-  temporary: Boolean
-}
-
-input CustomerUpdateWithoutStaffPrimaryDataInput {
-  active: Boolean
-  addresses: CustomerUpdateaddressesInput
-  code: String
-  companyBelong: CompanyUpdateOneWithoutCustomersInput
-  email: String
-  id: ID
-  jobs: JobUpdateManyWithoutCustomerInput
-  name: String
-  phoneNumber: String
-  staffSecondary: StaffUpdateOneWithoutCustomerSecondariesInput
-  temporary: Boolean
-}
-
-input CustomerUpdateWithoutStaffSecondaryDataInput {
-  active: Boolean
-  addresses: CustomerUpdateaddressesInput
-  code: String
-  companyBelong: CompanyUpdateOneWithoutCustomersInput
-  email: String
-  id: ID
-  jobs: JobUpdateManyWithoutCustomerInput
-  name: String
-  phoneNumber: String
-  staffPrimary: StaffUpdateOneRequiredWithoutCustomerPrimariesInput
-  temporary: Boolean
-}
-
-input CustomerUpdateWithWhereUniqueWithoutStaffPrimaryInput {
-  data: CustomerUpdateWithoutStaffPrimaryDataInput!
-  where: CustomerWhereUniqueInput!
-}
-
-input CustomerUpdateWithWhereUniqueWithoutStaffSecondaryInput {
-  data: CustomerUpdateWithoutStaffSecondaryDataInput!
-  where: CustomerWhereUniqueInput!
-}
-
-input CustomerUpsertWithoutJobsInput {
-  create: CustomerCreateWithoutJobsInput!
-  update: CustomerUpdateWithoutJobsDataInput!
-}
-
-input CustomerUpsertWithWhereUniqueWithoutStaffPrimaryInput {
-  create: CustomerCreateWithoutStaffPrimaryInput!
-  update: CustomerUpdateWithoutStaffPrimaryDataInput!
-  where: CustomerWhereUniqueInput!
-}
-
-input CustomerUpsertWithWhereUniqueWithoutStaffSecondaryInput {
-  create: CustomerCreateWithoutStaffSecondaryInput!
-  update: CustomerUpdateWithoutStaffSecondaryDataInput!
-  where: CustomerWhereUniqueInput!
 }
 
 input CustomerWhereInput {
@@ -715,35 +275,11 @@ type Job {
 }
 
 input JobCreateInput {
-  assignments: AssignmentCreateManyWithoutAssignmentsInput
-  customer: CustomerCreateOneWithoutCustomerInput!
-  dateIssued: DateTime
-  id: ID
-  needsFollowUp: Boolean
-}
-
-input JobCreateManyWithoutJobsInput {
-  connect: [JobWhereUniqueInput!]
-  create: [JobCreateWithoutCustomerInput!]
-}
-
-input JobCreateOneWithoutJobInput {
-  connect: JobWhereUniqueInput
-  create: JobCreateWithoutAssignmentsInput
-}
-
-input JobCreateWithoutAssignmentsInput {
-  customer: CustomerCreateOneWithoutCustomerInput!
-  dateIssued: DateTime
-  id: ID
-  needsFollowUp: Boolean
-}
-
-input JobCreateWithoutCustomerInput {
-  assignments: AssignmentCreateManyWithoutAssignmentsInput
-  dateIssued: DateTime
-  id: ID
-  needsFollowUp: Boolean
+  address: String!
+  customer: CustomerWhereUniqueInput!
+  staffPrimary: StaffWhereUniqueInput!
+  staffSecondary: StaffWhereUniqueInput
+  tasks: [TaskCreateInput!]!
 }
 
 input JobFilter {
@@ -758,84 +294,9 @@ input JobOrderByInput {
   needsFollowUp: OrderByArg
 }
 
-input JobScalarWhereInput {
-  AND: [JobScalarWhereInput!]
-  assignments: AssignmentFilter
-  dateIssued: DateTimeFilter
-  id: StringFilter
-  needsFollowUp: BooleanFilter
-  NOT: [JobScalarWhereInput!]
-  OR: [JobScalarWhereInput!]
-}
-
 input JobUpdateInput {
-  assignments: AssignmentUpdateManyWithoutJobInput
-  customer: CustomerUpdateOneRequiredWithoutJobsInput
-  dateIssued: DateTime
-  id: ID
+  customer: CustomerWhereUniqueInput!
   needsFollowUp: Boolean
-}
-
-input JobUpdateManyDataInput {
-  dateIssued: DateTime
-  id: ID
-  needsFollowUp: Boolean
-}
-
-input JobUpdateManyWithoutCustomerInput {
-  connect: [JobWhereUniqueInput!]
-  create: [JobCreateWithoutCustomerInput!]
-  delete: [JobWhereUniqueInput!]
-  deleteMany: [JobScalarWhereInput!]
-  disconnect: [JobWhereUniqueInput!]
-  set: [JobWhereUniqueInput!]
-  update: [JobUpdateWithWhereUniqueWithoutCustomerInput!]
-  updateMany: [JobUpdateManyWithWhereNestedInput!]
-  upsert: [JobUpsertWithWhereUniqueWithoutCustomerInput!]
-}
-
-input JobUpdateManyWithWhereNestedInput {
-  data: JobUpdateManyDataInput!
-  where: JobScalarWhereInput!
-}
-
-input JobUpdateOneWithoutAssignmentsInput {
-  connect: JobWhereUniqueInput
-  create: JobCreateWithoutAssignmentsInput
-  delete: Boolean
-  disconnect: Boolean
-  update: JobUpdateWithoutAssignmentsDataInput
-  upsert: JobUpsertWithoutAssignmentsInput
-}
-
-input JobUpdateWithoutAssignmentsDataInput {
-  customer: CustomerUpdateOneRequiredWithoutJobsInput
-  dateIssued: DateTime
-  id: ID
-  needsFollowUp: Boolean
-}
-
-input JobUpdateWithoutCustomerDataInput {
-  assignments: AssignmentUpdateManyWithoutJobInput
-  dateIssued: DateTime
-  id: ID
-  needsFollowUp: Boolean
-}
-
-input JobUpdateWithWhereUniqueWithoutCustomerInput {
-  data: JobUpdateWithoutCustomerDataInput!
-  where: JobWhereUniqueInput!
-}
-
-input JobUpsertWithoutAssignmentsInput {
-  create: JobCreateWithoutAssignmentsInput!
-  update: JobUpdateWithoutAssignmentsDataInput!
-}
-
-input JobUpsertWithWhereUniqueWithoutCustomerInput {
-  create: JobCreateWithoutCustomerInput!
-  update: JobUpdateWithoutCustomerDataInput!
-  where: JobWhereUniqueInput!
 }
 
 input JobWhereInput {
@@ -854,28 +315,36 @@ input JobWhereUniqueInput {
 }
 
 type Mutation {
+  createAction(assignmentWhere: AssignmentWhereUniqueInput!, data: ActionCreateInput!): Action!
   createAdmin(data: AdminCreateInput!): Admin!
+  createAssignment(data: AssignmentCreateInput!, jobWhere: JobWhereUniqueInput!): Assignment!
   createCompany(data: CompanyCreateInput!): Company!
   createCustomer(data: CustomerCreateInput!): Customer!
-  createOneJob(data: JobCreateInput!): Job!
+  createJob(data: JobCreateInput!): Job!
   createStaff(data: StaffCreateInput!): Staff!
+  createTask(assignmentWhere: AssignmentWhereUniqueInput!, data: TaskCreateInput!): Task!
+  deleteAction(where: ActionWhereUniqueInput!): Action
   deleteAdmin(where: AdminWhereUniqueInput!): Admin
   deleteCompany(where: CompanyWhereUniqueInput!): Company
   deleteCustomer(where: CustomerWhereUniqueInput!): Customer
-  deleteOneJob(where: JobWhereUniqueInput!): Job
+  deleteJob(where: JobWhereUniqueInput!): Job
   deleteStaff(where: StaffWhereUniqueInput!): Staff
+  deleteTask(where: TaskWhereUniqueInput!): Task
   forgotAdminPassword(username: String!): Boolean!
   forgotStaffPassword(where: StaffWhereUniqueInput!): Boolean!
   loginAdmin(password: String!, username: String!): AdminLoginResponse!
   loginStaff(password: String!, username: String!): StaffLoginResponse!
   resetAdminPassword(newPassword: String!, token: String!): Boolean!
   resetStaffPassword(newPassword: String!, where: StaffWhereUniqueInput!): Boolean!
+  updateAction(data: ActionUpdateInput!, where: ActionWhereUniqueInput!): Action
   updateAdmin(data: AdminUpdateInput!, where: AdminWhereUniqueInput!): Admin
   updateAdminPassword(newPassword: String!, oldPassword: String!, where: AdminWhereUniqueInput!): Boolean!
+  updateAssignment(data: AssignmentUpdateInput!, where: AssignmentWhereUniqueInput!): Assignment!
   updateCompany(data: CompanyUpdateInput!, where: CompanyWhereUniqueInput!): Company
   updateCustomer(data: CustomerUpdateInput!, where: CustomerWhereUniqueInput!): Customer!
-  updateOneJob(data: JobUpdateInput!, where: JobWhereUniqueInput!): Job
+  updateJob(data: JobUpdateInput!, where: JobWhereUniqueInput!): Job!
   updateStaff(data: StaffUpdateInput!, where: StaffWhereUniqueInput!): Staff
+  updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task!
 }
 
 input NullableDateTimeFilter {
@@ -934,60 +403,6 @@ input StaffCreateInput {
   username: String!
 }
 
-input StaffCreateOneWithoutStaffPrimaryInput {
-  connect: StaffWhereUniqueInput
-  create: StaffCreateWithoutCustomerPrimariesInput
-}
-
-input StaffCreateOneWithoutStaffSecondaryInput {
-  connect: StaffWhereUniqueInput
-  create: StaffCreateWithoutCustomerSecondariesInput
-}
-
-input StaffCreateWithoutAssignmentPrimariesInput {
-  assignmentSecondaries: AssignmentCreateManyWithoutAssignmentSecondariesInput
-  customerPrimaries: CustomerCreateManyWithoutCustomerPrimariesInput
-  customerSecondaries: CustomerCreateManyWithoutCustomerSecondariesInput
-  fullName: String!
-  hash: String!
-  id: ID
-  passwordForgotten: Boolean
-  username: String!
-}
-
-input StaffCreateWithoutAssignmentSecondariesInput {
-  assignmentPrimaries: AssignmentCreateManyWithoutAssignmentPrimariesInput
-  customerPrimaries: CustomerCreateManyWithoutCustomerPrimariesInput
-  customerSecondaries: CustomerCreateManyWithoutCustomerSecondariesInput
-  fullName: String!
-  hash: String!
-  id: ID
-  passwordForgotten: Boolean
-  username: String!
-}
-
-input StaffCreateWithoutCustomerPrimariesInput {
-  assignmentPrimaries: AssignmentCreateManyWithoutAssignmentPrimariesInput
-  assignmentSecondaries: AssignmentCreateManyWithoutAssignmentSecondariesInput
-  customerSecondaries: CustomerCreateManyWithoutCustomerSecondariesInput
-  fullName: String!
-  hash: String!
-  id: ID
-  passwordForgotten: Boolean
-  username: String!
-}
-
-input StaffCreateWithoutCustomerSecondariesInput {
-  assignmentPrimaries: AssignmentCreateManyWithoutAssignmentPrimariesInput
-  assignmentSecondaries: AssignmentCreateManyWithoutAssignmentSecondariesInput
-  customerPrimaries: CustomerCreateManyWithoutCustomerPrimariesInput
-  fullName: String!
-  hash: String!
-  id: ID
-  passwordForgotten: Boolean
-  username: String!
-}
-
 type StaffLoginResponse {
   staffId: String!
   token: String!
@@ -1004,102 +419,6 @@ input StaffOrderByInput {
 input StaffUpdateInput {
   fullName: String
   username: String
-}
-
-input StaffUpdateOneRequiredWithoutAssignmentPrimariesInput {
-  connect: StaffWhereUniqueInput
-  create: StaffCreateWithoutAssignmentPrimariesInput
-  update: StaffUpdateWithoutAssignmentPrimariesDataInput
-  upsert: StaffUpsertWithoutAssignmentPrimariesInput
-}
-
-input StaffUpdateOneRequiredWithoutCustomerPrimariesInput {
-  connect: StaffWhereUniqueInput
-  create: StaffCreateWithoutCustomerPrimariesInput
-  update: StaffUpdateWithoutCustomerPrimariesDataInput
-  upsert: StaffUpsertWithoutCustomerPrimariesInput
-}
-
-input StaffUpdateOneWithoutAssignmentSecondariesInput {
-  connect: StaffWhereUniqueInput
-  create: StaffCreateWithoutAssignmentSecondariesInput
-  delete: Boolean
-  disconnect: Boolean
-  update: StaffUpdateWithoutAssignmentSecondariesDataInput
-  upsert: StaffUpsertWithoutAssignmentSecondariesInput
-}
-
-input StaffUpdateOneWithoutCustomerSecondariesInput {
-  connect: StaffWhereUniqueInput
-  create: StaffCreateWithoutCustomerSecondariesInput
-  delete: Boolean
-  disconnect: Boolean
-  update: StaffUpdateWithoutCustomerSecondariesDataInput
-  upsert: StaffUpsertWithoutCustomerSecondariesInput
-}
-
-input StaffUpdateWithoutAssignmentPrimariesDataInput {
-  assignmentSecondaries: AssignmentUpdateManyWithoutStaffSecondaryInput
-  customerPrimaries: CustomerUpdateManyWithoutStaffPrimaryInput
-  customerSecondaries: CustomerUpdateManyWithoutStaffSecondaryInput
-  fullName: String
-  hash: String
-  id: ID
-  passwordForgotten: Boolean
-  username: String
-}
-
-input StaffUpdateWithoutAssignmentSecondariesDataInput {
-  assignmentPrimaries: AssignmentUpdateManyWithoutStaffPrimaryInput
-  customerPrimaries: CustomerUpdateManyWithoutStaffPrimaryInput
-  customerSecondaries: CustomerUpdateManyWithoutStaffSecondaryInput
-  fullName: String
-  hash: String
-  id: ID
-  passwordForgotten: Boolean
-  username: String
-}
-
-input StaffUpdateWithoutCustomerPrimariesDataInput {
-  assignmentPrimaries: AssignmentUpdateManyWithoutStaffPrimaryInput
-  assignmentSecondaries: AssignmentUpdateManyWithoutStaffSecondaryInput
-  customerSecondaries: CustomerUpdateManyWithoutStaffSecondaryInput
-  fullName: String
-  hash: String
-  id: ID
-  passwordForgotten: Boolean
-  username: String
-}
-
-input StaffUpdateWithoutCustomerSecondariesDataInput {
-  assignmentPrimaries: AssignmentUpdateManyWithoutStaffPrimaryInput
-  assignmentSecondaries: AssignmentUpdateManyWithoutStaffSecondaryInput
-  customerPrimaries: CustomerUpdateManyWithoutStaffPrimaryInput
-  fullName: String
-  hash: String
-  id: ID
-  passwordForgotten: Boolean
-  username: String
-}
-
-input StaffUpsertWithoutAssignmentPrimariesInput {
-  create: StaffCreateWithoutAssignmentPrimariesInput!
-  update: StaffUpdateWithoutAssignmentPrimariesDataInput!
-}
-
-input StaffUpsertWithoutAssignmentSecondariesInput {
-  create: StaffCreateWithoutAssignmentSecondariesInput!
-  update: StaffUpdateWithoutAssignmentSecondariesDataInput!
-}
-
-input StaffUpsertWithoutCustomerPrimariesInput {
-  create: StaffCreateWithoutCustomerPrimariesInput!
-  update: StaffUpdateWithoutCustomerPrimariesDataInput!
-}
-
-input StaffUpsertWithoutCustomerSecondariesInput {
-  create: StaffCreateWithoutCustomerSecondariesInput!
-  update: StaffUpdateWithoutCustomerSecondariesDataInput!
 }
 
 input StaffWhereInput {
@@ -1142,14 +461,7 @@ type Task {
   type: TaskType!
 }
 
-input TaskCreateManyWithoutTasksInput {
-  connect: [TaskWhereUniqueInput!]
-  create: [TaskCreateWithoutAssignmentInput!]
-}
-
-input TaskCreateWithoutAssignmentInput {
-  done: Boolean
-  id: ID
+input TaskCreateInput {
   remarks: String!
   type: TaskType!
 }
@@ -1160,16 +472,6 @@ input TaskFilter {
   some: TaskWhereInput
 }
 
-input TaskScalarWhereInput {
-  AND: [TaskScalarWhereInput!]
-  done: BooleanFilter
-  id: StringFilter
-  NOT: [TaskScalarWhereInput!]
-  OR: [TaskScalarWhereInput!]
-  remarks: StringFilter
-  type: TaskType
-}
-
 enum TaskType {
   COMPLAINT
   DELIVERY
@@ -1178,46 +480,10 @@ enum TaskType {
   TRANSPORT
 }
 
-input TaskUpdateManyDataInput {
+input TaskUpdateInput {
   done: Boolean
-  id: ID
   remarks: String
   type: TaskType
-}
-
-input TaskUpdateManyWithoutAssignmentInput {
-  connect: [TaskWhereUniqueInput!]
-  create: [TaskCreateWithoutAssignmentInput!]
-  delete: [TaskWhereUniqueInput!]
-  deleteMany: [TaskScalarWhereInput!]
-  disconnect: [TaskWhereUniqueInput!]
-  set: [TaskWhereUniqueInput!]
-  update: [TaskUpdateWithWhereUniqueWithoutAssignmentInput!]
-  updateMany: [TaskUpdateManyWithWhereNestedInput!]
-  upsert: [TaskUpsertWithWhereUniqueWithoutAssignmentInput!]
-}
-
-input TaskUpdateManyWithWhereNestedInput {
-  data: TaskUpdateManyDataInput!
-  where: TaskScalarWhereInput!
-}
-
-input TaskUpdateWithoutAssignmentDataInput {
-  done: Boolean
-  id: ID
-  remarks: String
-  type: TaskType
-}
-
-input TaskUpdateWithWhereUniqueWithoutAssignmentInput {
-  data: TaskUpdateWithoutAssignmentDataInput!
-  where: TaskWhereUniqueInput!
-}
-
-input TaskUpsertWithWhereUniqueWithoutAssignmentInput {
-  create: TaskCreateWithoutAssignmentInput!
-  update: TaskUpdateWithoutAssignmentDataInput!
-  where: TaskWhereUniqueInput!
 }
 
 input TaskWhereInput {
