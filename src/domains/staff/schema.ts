@@ -11,6 +11,25 @@ export const Query = extendType({
       ordering: true,
       pagination: true
     })
+
+    t.field('verifyStaffToken', {
+      type: 'StaffVerifyTokenResponse',
+      nullable: true,
+      args: {
+        token: stringArg({ required: true })
+      },
+      async resolve (_, { token }, { auth }) {
+        const decoded = await auth.verifyJwt(token).catch(() => ({}))
+
+        if (typeof decoded !== 'string' && auth.isStaffPayload(decoded)) {
+          return {
+            staffId: decoded.id
+          }
+        } else {
+          throw new AuthenticationError('Invalid token')
+        }
+      }
+    })
   }
 })
 
@@ -121,6 +140,13 @@ export const StaffLoginResponse = objectType({
   name: 'StaffLoginResponse',
   definition (t) {
     t.string('token')
+    t.string('staffId')
+  }
+})
+
+export const StaffVerifyTokenResponse = objectType({
+  name: 'StaffVerifyTokenResponse',
+  definition (t) {
     t.string('staffId')
   }
 })

@@ -68,6 +68,11 @@ input AdminUpdateInput {
   username: String
 }
 
+type AdminVerifyTokenResponse {
+  adminId: String!
+  adminPrivilege: AdminPrivilege!
+}
+
 input AdminWhereInput {
   AND: [AdminWhereInput!]
   hash: StringFilter
@@ -388,6 +393,8 @@ type Query {
   jobs(after: ID, before: ID, first: Int, last: Int, orderBy: JobOrderByInput, skip: Int, where: JobWhereInput): [Job!]!
   staff(where: StaffWhereUniqueInput!): Staff
   staffs(after: ID, before: ID, first: Int, last: Int, orderBy: StaffOrderByInput, skip: Int, where: StaffWhereInput): [Staff!]!
+  verifyAdminToken(token: String!): AdminVerifyTokenResponse
+  verifyStaffToken(token: String!): StaffVerifyTokenResponse
 }
 
 type Staff {
@@ -419,6 +426,10 @@ input StaffOrderByInput {
 input StaffUpdateInput {
   fullName: String
   username: String
+}
+
+type StaffVerifyTokenResponse {
+  staffId: String!
 }
 
 input StaffWhereInput {

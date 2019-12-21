@@ -354,6 +354,10 @@ export interface NexusGenRootTypes {
     adminPrivilege: NexusGenEnums['AdminPrivilege']; // AdminPrivilege!
     token: string; // String!
   }
+  AdminVerifyTokenResponse: { // root type
+    adminId: string; // String!
+    adminPrivilege: NexusGenEnums['AdminPrivilege']; // AdminPrivilege!
+  }
   Assignment: { // root type
     address: string; // String!
     checkIn?: any | null; // DateTime
@@ -392,6 +396,9 @@ export interface NexusGenRootTypes {
   StaffLoginResponse: { // root type
     staffId: string; // String!
     token: string; // String!
+  }
+  StaffVerifyTokenResponse: { // root type
+    staffId: string; // String!
   }
   Task: { // root type
     id: string; // ID!
@@ -473,6 +480,10 @@ export interface NexusGenFieldTypes {
     adminPrivilege: NexusGenEnums['AdminPrivilege']; // AdminPrivilege!
     token: string; // String!
   }
+  AdminVerifyTokenResponse: { // field return type
+    adminId: string; // String!
+    adminPrivilege: NexusGenEnums['AdminPrivilege']; // AdminPrivilege!
+  }
   Assignment: { // field return type
     actions: NexusGenRootTypes['Action'][]; // [Action!]!
     address: string; // String!
@@ -552,6 +563,8 @@ export interface NexusGenFieldTypes {
     jobs: NexusGenRootTypes['Job'][]; // [Job!]!
     staff: NexusGenRootTypes['Staff'] | null; // Staff
     staffs: NexusGenRootTypes['Staff'][]; // [Staff!]!
+    verifyAdminToken: NexusGenRootTypes['AdminVerifyTokenResponse'] | null; // AdminVerifyTokenResponse
+    verifyStaffToken: NexusGenRootTypes['StaffVerifyTokenResponse'] | null; // StaffVerifyTokenResponse
   }
   Staff: { // field return type
     fullName: string; // String!
@@ -562,6 +575,9 @@ export interface NexusGenFieldTypes {
   StaffLoginResponse: { // field return type
     staffId: string; // String!
     token: string; // String!
+  }
+  StaffVerifyTokenResponse: { // field return type
+    staffId: string; // String!
   }
   Task: { // field return type
     id: string; // ID!
@@ -764,6 +780,12 @@ export interface NexusGenArgTypes {
       skip?: number | null; // Int
       where?: NexusGenInputs['StaffWhereInput'] | null; // StaffWhereInput
     }
+    verifyAdminToken: { // args
+      token: string; // String!
+    }
+    verifyStaffToken: { // args
+      token: string; // String!
+    }
   }
 }
 
@@ -772,7 +794,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Action" | "Admin" | "AdminLoginResponse" | "Assignment" | "Company" | "Customer" | "Job" | "Mutation" | "Query" | "Staff" | "StaffLoginResponse" | "Task";
+export type NexusGenObjectNames = "Action" | "Admin" | "AdminLoginResponse" | "AdminVerifyTokenResponse" | "Assignment" | "Company" | "Customer" | "Job" | "Mutation" | "Query" | "Staff" | "StaffLoginResponse" | "StaffVerifyTokenResponse" | "Task";
 
 export type NexusGenInputNames = "ActionCreateInput" | "ActionFilter" | "ActionUpdateInput" | "ActionWhereInput" | "ActionWhereUniqueInput" | "AdminCreateInput" | "AdminOrderByInput" | "AdminUpdateInput" | "AdminWhereInput" | "AdminWhereUniqueInput" | "AssignmentCreateInput" | "AssignmentFilter" | "AssignmentUpdateInput" | "AssignmentWhereInput" | "AssignmentWhereUniqueInput" | "BooleanFilter" | "CompanyCreateInput" | "CompanyUpdateInput" | "CompanyWhereInput" | "CompanyWhereUniqueInput" | "CustomerCreateInput" | "CustomerFilter" | "CustomerOrderByInput" | "CustomerUpdateInput" | "CustomerWhereInput" | "CustomerWhereUniqueInput" | "DateTimeFilter" | "JobCreateInput" | "JobFilter" | "JobOrderByInput" | "JobUpdateInput" | "JobWhereInput" | "JobWhereUniqueInput" | "NullableDateTimeFilter" | "NullableStringFilter" | "StaffCreateInput" | "StaffOrderByInput" | "StaffUpdateInput" | "StaffWhereInput" | "StaffWhereUniqueInput" | "StringFilter" | "TaskCreateInput" | "TaskFilter" | "TaskUpdateInput" | "TaskWhereInput" | "TaskWhereUniqueInput";
 

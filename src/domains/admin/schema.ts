@@ -11,6 +11,26 @@ export const Query = extendType({
       ordering: true,
       pagination: true
     })
+
+    t.field('verifyAdminToken', {
+      type: 'AdminVerifyTokenResponse',
+      nullable: true,
+      args: {
+        token: stringArg({ required: true })
+      },
+      async resolve (_, { token }, { auth }) {
+        const decoded = await auth.verifyJwt(token).catch(() => ({}))
+
+        if (typeof decoded !== 'string' && auth.isAdminPayload(decoded)) {
+          return {
+            adminId: decoded.id,
+            adminPrivilege: decoded.privilege
+          }
+        } else {
+          throw new AuthenticationError('Invalid token')
+        }
+      }
+    })
   }
 })
 
@@ -160,6 +180,14 @@ export const AdminLoginResponse = objectType({
   name: 'AdminLoginResponse',
   definition (t) {
     t.string('token')
+    t.string('adminId')
+    t.field('adminPrivilege', { type: 'AdminPrivilege' })
+  }
+})
+
+export const AdminVerifyTokenResponse = objectType({
+  name: 'AdminVerifyTokenResponse',
+  definition (t) {
     t.string('adminId')
     t.field('adminPrivilege', { type: 'AdminPrivilege' })
   }
