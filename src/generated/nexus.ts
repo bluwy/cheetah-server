@@ -218,7 +218,7 @@ export interface NexusGenInputs {
     needsFollowUp?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
   }
   JobUpdateInput: { // input type
-    customer: NexusGenInputs['CustomerWhereUniqueInput']; // CustomerWhereUniqueInput!
+    customer?: NexusGenInputs['CustomerWhereUniqueInput'] | null; // CustomerWhereUniqueInput
     needsFollowUp?: boolean | null; // Boolean
   }
   JobWhereInput: { // input type

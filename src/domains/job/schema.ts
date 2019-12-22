@@ -233,7 +233,7 @@ export const JobCreateInput = inputObjectType({
 export const JobUpdateInput = inputObjectType({
   name: 'JobUpdateInput',
   definition (t) {
-    t.field('customer', { type: 'CustomerWhereUniqueInput', required: true })
+    t.field('customer', { type: 'CustomerWhereUniqueInput' })
     t.boolean('needsFollowUp')
   }
 })

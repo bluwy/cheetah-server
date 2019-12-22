@@ -300,7 +300,7 @@ input JobOrderByInput {
 }
 
 input JobUpdateInput {
-  customer: CustomerWhereUniqueInput!
+  customer: CustomerWhereUniqueInput
   needsFollowUp: Boolean
 }
 
