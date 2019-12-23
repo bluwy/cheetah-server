@@ -1,3 +1,4 @@
+import { UserInputError } from 'apollo-server'
 import { enumType, extendType, objectType, inputObjectType, arg } from 'nexus'
 
 export const Query = extendType({
@@ -21,8 +22,41 @@ export const Mutation = extendType({
         data: arg({ type: 'JobCreateInput', required: true })
       },
       async resolve (_, { data }, { photon }) {
+        const customer = await photon.customers.findOne({
+          select: {
+            companyBelong: {
+              select: {
+                alias: true
+              }
+            }
+          },
+          where: data.customer
+        })
+
+        const alias = customer?.companyBelong?.alias
+
+        if (alias == null) {
+          throw new UserInputError('Invalid company alias', { invalidArgs: ['data'] })
+        }
+
+        const todayJobs = await photon.jobs.findMany({
+          select: { id: true },
+          where: {
+            dateIssued: {
+              gte: new Date(new Date().setUTCHours(0, 0, 0, 0))
+            }
+          }
+        })
+
+        const code = [
+          alias,
+          getDDMMYY(),
+          (todayJobs.length + 1).toString().padStart(3, '0')
+        ].join('-')
+
         return photon.jobs.create({
           data: {
+            code,
             customer: {
               connect: data.customer
             },
@@ -180,6 +214,7 @@ export const Job = objectType({
   name: 'Job',
   definition (t) {
     t.model.id()
+    t.model.code()
     t.model.dateIssued()
     t.model.customer()
     t.model.assignments()
@@ -308,3 +343,13 @@ export const TaskType = enumType({
     'OTHERS'
   ]
 })
+
+function getDDMMYY (): string {
+  const date = new Date()
+
+  const dd = date.getUTCDate().toString().padStart(2, '0')
+  const mm = (date.getUTCMonth() + 1).toString().padStart(2, '0')
+  const yy = date.getUTCFullYear().toString().substr(-2)
+
+  return dd + mm + yy
+}

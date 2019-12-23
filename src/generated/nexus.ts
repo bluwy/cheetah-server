@@ -213,6 +213,7 @@ export interface NexusGenInputs {
     some?: NexusGenInputs['JobWhereInput'] | null; // JobWhereInput
   }
   JobOrderByInput: { // input type
+    code?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     dateIssued?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     id?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     needsFollowUp?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
@@ -224,6 +225,7 @@ export interface NexusGenInputs {
   JobWhereInput: { // input type
     AND?: NexusGenInputs['JobWhereInput'][] | null; // [JobWhereInput!]
     assignments?: NexusGenInputs['AssignmentFilter'] | null; // AssignmentFilter
+    code?: NexusGenInputs['StringFilter'] | null; // StringFilter
     customer?: NexusGenInputs['CustomerWhereInput'] | null; // CustomerWhereInput
     dateIssued?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -232,6 +234,7 @@ export interface NexusGenInputs {
     OR?: NexusGenInputs['JobWhereInput'][] | null; // [JobWhereInput!]
   }
   JobWhereUniqueInput: { // input type
+    code?: string | null; // String
     id?: string | null; // ID
   }
   NullableDateTimeFilter: { // input type
@@ -381,6 +384,7 @@ export interface NexusGenRootTypes {
     temporary: boolean; // Boolean!
   }
   Job: { // root type
+    code: string; // String!
     dateIssued: any; // DateTime!
     id: string; // ID!
     needsFollowUp: boolean; // Boolean!
@@ -515,6 +519,7 @@ export interface NexusGenFieldTypes {
   }
   Job: { // field return type
     assignments: NexusGenRootTypes['Assignment'][]; // [Assignment!]!
+    code: string; // String!
     customer: NexusGenRootTypes['Customer']; // Customer!
     dateIssued: any; // DateTime!
     id: string; // ID!

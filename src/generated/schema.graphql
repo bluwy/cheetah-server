@@ -273,6 +273,7 @@ input DateTimeFilter {
 
 type Job {
   assignments(after: ID, before: ID, first: Int, last: Int, skip: Int): [Assignment!]!
+  code: String!
   customer: Customer!
   dateIssued: DateTime!
   id: ID!
@@ -294,6 +295,7 @@ input JobFilter {
 }
 
 input JobOrderByInput {
+  code: OrderByArg
   dateIssued: OrderByArg
   id: OrderByArg
   needsFollowUp: OrderByArg
@@ -307,6 +309,7 @@ input JobUpdateInput {
 input JobWhereInput {
   AND: [JobWhereInput!]
   assignments: AssignmentFilter
+  code: StringFilter
   customer: CustomerWhereInput
   dateIssued: DateTimeFilter
   id: StringFilter
@@ -316,6 +319,7 @@ input JobWhereInput {
 }
 
 input JobWhereUniqueInput {
+  code: String
   id: ID
 }
 
