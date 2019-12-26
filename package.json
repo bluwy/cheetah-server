@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "ts-node-dev --no-notify --respawn --transpile-only -r dotenv/config src/index.ts",
-    "start": "ts-node -r dotenv/config src/index.ts",
+    "start": "ts-node --transpile-only -r dotenv/config src/index.ts",
+    "build": "npm run generate && npm run start",
     "generate:prisma": "prisma2 generate",
     "generate:nexus": "cross-env NODE_ENV=development ts-node --transpile-only -r dotenv/config src/gen-schema.ts",
     "generate": "npm run generate:prisma && npm run generate:nexus",
@@ -41,6 +42,7 @@
     "eslint-plugin-node": "^9.2.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "prisma2": "^2.0.0-preview019",
     "ts-node": "^8.5.4",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.3"
