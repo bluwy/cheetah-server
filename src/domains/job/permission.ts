@@ -1,6 +1,7 @@
 import { isAdmin, isAdminFull, isVerified } from '../rules'
 
 export const Query = {
+  jobCount: isAdmin,
   job: isVerified,
   jobs: isAdmin
 }
