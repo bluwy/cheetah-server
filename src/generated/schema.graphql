@@ -93,6 +93,7 @@ type Assignment {
   address: String!
   checkIn: DateTime
   checkOut: DateTime
+  expired: Boolean!
   id: ID!
   preferTime: DateTime
   staffPrimary: Staff!
@@ -102,6 +103,7 @@ type Assignment {
 
 input AssignmentCreateInput {
   address: String!
+  preferTime: DateTime
   staffPrimary: StaffWhereUniqueInput!
   staffSecondary: StaffWhereUniqueInput
   tasks: [TaskCreateInput!]!
@@ -128,6 +130,7 @@ input AssignmentWhereInput {
   AND: [AssignmentWhereInput!]
   checkIn: NullableDateTimeFilter
   checkOut: NullableDateTimeFilter
+  expired: BooleanFilter
   id: StringFilter
   job: JobWhereInput
   NOT: [AssignmentWhereInput!]
@@ -189,7 +192,7 @@ type Customer {
   active: Boolean!
   addresses: [String!]!
   code: String!
-  companyBelong: Company
+  companyBelong: Company!
   email: String
   id: ID!
   name: String!

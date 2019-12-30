@@ -70,6 +70,7 @@ export interface NexusGenInputs {
   }
   AssignmentCreateInput: { // input type
     address: string; // String!
+    preferTime?: any | null; // DateTime
     staffPrimary: NexusGenInputs['StaffWhereUniqueInput']; // StaffWhereUniqueInput!
     staffSecondary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
     tasks: NexusGenInputs['TaskCreateInput'][]; // [TaskCreateInput!]!
@@ -93,6 +94,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['AssignmentWhereInput'][] | null; // [AssignmentWhereInput!]
     checkIn?: NexusGenInputs['NullableDateTimeFilter'] | null; // NullableDateTimeFilter
     checkOut?: NexusGenInputs['NullableDateTimeFilter'] | null; // NullableDateTimeFilter
+    expired?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     job?: NexusGenInputs['JobWhereInput'] | null; // JobWhereInput
     NOT?: NexusGenInputs['AssignmentWhereInput'][] | null; // [AssignmentWhereInput!]
@@ -370,6 +372,7 @@ export interface NexusGenRootTypes {
     address: string; // String!
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
+    expired: boolean; // Boolean!
     id: string; // ID!
     preferTime?: any | null; // DateTime
   }
@@ -499,6 +502,7 @@ export interface NexusGenFieldTypes {
     address: string; // String!
     checkIn: any | null; // DateTime
     checkOut: any | null; // DateTime
+    expired: boolean; // Boolean!
     id: string; // ID!
     preferTime: any | null; // DateTime
     staffPrimary: NexusGenRootTypes['Staff']; // Staff!
@@ -514,7 +518,7 @@ export interface NexusGenFieldTypes {
     active: boolean; // Boolean!
     addresses: string[]; // [String!]!
     code: string; // String!
-    companyBelong: NexusGenRootTypes['Company'] | null; // Company
+    companyBelong: NexusGenRootTypes['Company']; // Company!
     email: string | null; // String
     id: string; // ID!
     name: string; // String!

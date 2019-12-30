@@ -61,6 +61,7 @@ model Assignment {
   preferTime     DateTime?
   checkIn        DateTime?
   checkOut       DateTime?
+  expired        Boolean   @default(false)
   staffPrimary   Staff     @relation("StaffPrimaryByAssignment")
   staffSecondary Staff?    @relation("StaffSecondaryByAssignment")
   tasks          Task[]

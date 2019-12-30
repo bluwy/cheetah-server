@@ -112,6 +112,16 @@ export const Mutation = extendType({
         jobWhere: arg({ type: 'JobWhereUniqueInput', required: true })
       },
       async resolve (_, { data, jobWhere }, { photon }) {
+        // Set previous assignments expired
+        await photon.assignments.updateMany({
+          data: {
+            expired: true
+          },
+          where: {
+            job: jobWhere
+          }
+        })
+
         return photon.assignments.create({
           data: {
             address: data.address,
@@ -235,6 +245,7 @@ export const Assignment = objectType({
     t.model.preferTime()
     t.model.checkIn()
     t.model.checkOut()
+    t.model.expired()
     t.model.staffPrimary()
     t.model.staffSecondary()
     t.model.tasks()
@@ -282,6 +293,7 @@ export const AssignmentCreateInput = inputObjectType({
   name: 'AssignmentCreateInput',
   definition (t) {
     t.string('address', { required: true })
+    t.field('preferTime', { type: 'DateTime' })
     t.field('staffPrimary', { type: 'StaffWhereUniqueInput', required: true })
     t.field('staffSecondary', { type: 'StaffWhereUniqueInput' })
     t.list.field('tasks', { type: 'TaskCreateInput', required: true })
