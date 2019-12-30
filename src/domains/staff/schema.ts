@@ -9,7 +9,7 @@ export const Query = extendType({
     t.crud.staffs({
       filtering: true,
       ordering: true,
-      pagination: true
+      pagination: false
     })
 
     t.field('verifyStaffToken', {

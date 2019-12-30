@@ -4,7 +4,11 @@ export const Query = extendType({
   type: 'Query',
   definition (t) {
     t.crud.company()
-    t.crud.companies()
+    t.crud.companies({
+      filtering: true,
+      ordering: true,
+      pagination: false
+    })
   }
 })
 
