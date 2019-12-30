@@ -4,6 +4,11 @@ import { enumType, extendType, objectType, inputObjectType, arg } from 'nexus'
 export const Query = extendType({
   type: 'Query',
   definition (t) {
+    t.int('jobCount', {
+      async resolve (_, __, { photon }) {
+        return photon.jobs.count()
+      }
+    })
     t.crud.job()
     t.crud.jobs({
       filtering: true,

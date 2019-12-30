@@ -113,6 +113,11 @@ export interface NexusGenInputs {
     alias: string; // String!
     name: string; // String!
   }
+  CompanyOrderByInput: { // input type
+    alias?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
+    id?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
+    name?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
+  }
   CompanyUpdateInput: { // input type
     alias?: string | null; // String
     name?: string | null; // String
@@ -435,6 +440,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   AssignmentWhereUniqueInput: NexusGenInputs['AssignmentWhereUniqueInput'];
   BooleanFilter: NexusGenInputs['BooleanFilter'];
   CompanyCreateInput: NexusGenInputs['CompanyCreateInput'];
+  CompanyOrderByInput: NexusGenInputs['CompanyOrderByInput'];
   CompanyUpdateInput: NexusGenInputs['CompanyUpdateInput'];
   CompanyWhereInput: NexusGenInputs['CompanyWhereInput'];
   CompanyWhereUniqueInput: NexusGenInputs['CompanyWhereUniqueInput'];
@@ -563,8 +569,10 @@ export interface NexusGenFieldTypes {
     companies: NexusGenRootTypes['Company'][]; // [Company!]!
     company: NexusGenRootTypes['Company'] | null; // Company
     customer: NexusGenRootTypes['Customer'] | null; // Customer
+    customerCount: number; // Int!
     customers: NexusGenRootTypes['Customer'][]; // [Customer!]!
     job: NexusGenRootTypes['Job'] | null; // Job
+    jobCount: number; // Int!
     jobs: NexusGenRootTypes['Job'][]; // [Job!]!
     staff: NexusGenRootTypes['Staff'] | null; // Staff
     staffs: NexusGenRootTypes['Staff'][]; // [Staff!]!
@@ -731,20 +739,12 @@ export interface NexusGenArgTypes {
       where: NexusGenInputs['AdminWhereUniqueInput']; // AdminWhereUniqueInput!
     }
     admins: { // args
-      after?: string | null; // ID
-      before?: string | null; // ID
-      first?: number | null; // Int
-      last?: number | null; // Int
       orderBy?: NexusGenInputs['AdminOrderByInput'] | null; // AdminOrderByInput
-      skip?: number | null; // Int
       where?: NexusGenInputs['AdminWhereInput'] | null; // AdminWhereInput
     }
     companies: { // args
-      after?: string | null; // ID
-      before?: string | null; // ID
-      first?: number | null; // Int
-      last?: number | null; // Int
-      skip?: number | null; // Int
+      orderBy?: NexusGenInputs['CompanyOrderByInput'] | null; // CompanyOrderByInput
+      where?: NexusGenInputs['CompanyWhereInput'] | null; // CompanyWhereInput
     }
     company: { // args
       where: NexusGenInputs['CompanyWhereUniqueInput']; // CompanyWhereUniqueInput!
@@ -777,12 +777,7 @@ export interface NexusGenArgTypes {
       where: NexusGenInputs['StaffWhereUniqueInput']; // StaffWhereUniqueInput!
     }
     staffs: { // args
-      after?: string | null; // ID
-      before?: string | null; // ID
-      first?: number | null; // Int
-      last?: number | null; // Int
       orderBy?: NexusGenInputs['StaffOrderByInput'] | null; // StaffOrderByInput
-      skip?: number | null; // Int
       where?: NexusGenInputs['StaffWhereInput'] | null; // StaffWhereInput
     }
     verifyAdminToken: { // args
@@ -801,7 +796,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "Action" | "Admin" | "AdminLoginResponse" | "AdminVerifyTokenResponse" | "Assignment" | "Company" | "Customer" | "Job" | "Mutation" | "Query" | "Staff" | "StaffLoginResponse" | "StaffVerifyTokenResponse" | "Task";
 
-export type NexusGenInputNames = "ActionCreateInput" | "ActionFilter" | "ActionUpdateInput" | "ActionWhereInput" | "ActionWhereUniqueInput" | "AdminCreateInput" | "AdminOrderByInput" | "AdminUpdateInput" | "AdminWhereInput" | "AdminWhereUniqueInput" | "AssignmentCreateInput" | "AssignmentFilter" | "AssignmentUpdateInput" | "AssignmentWhereInput" | "AssignmentWhereUniqueInput" | "BooleanFilter" | "CompanyCreateInput" | "CompanyUpdateInput" | "CompanyWhereInput" | "CompanyWhereUniqueInput" | "CustomerCreateInput" | "CustomerFilter" | "CustomerOrderByInput" | "CustomerUpdateInput" | "CustomerWhereInput" | "CustomerWhereUniqueInput" | "DateTimeFilter" | "JobCreateInput" | "JobFilter" | "JobOrderByInput" | "JobUpdateInput" | "JobWhereInput" | "JobWhereUniqueInput" | "NullableDateTimeFilter" | "NullableStringFilter" | "StaffCreateInput" | "StaffOrderByInput" | "StaffUpdateInput" | "StaffWhereInput" | "StaffWhereUniqueInput" | "StringFilter" | "TaskCreateInput" | "TaskFilter" | "TaskUpdateInput" | "TaskWhereInput" | "TaskWhereUniqueInput";
+export type NexusGenInputNames = "ActionCreateInput" | "ActionFilter" | "ActionUpdateInput" | "ActionWhereInput" | "ActionWhereUniqueInput" | "AdminCreateInput" | "AdminOrderByInput" | "AdminUpdateInput" | "AdminWhereInput" | "AdminWhereUniqueInput" | "AssignmentCreateInput" | "AssignmentFilter" | "AssignmentUpdateInput" | "AssignmentWhereInput" | "AssignmentWhereUniqueInput" | "BooleanFilter" | "CompanyCreateInput" | "CompanyOrderByInput" | "CompanyUpdateInput" | "CompanyWhereInput" | "CompanyWhereUniqueInput" | "CustomerCreateInput" | "CustomerFilter" | "CustomerOrderByInput" | "CustomerUpdateInput" | "CustomerWhereInput" | "CustomerWhereUniqueInput" | "DateTimeFilter" | "JobCreateInput" | "JobFilter" | "JobOrderByInput" | "JobUpdateInput" | "JobWhereInput" | "JobWhereUniqueInput" | "NullableDateTimeFilter" | "NullableStringFilter" | "StaffCreateInput" | "StaffOrderByInput" | "StaffUpdateInput" | "StaffWhereInput" | "StaffWhereUniqueInput" | "StringFilter" | "TaskCreateInput" | "TaskFilter" | "TaskUpdateInput" | "TaskWhereInput" | "TaskWhereUniqueInput";
 
 export type NexusGenEnumNames = "AdminPrivilege" | "OrderByArg" | "TaskType";
 

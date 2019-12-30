@@ -158,6 +158,12 @@ input CompanyCreateInput {
   name: String!
 }
 
+input CompanyOrderByInput {
+  alias: OrderByArg
+  id: OrderByArg
+  name: OrderByArg
+}
+
 input CompanyUpdateInput {
   alias: String
   name: String
@@ -388,15 +394,17 @@ enum OrderByArg {
 
 type Query {
   admin(where: AdminWhereUniqueInput!): Admin
-  admins(after: ID, before: ID, first: Int, last: Int, orderBy: AdminOrderByInput, skip: Int, where: AdminWhereInput): [Admin!]!
-  companies(after: ID, before: ID, first: Int, last: Int, skip: Int): [Company!]!
+  admins(orderBy: AdminOrderByInput, where: AdminWhereInput): [Admin!]!
+  companies(orderBy: CompanyOrderByInput, where: CompanyWhereInput): [Company!]!
   company(where: CompanyWhereUniqueInput!): Company
   customer(where: CustomerWhereUniqueInput!): Customer
+  customerCount: Int!
   customers(after: ID, before: ID, first: Int, last: Int, orderBy: CustomerOrderByInput, skip: Int, where: CustomerWhereInput): [Customer!]!
   job(where: JobWhereUniqueInput!): Job
+  jobCount: Int!
   jobs(after: ID, before: ID, first: Int, last: Int, orderBy: JobOrderByInput, skip: Int, where: JobWhereInput): [Job!]!
   staff(where: StaffWhereUniqueInput!): Staff
-  staffs(after: ID, before: ID, first: Int, last: Int, orderBy: StaffOrderByInput, skip: Int, where: StaffWhereInput): [Staff!]!
+  staffs(orderBy: StaffOrderByInput, where: StaffWhereInput): [Staff!]!
   verifyAdminToken(token: String!): AdminVerifyTokenResponse
   verifyStaffToken(token: String!): StaffVerifyTokenResponse
 }

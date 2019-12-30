@@ -3,6 +3,11 @@ import { extendType, objectType, inputObjectType, arg } from 'nexus'
 export const Query = extendType({
   type: 'Query',
   definition (t) {
+    t.int('customerCount', {
+      async resolve (_, __, { photon }) {
+        return photon.customers.count()
+      }
+    })
     t.crud.customer()
     t.crud.customers({
       filtering: true,
