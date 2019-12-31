@@ -11,8 +11,8 @@
     "generate:prisma": "prisma2 generate",
     "generate:nexus": "cross-env NODE_ENV=development ts-node --transpile-only -r dotenv/config src/gen-schema.ts",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
-    "lint": "eslint src/**/*.ts",
-    "lintfix": "eslint --fix src/**/*.ts"
+    "lint": "eslint ./**/*.ts",
+    "lintfix": "eslint --fix ./**/*.ts"
   },
   "dependencies": {
     "@prisma/photon": "^2.0.0-preview019",
