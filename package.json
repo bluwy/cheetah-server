@@ -11,6 +11,8 @@
     "generate:prisma": "prisma2 generate",
     "generate:nexus": "cross-env NODE_ENV=development ts-node --transpile-only -r dotenv/config src/gen-schema.ts",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
+    "introspect": "prisma2 introspect",
+    "migrate": "node-pg-migrate --tsconfig tsconfig.json",
     "lint": "eslint ./**/*.ts",
     "lintfix": "eslint --fix ./**/*.ts"
   },

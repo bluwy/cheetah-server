@@ -8,6 +8,7 @@ generator photon {
 }
 
 model Admin {
+  @@map("admin")
   id        String         @default(cuid()) @id
   username  String         @unique
   privilege AdminPrivilege @default(BASIC)
@@ -15,11 +16,12 @@ model Admin {
 }
 
 model Staff {
+  @@map("staff")
   id                    String       @default(cuid()) @id
   username              String       @unique
-  fullName              String
+  fullName              String       @map("full_name")
   hash                  String
-  passwordForgotten     Boolean      @default(false)
+  passwordForgotten     Boolean      @default(false) @map("password_forgotten")
   customerPrimaries     Customer[]   @relation("StaffPrimaryByCustomer")
   customerSecondaries   Customer[]   @relation("StaffSecondaryByCustomer")
   assignmentPrimaries   Assignment[] @relation("StaffPrimaryByAssignment")
@@ -27,49 +29,54 @@ model Staff {
 }
 
 model Company {
+  @@map("company")
   id    String @default(cuid()) @id
   name  String @unique
   alias String @unique
 }
 
 model Customer {
+  @@map("customer")
   id             String   @default(cuid()) @id
   code           String   @unique
   name           String   @unique
   email          String?
   addresses      String[]
-  phoneNumber    String?
-  companyBelong  Company
+  phoneNumber    String?  @map("phone_number")
+  companyBelong  Company  @map("company_belong")
   temporary      Boolean  @default(false)
   active         Boolean  @default(true)
-  staffPrimary   Staff    @relation("StaffPrimaryByCustomer")
-  staffSecondary Staff?   @relation("StaffSecondaryByCustomer")
+  staffPrimary   Staff    @relation("StaffPrimaryByCustomer") @map("staff_primary")
+  staffSecondary Staff?   @relation("StaffSecondaryByCustomer") @map("staff_secondary")
 }
 
 model Job {
+  @@map("job")
   id            String       @default(cuid()) @id
   code          String       @unique
-  dateIssued    DateTime     @default(now())
+  dateIssued    DateTime     @default(now()) @map("date_issued")
   customer      Customer
   assignments   Assignment[]
-  needsFollowUp Boolean      @default(false)
+  needsFollowUp Boolean      @default(false) @map("needs_follow_up")
 }
 
 model Assignment {
+  @@map("assignment")
   id             String    @default(cuid()) @id
   address        String
-  preferTime     DateTime?
-  checkIn        DateTime?
-  checkOut       DateTime?
+  preferTime     DateTime? @map("prefer_time")
+  checkIn        DateTime? @map("check_in")
+  checkOut       DateTime? @map("check_out")
   expired        Boolean   @default(false)
-  staffPrimary   Staff     @relation("StaffPrimaryByAssignment")
-  staffSecondary Staff?    @relation("StaffSecondaryByAssignment")
+  staffPrimary   Staff     @relation("StaffPrimaryByAssignment") @map("staff_primary")
+  staffSecondary Staff?    @relation("StaffSecondaryByAssignment") @map("staff_secondary")
   tasks          Task[]
   actions        Action[]
   job            Job       @relation(onDelete: CASCADE)
 }
 
 model Task {
+  @@map("task")
   id         String     @default(cuid()) @id
   type       TaskType
   remarks    String
@@ -78,6 +85,7 @@ model Task {
 }
 
 model Action {
+  @@map("action")
   id         String     @default(cuid()) @id
   remarks    String
   assignment Assignment @relation(onDelete: CASCADE)

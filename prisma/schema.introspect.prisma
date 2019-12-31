@@ -1,0 +1,105 @@
+generator photon {
+  provider = "photonjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model action {
+  assignment assignment
+  id         String     @id
+  remarks    String
+}
+
+model admin {
+  hash      String
+  id        String @id
+  privilege String
+  username  String @unique
+}
+
+model assignment {
+  address         String
+  check_in        DateTime?
+  check_out       DateTime?
+  expired         Boolean   @default(false)
+  id              String    @id
+  job             job
+  prefer_time     DateTime?
+  staff_primary   staff     @relation("assignment_staff_primaryTostaff")
+  staff_secondary staff?    @relation("assignment_staff_secondaryTostaff")
+  actions         action[]  @relation(onDelete: CASCADE)
+  tasks           task[]    @relation(references: [assignment], onDelete: CASCADE)
+}
+
+model company {
+  alias     String     @unique
+  id        String     @id
+  name      String     @unique
+  customers customer[] @relation(references: [company_belong])
+}
+
+model customer {
+  active          Boolean  @default(true)
+  addresses       String[]
+  code            String   @unique
+  company_belong  company
+  email           String?
+  id              String   @id
+  name            String   @unique
+  phone_number    String?
+  staff_primary   staff    @relation("customer_staff_primaryTostaff")
+  staff_secondary staff?   @relation("customer_staff_secondaryTostaff")
+  temporary       Boolean  @default(false)
+  jobs            job[]    @relation(references: [customer])
+}
+
+model job {
+  code            String       @unique
+  customer        customer
+  date_issued     DateTime
+  id              String       @id
+  needs_follow_up Boolean      @default(false)
+  assignments     assignment[] @relation(onDelete: CASCADE)
+}
+
+model pgmigrations {
+  id     Int      @id
+  name   String
+  run_on DateTime
+}
+
+model staff {
+  full_name                                     String
+  hash                                          String
+  id                                            String       @id
+  password_forgotten                            Boolean      @default(false)
+  username                                      String       @unique
+  assignments_assignment_staff_primaryTostaff   assignment[] @relation("assignment_staff_primaryTostaff")
+  assignments_assignment_staff_secondaryTostaff assignment[] @relation("assignment_staff_secondaryTostaff")
+  customers_customer_staff_primaryTostaff       customer[]   @relation("customer_staff_primaryTostaff")
+  customers_customer_staff_secondaryTostaff     customer[]   @relation("customer_staff_secondaryTostaff")
+}
+
+model task {
+  assignment assignment
+  done       Boolean    @default(false)
+  id         String     @id
+  remarks    String
+  type       String
+}
+
+enum admin_privilege {
+  BASIC
+  FULL
+}
+
+enum task_type {
+  COMPLAINT
+  DELIVERY
+  OTHERS
+  SERVICE
+  TRANSPORT
+}
