@@ -1,9 +1,0 @@
-# IF THERE'S A GIT CONFLICT IN THIS FILE, DON'T SOLVE IT MANUALLY!
-# INSTEAD EXECUTE `prisma lift fix`
-# lift lockfile v1
-# Read more about conflict resolution here: TODO
-
-20191220193212-init
-20191221142548-rel-cascade
-20191223162638-job-code
-20191228232635-company-non-null
