@@ -341,13 +341,13 @@ type Mutation {
   createJob(data: JobCreateInput!): Job!
   createStaff(data: StaffCreateInput!): Staff!
   createTask(assignmentWhere: AssignmentWhereUniqueInput!, data: TaskCreateInput!): Task!
-  deleteAction(where: ActionWhereUniqueInput!): Action
-  deleteAdmin(where: AdminWhereUniqueInput!): Admin
-  deleteCompany(where: CompanyWhereUniqueInput!): Company
-  deleteCustomer(where: CustomerWhereUniqueInput!): Customer
-  deleteJob(where: JobWhereUniqueInput!): Job
-  deleteStaff(where: StaffWhereUniqueInput!): Staff
-  deleteTask(where: TaskWhereUniqueInput!): Task
+  deleteAction(where: ActionWhereUniqueInput!): Boolean!
+  deleteAdmin(where: AdminWhereUniqueInput!): Boolean!
+  deleteCompany(where: CompanyWhereUniqueInput!): Boolean!
+  deleteCustomer(where: CustomerWhereUniqueInput!): Boolean!
+  deleteJob(where: JobWhereUniqueInput!): Boolean!
+  deleteStaff(where: StaffWhereUniqueInput!): Boolean!
+  deleteTask(where: TaskWhereUniqueInput!): Boolean!
   forgotAdminPassword(username: String!): Boolean!
   forgotStaffPassword(where: StaffWhereUniqueInput!): Boolean!
   loginAdmin(password: String!, username: String!): AdminLoginResponse!

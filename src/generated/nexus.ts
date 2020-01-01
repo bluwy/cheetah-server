@@ -544,13 +544,13 @@ export interface NexusGenFieldTypes {
     createJob: NexusGenRootTypes['Job']; // Job!
     createStaff: NexusGenRootTypes['Staff']; // Staff!
     createTask: NexusGenRootTypes['Task']; // Task!
-    deleteAction: NexusGenRootTypes['Action'] | null; // Action
-    deleteAdmin: NexusGenRootTypes['Admin'] | null; // Admin
-    deleteCompany: NexusGenRootTypes['Company'] | null; // Company
-    deleteCustomer: NexusGenRootTypes['Customer'] | null; // Customer
-    deleteJob: NexusGenRootTypes['Job'] | null; // Job
-    deleteStaff: NexusGenRootTypes['Staff'] | null; // Staff
-    deleteTask: NexusGenRootTypes['Task'] | null; // Task
+    deleteAction: boolean; // Boolean!
+    deleteAdmin: boolean; // Boolean!
+    deleteCompany: boolean; // Boolean!
+    deleteCustomer: boolean; // Boolean!
+    deleteJob: boolean; // Boolean!
+    deleteStaff: boolean; // Boolean!
+    deleteTask: boolean; // Boolean!
     forgotAdminPassword: boolean; // Boolean!
     forgotStaffPassword: boolean; // Boolean!
     loginAdmin: NexusGenRootTypes['AdminLoginResponse']; // AdminLoginResponse!

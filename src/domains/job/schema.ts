@@ -1,5 +1,6 @@
 import { UserInputError } from 'apollo-server'
 import { enumType, extendType, objectType, inputObjectType, arg } from 'nexus'
+import { deleteOneField } from '../utils'
 
 export const Query = extendType({
   type: 'Query',
@@ -103,7 +104,7 @@ export const Mutation = extendType({
       }
     })
 
-    t.crud.deleteOneJob({ alias: 'deleteJob' })
+    deleteOneField(t, 'deleteJob', 'JobWhereUniqueInput', 'job')
 
     t.field('createAssignment', {
       type: 'Assignment',
@@ -202,7 +203,7 @@ export const Mutation = extendType({
       }
     })
 
-    t.crud.deleteOneTask({ alias: 'deleteTask' })
+    deleteOneField(t, 'deleteTask', 'TaskWhereUniqueInput', 'task')
 
     t.field('createAction', {
       type: 'Action',
@@ -221,7 +222,8 @@ export const Mutation = extendType({
     })
 
     t.crud.updateOneAction({ alias: 'updateAction' })
-    t.crud.deleteOneAction({ alias: 'deleteAction' })
+
+    deleteOneField(t, 'deleteAction', 'ActionWhereUniqueInput', 'action')
   }
 })
 
@@ -345,6 +347,13 @@ export const ActionUpdateInput = inputObjectType({
 
 export const AssignmentWhereUniqueInput = inputObjectType({
   name: 'AssignmentWhereUniqueInput',
+  definition (t) {
+    t.id('id')
+  }
+})
+
+export const TaskWhereUniqueInput = inputObjectType({
+  name: 'TaskWhereUniqueInput',
   definition (t) {
     t.id('id')
   }

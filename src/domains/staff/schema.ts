@@ -1,6 +1,7 @@
 import { AuthenticationError, UserInputError } from 'apollo-server'
 import { arg, extendType, inputObjectType, objectType, stringArg } from 'nexus'
 import { StaffPayload, UserRole } from '../../services/auth'
+import { deleteOneField } from '../utils'
 
 export const Query = extendType({
   type: 'Query',
@@ -58,7 +59,8 @@ export const Mutation = extendType({
     })
 
     t.crud.updateOneStaff({ alias: 'updateStaff' })
-    t.crud.deleteOneStaff({ alias: 'deleteStaff' })
+
+    deleteOneField(t, 'deleteStaff', 'StaffWhereUniqueInput', 'staff')
 
     // Staff alert admin of forgot password
     t.field('forgotStaffPassword', {

@@ -1,4 +1,5 @@
 import { extendType, objectType, inputObjectType, arg } from 'nexus'
+import { deleteOneField } from '../utils'
 
 export const Query = extendType({
   type: 'Query',
@@ -78,7 +79,7 @@ export const Mutation = extendType({
       }
     })
 
-    t.crud.deleteOneCustomer({ alias: 'deleteCustomer' })
+    deleteOneField(t, 'deleteCustomer', 'CustomerWhereUniqueInput', 'customer')
   }
 })
 
