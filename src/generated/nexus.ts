@@ -285,10 +285,10 @@ export interface NexusGenInputs {
   }
   StaffWhereInput: { // input type
     AND?: NexusGenInputs['StaffWhereInput'][] | null; // [StaffWhereInput!]
-    assignmentPrimaries?: NexusGenInputs['AssignmentFilter'] | null; // AssignmentFilter
-    assignmentSecondaries?: NexusGenInputs['AssignmentFilter'] | null; // AssignmentFilter
-    customerPrimaries?: NexusGenInputs['CustomerFilter'] | null; // CustomerFilter
-    customerSecondaries?: NexusGenInputs['CustomerFilter'] | null; // CustomerFilter
+    assignmentPrimaries?: NexusGenInputs['CustomerFilter'] | null; // CustomerFilter
+    assignmentSecondaries?: NexusGenInputs['CustomerFilter'] | null; // CustomerFilter
+    customerPrimaries?: NexusGenInputs['AssignmentFilter'] | null; // AssignmentFilter
+    customerSecondaries?: NexusGenInputs['AssignmentFilter'] | null; // AssignmentFilter
     fullName?: NexusGenInputs['StringFilter'] | null; // StringFilter
     hash?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter

@@ -22,17 +22,18 @@ model Staff {
   fullName              String       @map("full_name")
   hash                  String
   passwordForgotten     Boolean      @default(false) @map("password_forgotten")
-  customerPrimaries     Customer[]   @relation("StaffPrimaryByCustomer")
-  customerSecondaries   Customer[]   @relation("StaffSecondaryByCustomer")
-  assignmentPrimaries   Assignment[] @relation("StaffPrimaryByAssignment")
-  assignmentSecondaries Assignment[] @relation("StaffSecondaryByAssignment")
+  customerPrimaries     Assignment[] @relation("assignment_staff_primaryTostaff") @map("assignments_assignment_staff_primaryTostaff")
+  customerSecondaries   Assignment[] @relation("assignment_staff_secondaryTostaff") @map("assignments_assignment_staff_secondaryTostaff")
+  assignmentPrimaries   Customer[]   @relation("customer_staff_primaryTostaff") @map("customers_customer_staff_primaryTostaff")
+  assignmentSecondaries Customer[]   @relation("customer_staff_secondaryTostaff") @map("customers_customer_staff_secondaryTostaff")
 }
 
 model Company {
   @@map("company")
-  id    String @default(cuid()) @id
-  name  String @unique
-  alias String @unique
+  id        String     @default(cuid()) @id
+  name      String     @unique
+  alias     String     @unique
+  customers Customer[] @relation(references: [companyBelong])
 }
 
 model Customer {
@@ -46,8 +47,9 @@ model Customer {
   companyBelong  Company  @map("company_belong")
   temporary      Boolean  @default(false)
   active         Boolean  @default(true)
-  staffPrimary   Staff    @relation("StaffPrimaryByCustomer") @map("staff_primary")
-  staffSecondary Staff?   @relation("StaffSecondaryByCustomer") @map("staff_secondary")
+  staffPrimary   Staff    @relation("customer_staff_primaryTostaff") @map("staff_primary")
+  staffSecondary Staff?   @relation("customer_staff_secondaryTostaff") @map("staff_secondary")
+  jobs           Job[]    @relation(references: [customer])
 }
 
 model Job {
@@ -68,11 +70,11 @@ model Assignment {
   checkIn        DateTime? @map("check_in")
   checkOut       DateTime? @map("check_out")
   expired        Boolean   @default(false)
-  staffPrimary   Staff     @relation("StaffPrimaryByAssignment") @map("staff_primary")
-  staffSecondary Staff?    @relation("StaffSecondaryByAssignment") @map("staff_secondary")
-  tasks          Task[]
+  staffPrimary   Staff     @relation("assignment_staff_primaryTostaff") @map("staff_primary")
+  staffSecondary Staff?    @relation("assignment_staff_secondaryTostaff") @map("staff_secondary")
+  tasks          Task[]    @relation(references: [assignment])
   actions        Action[]
-  job            Job       @relation(onDelete: CASCADE)
+  job            Job
 }
 
 model Task {
@@ -81,14 +83,14 @@ model Task {
   type       TaskType
   remarks    String
   done       Boolean    @default(false)
-  assignment Assignment @relation(onDelete: CASCADE)
+  assignment Assignment
 }
 
 model Action {
   @@map("action")
   id         String     @default(cuid()) @id
   remarks    String
-  assignment Assignment @relation(onDelete: CASCADE)
+  assignment Assignment
 }
 
 enum AdminPrivilege {

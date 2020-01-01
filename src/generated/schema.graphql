@@ -449,10 +449,10 @@ type StaffVerifyTokenResponse {
 
 input StaffWhereInput {
   AND: [StaffWhereInput!]
-  assignmentPrimaries: AssignmentFilter
-  assignmentSecondaries: AssignmentFilter
-  customerPrimaries: CustomerFilter
-  customerSecondaries: CustomerFilter
+  assignmentPrimaries: CustomerFilter
+  assignmentSecondaries: CustomerFilter
+  customerPrimaries: AssignmentFilter
+  customerSecondaries: AssignmentFilter
   fullName: StringFilter
   hash: StringFilter
   id: StringFilter
