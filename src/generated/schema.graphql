@@ -292,6 +292,7 @@ type Job {
 input JobCreateInput {
   address: String!
   customer: CustomerWhereUniqueInput!
+  preferTime: DateTime
   staffPrimary: StaffWhereUniqueInput!
   staffSecondary: StaffWhereUniqueInput
   tasks: [TaskCreateInput!]!

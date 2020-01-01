@@ -210,6 +210,7 @@ export interface NexusGenInputs {
   JobCreateInput: { // input type
     address: string; // String!
     customer: NexusGenInputs['CustomerWhereUniqueInput']; // CustomerWhereUniqueInput!
+    preferTime?: any | null; // DateTime
     staffPrimary: NexusGenInputs['StaffWhereUniqueInput']; // StaffWhereUniqueInput!
     staffSecondary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
     tasks: NexusGenInputs['TaskCreateInput'][]; // [TaskCreateInput!]!

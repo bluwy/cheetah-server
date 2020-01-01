@@ -69,6 +69,7 @@ export const Mutation = extendType({
             assignments: {
               create: {
                 address: data.address,
+                preferTime: data.preferTime,
                 staffPrimary: { connect: data.staffPrimary },
                 staffSecondary: { connect: data.staffSecondary },
                 tasks: { create: data.tasks }
@@ -126,6 +127,7 @@ export const Mutation = extendType({
         return photon.assignments.create({
           data: {
             address: data.address,
+            preferTime: data.preferTime,
             staffPrimary: { connect: data.staffPrimary },
             staffSecondary: { connect: data.staffSecondary },
             tasks: { create: data.tasks },
@@ -277,6 +279,7 @@ export const JobCreateInput = inputObjectType({
   definition (t) {
     t.field('customer', { type: 'CustomerWhereUniqueInput', required: true })
     t.string('address', { required: true })
+    t.field('preferTime', { type: 'DateTime' })
     t.field('staffPrimary', { type: 'StaffWhereUniqueInput', required: true })
     t.field('staffSecondary', { type: 'StaffWhereUniqueInput' })
     t.list.field('tasks', { type: 'TaskCreateInput', required: true })
