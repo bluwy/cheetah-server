@@ -14,7 +14,8 @@
     "introspect": "prisma2 introspect",
     "migrate": "node-pg-migrate --tsconfig tsconfig.json",
     "lint": "eslint ./**/*.ts",
-    "lintfix": "eslint --fix ./**/*.ts"
+    "lintfix": "eslint --fix ./**/*.ts",
+    "cron:eta": "ts-node -r dotenv/config src/cron/eta.ts"
   },
   "dependencies": {
     "@prisma/photon": "^2.0.0-preview019",
