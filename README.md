@@ -6,6 +6,10 @@ An overhaul rewrite to Apollo + Prisma Framework server
 
 The current server implementation is very unstable as Prisma Framework is currently in preview. It's expected to be better in consequent Prisma releases.
 
+Since the database is built ground up, Photon currently cannot infer cascading deletes and would result in `RelationViolation`. It's botched with custom `pg` DROP command.
+
+The time system depends on env var `CLIENT_TIMEZONE` to calculate the job codes and cron jobs. Data are however stored with time zone. So some hacky timezone offsets were perform to work properly in the client's timezone.
+
 ## Development
 
 General Prisma commands for Photon (Data model): [Prisma Framework CLI](https://github.com/prisma/prisma2/blob/master/docs/prisma2-cli.md)

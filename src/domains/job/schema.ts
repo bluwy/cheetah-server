@@ -45,11 +45,14 @@ export const Mutation = extendType({
           throw new UserInputError('Invalid company alias', { invalidArgs: ['data'] })
         }
 
+        const clientTimezone = +(process.env.CLIENT_TIMEZONE ?? 0)
+        const offsetDate = new Date(Date.now() + new Date().getTimezoneOffset() * 1000 + clientTimezone * 60 * 1000)
+
         const todayJobs = await photon.jobs.findMany({
           select: { id: true },
           where: {
             dateIssued: {
-              gte: new Date(new Date().setUTCHours(0, 0, 0, 0))
+              gte: new Date(offsetDate.setHours(0, 0, 0, 0))
             }
           }
         })
