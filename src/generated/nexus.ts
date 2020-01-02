@@ -70,6 +70,7 @@ export interface NexusGenInputs {
   }
   AssignmentCreateInput: { // input type
     address: string; // String!
+    eta?: boolean | null; // Boolean
     preferTime?: any | null; // DateTime
     staffPrimary: NexusGenInputs['StaffWhereUniqueInput']; // StaffWhereUniqueInput!
     staffSecondary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
@@ -84,6 +85,7 @@ export interface NexusGenInputs {
     address?: string | null; // String
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
+    eta?: boolean | null; // Boolean
     preferTime?: any | null; // DateTime
     staffPrimary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
     staffSecondary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
@@ -94,6 +96,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['AssignmentWhereInput'][] | null; // [AssignmentWhereInput!]
     checkIn?: NexusGenInputs['NullableDateTimeFilter'] | null; // NullableDateTimeFilter
     checkOut?: NexusGenInputs['NullableDateTimeFilter'] | null; // NullableDateTimeFilter
+    eta?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
     expired?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     job?: NexusGenInputs['JobWhereInput'] | null; // JobWhereInput
@@ -210,6 +213,7 @@ export interface NexusGenInputs {
   JobCreateInput: { // input type
     address: string; // String!
     customer: NexusGenInputs['CustomerWhereUniqueInput']; // CustomerWhereUniqueInput!
+    eta?: boolean | null; // Boolean
     preferTime?: any | null; // DateTime
     staffPrimary: NexusGenInputs['StaffWhereUniqueInput']; // StaffWhereUniqueInput!
     staffSecondary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
@@ -237,13 +241,17 @@ export interface NexusGenInputs {
     customer?: NexusGenInputs['CustomerWhereInput'] | null; // CustomerWhereInput
     dateIssued?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    needsFollowUp?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
+    needsFollowUp?: NexusGenInputs['NullableBooleanFilter'] | null; // NullableBooleanFilter
     NOT?: NexusGenInputs['JobWhereInput'][] | null; // [JobWhereInput!]
     OR?: NexusGenInputs['JobWhereInput'][] | null; // [JobWhereInput!]
   }
   JobWhereUniqueInput: { // input type
     code?: string | null; // String
     id?: string | null; // ID
+  }
+  NullableBooleanFilter: { // input type
+    equals?: boolean | null; // Boolean
+    not?: boolean | null; // Boolean
   }
   NullableDateTimeFilter: { // input type
     equals?: any | null; // DateTime
@@ -396,7 +404,7 @@ export interface NexusGenRootTypes {
     code: string; // String!
     dateIssued: any; // DateTime!
     id: string; // ID!
-    needsFollowUp: boolean; // Boolean!
+    needsFollowUp?: boolean | null; // Boolean
   }
   Mutation: {};
   Query: {};
@@ -461,6 +469,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   JobUpdateInput: NexusGenInputs['JobUpdateInput'];
   JobWhereInput: NexusGenInputs['JobWhereInput'];
   JobWhereUniqueInput: NexusGenInputs['JobWhereUniqueInput'];
+  NullableBooleanFilter: NexusGenInputs['NullableBooleanFilter'];
   NullableDateTimeFilter: NexusGenInputs['NullableDateTimeFilter'];
   NullableStringFilter: NexusGenInputs['NullableStringFilter'];
   StaffCreateInput: NexusGenInputs['StaffCreateInput'];
@@ -534,7 +543,7 @@ export interface NexusGenFieldTypes {
     customer: NexusGenRootTypes['Customer']; // Customer!
     dateIssued: any; // DateTime!
     id: string; // ID!
-    needsFollowUp: boolean; // Boolean!
+    needsFollowUp: boolean | null; // Boolean
   }
   Mutation: { // field return type
     createAction: NexusGenRootTypes['Action']; // Action!
@@ -801,7 +810,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "Action" | "Admin" | "AdminLoginResponse" | "AdminVerifyTokenResponse" | "Assignment" | "Company" | "Customer" | "Job" | "Mutation" | "Query" | "Staff" | "StaffLoginResponse" | "StaffVerifyTokenResponse" | "Task";
 
-export type NexusGenInputNames = "ActionCreateInput" | "ActionFilter" | "ActionUpdateInput" | "ActionWhereInput" | "ActionWhereUniqueInput" | "AdminCreateInput" | "AdminOrderByInput" | "AdminUpdateInput" | "AdminWhereInput" | "AdminWhereUniqueInput" | "AssignmentCreateInput" | "AssignmentFilter" | "AssignmentUpdateInput" | "AssignmentWhereInput" | "AssignmentWhereUniqueInput" | "BooleanFilter" | "CompanyCreateInput" | "CompanyOrderByInput" | "CompanyUpdateInput" | "CompanyWhereInput" | "CompanyWhereUniqueInput" | "CustomerCreateInput" | "CustomerFilter" | "CustomerOrderByInput" | "CustomerUpdateInput" | "CustomerWhereInput" | "CustomerWhereUniqueInput" | "DateTimeFilter" | "JobCreateInput" | "JobFilter" | "JobOrderByInput" | "JobUpdateInput" | "JobWhereInput" | "JobWhereUniqueInput" | "NullableDateTimeFilter" | "NullableStringFilter" | "StaffCreateInput" | "StaffOrderByInput" | "StaffUpdateInput" | "StaffWhereInput" | "StaffWhereUniqueInput" | "StringFilter" | "TaskCreateInput" | "TaskFilter" | "TaskUpdateInput" | "TaskWhereInput" | "TaskWhereUniqueInput";
+export type NexusGenInputNames = "ActionCreateInput" | "ActionFilter" | "ActionUpdateInput" | "ActionWhereInput" | "ActionWhereUniqueInput" | "AdminCreateInput" | "AdminOrderByInput" | "AdminUpdateInput" | "AdminWhereInput" | "AdminWhereUniqueInput" | "AssignmentCreateInput" | "AssignmentFilter" | "AssignmentUpdateInput" | "AssignmentWhereInput" | "AssignmentWhereUniqueInput" | "BooleanFilter" | "CompanyCreateInput" | "CompanyOrderByInput" | "CompanyUpdateInput" | "CompanyWhereInput" | "CompanyWhereUniqueInput" | "CustomerCreateInput" | "CustomerFilter" | "CustomerOrderByInput" | "CustomerUpdateInput" | "CustomerWhereInput" | "CustomerWhereUniqueInput" | "DateTimeFilter" | "JobCreateInput" | "JobFilter" | "JobOrderByInput" | "JobUpdateInput" | "JobWhereInput" | "JobWhereUniqueInput" | "NullableBooleanFilter" | "NullableDateTimeFilter" | "NullableStringFilter" | "StaffCreateInput" | "StaffOrderByInput" | "StaffUpdateInput" | "StaffWhereInput" | "StaffWhereUniqueInput" | "StringFilter" | "TaskCreateInput" | "TaskFilter" | "TaskUpdateInput" | "TaskWhereInput" | "TaskWhereUniqueInput";
 
 export type NexusGenEnumNames = "AdminPrivilege" | "OrderByArg" | "TaskType";
 

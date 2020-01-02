@@ -69,6 +69,7 @@ export const Mutation = extendType({
             assignments: {
               create: {
                 address: data.address,
+                eta: data.eta,
                 preferTime: data.preferTime,
                 staffPrimary: { connect: data.staffPrimary },
                 staffSecondary: { connect: data.staffSecondary },
@@ -127,6 +128,7 @@ export const Mutation = extendType({
         return photon.assignments.create({
           data: {
             address: data.address,
+            eta: data.eta,
             preferTime: data.preferTime,
             staffPrimary: { connect: data.staffPrimary },
             staffSecondary: { connect: data.staffSecondary },
@@ -153,6 +155,7 @@ export const Mutation = extendType({
         return photon.assignments.update({
           data: {
             address: data.address,
+            eta: data.eta,
             preferTime: data.preferTime,
             checkIn: data.checkIn,
             checkOut: data.checkOut,
@@ -279,6 +282,7 @@ export const JobCreateInput = inputObjectType({
   definition (t) {
     t.field('customer', { type: 'CustomerWhereUniqueInput', required: true })
     t.string('address', { required: true })
+    t.boolean('eta')
     t.field('preferTime', { type: 'DateTime' })
     t.field('staffPrimary', { type: 'StaffWhereUniqueInput', required: true })
     t.field('staffSecondary', { type: 'StaffWhereUniqueInput' })
@@ -298,6 +302,7 @@ export const AssignmentCreateInput = inputObjectType({
   name: 'AssignmentCreateInput',
   definition (t) {
     t.string('address', { required: true })
+    t.boolean('eta')
     t.field('preferTime', { type: 'DateTime' })
     t.field('staffPrimary', { type: 'StaffWhereUniqueInput', required: true })
     t.field('staffSecondary', { type: 'StaffWhereUniqueInput' })
@@ -309,6 +314,7 @@ export const AssignmentUpdateInput = inputObjectType({
   name: 'AssignmentUpdateInput',
   definition (t) {
     t.string('address')
+    t.boolean('eta')
     t.field('preferTime', { type: 'DateTime' })
     t.field('checkIn', { type: 'DateTime' })
     t.field('checkOut', { type: 'DateTime' })

@@ -103,6 +103,7 @@ type Assignment {
 
 input AssignmentCreateInput {
   address: String!
+  eta: Boolean
   preferTime: DateTime
   staffPrimary: StaffWhereUniqueInput!
   staffSecondary: StaffWhereUniqueInput
@@ -119,6 +120,7 @@ input AssignmentUpdateInput {
   address: String
   checkIn: DateTime
   checkOut: DateTime
+  eta: Boolean
   preferTime: DateTime
   staffPrimary: StaffWhereUniqueInput
   staffSecondary: StaffWhereUniqueInput
@@ -130,6 +132,7 @@ input AssignmentWhereInput {
   AND: [AssignmentWhereInput!]
   checkIn: NullableDateTimeFilter
   checkOut: NullableDateTimeFilter
+  eta: BooleanFilter
   expired: BooleanFilter
   id: StringFilter
   job: JobWhereInput
@@ -286,12 +289,13 @@ type Job {
   customer: Customer!
   dateIssued: DateTime!
   id: ID!
-  needsFollowUp: Boolean!
+  needsFollowUp: Boolean
 }
 
 input JobCreateInput {
   address: String!
   customer: CustomerWhereUniqueInput!
+  eta: Boolean
   preferTime: DateTime
   staffPrimary: StaffWhereUniqueInput!
   staffSecondary: StaffWhereUniqueInput
@@ -323,7 +327,7 @@ input JobWhereInput {
   customer: CustomerWhereInput
   dateIssued: DateTimeFilter
   id: StringFilter
-  needsFollowUp: BooleanFilter
+  needsFollowUp: NullableBooleanFilter
   NOT: [JobWhereInput!]
   OR: [JobWhereInput!]
 }
@@ -364,6 +368,11 @@ type Mutation {
   updateJob(data: JobUpdateInput!, where: JobWhereUniqueInput!): Job!
   updateStaff(data: StaffUpdateInput!, where: StaffWhereUniqueInput!): Staff
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task!
+}
+
+input NullableBooleanFilter {
+  equals: Boolean
+  not: Boolean
 }
 
 input NullableDateTimeFilter {
