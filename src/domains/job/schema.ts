@@ -383,11 +383,12 @@ export const TaskType = enumType({
 })
 
 function getDDMMYY (): string {
-  const date = new Date()
+  const clientTimezone = +(process.env.CLIENT_TIMEZONE ?? 0)
+  const offsetDate = new Date(Date.now() + new Date().getTimezoneOffset() * 1000 + clientTimezone * 60 * 1000)
 
-  const dd = date.getUTCDate().toString().padStart(2, '0')
-  const mm = (date.getUTCMonth() + 1).toString().padStart(2, '0')
-  const yy = date.getUTCFullYear().toString().substr(-2)
+  const dd = offsetDate.getDate().toString().padStart(2, '0')
+  const mm = (offsetDate.getMonth() + 1).toString().padStart(2, '0')
+  const yy = offsetDate.getFullYear().toString().substr(-2)
 
   return dd + mm + yy
 }
