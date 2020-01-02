@@ -16,7 +16,7 @@ model action {
 model admin {
   hash      String
   id        String @id
-  privilege String
+  privilege String @default("BASIC")
   username  String @unique
 }
 
@@ -24,6 +24,7 @@ model assignment {
   address         String
   check_in        DateTime?
   check_out       DateTime?
+  eta             Boolean   @default(false)
   expired         Boolean   @default(false)
   id              String    @id
   job             job
@@ -61,7 +62,7 @@ model job {
   customer        customer
   date_issued     DateTime
   id              String       @id
-  needs_follow_up Boolean      @default(false)
+  needs_follow_up Boolean?
   assignments     assignment[] @relation(onDelete: CASCADE)
 }
 

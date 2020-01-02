@@ -59,13 +59,14 @@ model Job {
   dateIssued    DateTime     @default(now()) @map("date_issued")
   customer      Customer
   assignments   Assignment[]
-  needsFollowUp Boolean      @default(false) @map("needs_follow_up")
+  needsFollowUp Boolean?     @map("needs_follow_up")
 }
 
 model Assignment {
   @@map("assignment")
   id             String    @default(cuid()) @id
   address        String
+  eta            Boolean   @default(false)
   preferTime     DateTime? @map("prefer_time")
   checkIn        DateTime? @map("check_in")
   checkOut       DateTime? @map("check_out")
