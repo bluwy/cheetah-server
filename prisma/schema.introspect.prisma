@@ -52,7 +52,6 @@ model customer {
   phone_number    String?
   staff_primary   staff    @relation("customer_staff_primaryTostaff")
   staff_secondary staff?   @relation("customer_staff_secondaryTostaff")
-  temporary       Boolean  @default(false)
   jobs            job[]    @relation(references: [customer])
 }
 

@@ -46,7 +46,6 @@ model Customer {
   addresses      String[]
   phoneNumber    String?  @map("phone_number")
   companyBelong  Company  @map("company_belong")
-  temporary      Boolean  @default(false)
   active         Boolean  @default(true)
   staffPrimary   Staff    @relation("customer_staff_primaryTostaff") @map("staff_primary")
   staffSecondary Staff?   @relation("customer_staff_secondaryTostaff") @map("staff_secondary")

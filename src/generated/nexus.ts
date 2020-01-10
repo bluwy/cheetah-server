@@ -162,7 +162,6 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     name?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     phoneNumber?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
-    temporary?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
   }
   CustomerUpdateInput: { // input type
     active?: boolean | null; // Boolean
@@ -190,7 +189,6 @@ export interface NexusGenInputs {
     phoneNumber?: NexusGenInputs['NullableStringFilter'] | null; // NullableStringFilter
     staffPrimary?: NexusGenInputs['StaffWhereInput'] | null; // StaffWhereInput
     staffSecondary?: NexusGenInputs['StaffWhereInput'] | null; // StaffWhereInput
-    temporary?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
   }
   CustomerWhereUniqueInput: { // input type
     code?: string | null; // String
@@ -397,7 +395,6 @@ export interface NexusGenRootTypes {
     id: string; // ID!
     name: string; // String!
     phoneNumber?: string | null; // String
-    temporary: boolean; // Boolean!
   }
   Job: { // root type
     code: string; // String!
@@ -535,7 +532,6 @@ export interface NexusGenFieldTypes {
     phoneNumber: string | null; // String
     staffPrimary: NexusGenRootTypes['Staff']; // Staff!
     staffSecondary: NexusGenRootTypes['Staff'] | null; // Staff
-    temporary: boolean; // Boolean!
   }
   Job: { // field return type
     assignments: NexusGenRootTypes['Assignment'][]; // [Assignment!]!

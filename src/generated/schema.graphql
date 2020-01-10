@@ -199,7 +199,6 @@ type Customer {
   phoneNumber: String
   staffPrimary: Staff!
   staffSecondary: Staff
-  temporary: Boolean!
 }
 
 input CustomerCreateInput {
@@ -228,7 +227,6 @@ input CustomerOrderByInput {
   id: OrderByArg
   name: OrderByArg
   phoneNumber: OrderByArg
-  temporary: OrderByArg
 }
 
 input CustomerUpdateInput {
@@ -258,7 +256,6 @@ input CustomerWhereInput {
   phoneNumber: NullableStringFilter
   staffPrimary: StaffWhereInput
   staffSecondary: StaffWhereInput
-  temporary: BooleanFilter
 }
 
 input CustomerWhereUniqueInput {
