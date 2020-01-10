@@ -211,7 +211,6 @@ input CustomerCreateInput {
   phoneNumber: String
   staffPrimary: StaffWhereUniqueInput!
   staffSecondary: StaffWhereUniqueInput
-  temporary: Boolean
 }
 
 input CustomerFilter {
@@ -239,7 +238,6 @@ input CustomerUpdateInput {
   phoneNumber: String
   staffPrimary: StaffWhereUniqueInput
   staffSecondary: StaffWhereUniqueInput
-  temporary: Boolean
 }
 
 input CustomerWhereInput {

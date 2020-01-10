@@ -148,7 +148,6 @@ export interface NexusGenInputs {
     phoneNumber?: string | null; // String
     staffPrimary: NexusGenInputs['StaffWhereUniqueInput']; // StaffWhereUniqueInput!
     staffSecondary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
-    temporary?: boolean | null; // Boolean
   }
   CustomerFilter: { // input type
     every?: NexusGenInputs['CustomerWhereInput'] | null; // CustomerWhereInput
@@ -173,7 +172,6 @@ export interface NexusGenInputs {
     phoneNumber?: string | null; // String
     staffPrimary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
     staffSecondary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
-    temporary?: boolean | null; // Boolean
   }
   CustomerWhereInput: { // input type
     active?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter

@@ -35,7 +35,6 @@ export const Mutation = extendType({
             addresses: data.addresses != null ? { set: data.addresses } : undefined,
             phoneNumber: data.phoneNumber,
             companyBelong: { connect: data.companyBelong },
-            temporary: user.isAdminBasic() ? true : data.temporary,
             active: data.active,
             staffPrimary: { connect: data.staffPrimary },
             staffSecondary: { connect: data.staffSecondary }
@@ -64,7 +63,6 @@ export const Mutation = extendType({
             addresses: data.addresses != null ? { set: data.addresses } : undefined,
             phoneNumber: data.phoneNumber,
             companyBelong: { connect: data.companyBelong },
-            temporary: user.isAdminBasic() ? undefined : data.temporary,
             active: data.active,
             staffPrimary: { connect: data.staffPrimary },
             staffSecondary: { connect: data.staffSecondary }
@@ -93,7 +91,6 @@ export const Customer = objectType({
     t.model.addresses()
     t.model.phoneNumber()
     t.model.companyBelong()
-    t.model.temporary()
     t.model.active()
     t.model.staffPrimary()
     t.model.staffSecondary()
@@ -109,7 +106,6 @@ export const CustomerCreateInput = inputObjectType({
     t.list.string('addresses')
     t.string('phoneNumber')
     t.field('companyBelong', { type: 'CompanyWhereUniqueInput', required: true })
-    t.boolean('temporary')
     t.boolean('active')
     t.field('staffPrimary', { type: 'StaffWhereUniqueInput', required: true })
     t.field('staffSecondary', { type: 'StaffWhereUniqueInput' })
@@ -125,7 +121,6 @@ export const CustomerUpdateInput = inputObjectType({
     t.list.string('addresses')
     t.string('phoneNumber')
     t.field('companyBelong', { type: 'CompanyWhereUniqueInput' })
-    t.boolean('temporary')
     t.boolean('active')
     t.field('staffPrimary', { type: 'StaffWhereUniqueInput' })
     t.field('staffSecondary', { type: 'StaffWhereUniqueInput' })
