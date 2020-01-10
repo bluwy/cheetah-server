@@ -132,7 +132,6 @@ input AssignmentWhereInput {
   AND: [AssignmentWhereInput!]
   checkIn: NullableDateTimeFilter
   checkOut: NullableDateTimeFilter
-  eta: BooleanFilter
   expired: BooleanFilter
   id: StringFilter
   job: JobWhereInput
@@ -441,6 +440,7 @@ type StaffLoginResponse {
 }
 
 input StaffOrderByInput {
+  active: OrderByArg
   fullName: OrderByArg
   hash: OrderByArg
   id: OrderByArg
@@ -458,6 +458,7 @@ type StaffVerifyTokenResponse {
 }
 
 input StaffWhereInput {
+  active: BooleanFilter
   AND: [StaffWhereInput!]
   assignmentPrimaries: CustomerFilter
   assignmentSecondaries: CustomerFilter

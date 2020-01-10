@@ -21,6 +21,7 @@ model Staff {
   username              String       @unique
   fullName              String       @map("full_name")
   hash                  String
+  active                Boolean      @default(true)
   passwordForgotten     Boolean      @default(false) @map("password_forgotten")
   customerPrimaries     Assignment[] @relation("assignment_staff_primaryTostaff") @map("assignments_assignment_staff_primaryTostaff")
   customerSecondaries   Assignment[] @relation("assignment_staff_secondaryTostaff") @map("assignments_assignment_staff_secondaryTostaff")
@@ -66,7 +67,6 @@ model Assignment {
   @@map("assignment")
   id             String    @default(cuid()) @id
   address        String
-  eta            Boolean   @default(false)
   preferTime     DateTime? @map("prefer_time")
   checkIn        DateTime? @map("check_in")
   checkOut       DateTime? @map("check_out")

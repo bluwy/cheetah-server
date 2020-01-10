@@ -24,7 +24,6 @@ model assignment {
   address         String
   check_in        DateTime?
   check_out       DateTime?
-  eta             Boolean   @default(false)
   expired         Boolean   @default(false)
   id              String    @id
   job             job
@@ -73,6 +72,7 @@ model pgmigrations {
 }
 
 model staff {
+  active                                        Boolean      @default(true)
   full_name                                     String
   hash                                          String
   id                                            String       @id

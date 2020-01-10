@@ -96,7 +96,6 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['AssignmentWhereInput'][] | null; // [AssignmentWhereInput!]
     checkIn?: NexusGenInputs['NullableDateTimeFilter'] | null; // NullableDateTimeFilter
     checkOut?: NexusGenInputs['NullableDateTimeFilter'] | null; // NullableDateTimeFilter
-    eta?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
     expired?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     job?: NexusGenInputs['JobWhereInput'] | null; // JobWhereInput
@@ -282,6 +281,7 @@ export interface NexusGenInputs {
     username: string; // String!
   }
   StaffOrderByInput: { // input type
+    active?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     fullName?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     hash?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     id?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
@@ -293,6 +293,7 @@ export interface NexusGenInputs {
     username?: string | null; // String
   }
   StaffWhereInput: { // input type
+    active?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
     AND?: NexusGenInputs['StaffWhereInput'][] | null; // [StaffWhereInput!]
     assignmentPrimaries?: NexusGenInputs['CustomerFilter'] | null; // CustomerFilter
     assignmentSecondaries?: NexusGenInputs['CustomerFilter'] | null; // CustomerFilter
