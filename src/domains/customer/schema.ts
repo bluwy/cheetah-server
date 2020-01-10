@@ -5,8 +5,20 @@ export const Query = extendType({
   type: 'Query',
   definition (t) {
     t.int('customerCount', {
-      async resolve (_, __, { photon }) {
-        return photon.customers.count()
+      args: {
+        where: arg({ type: 'CustomerWhereInput' })
+      },
+      async resolve (_, { where }, { photon }) {
+        if (where != null) {
+          const result = await photon.customers.findMany({
+            where,
+            select: { id: true }
+          })
+
+          return result.length
+        } else {
+          return photon.customers.count()
+        }
       }
     })
     t.crud.customer()

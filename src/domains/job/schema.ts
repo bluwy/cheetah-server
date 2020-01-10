@@ -6,8 +6,20 @@ export const Query = extendType({
   type: 'Query',
   definition (t) {
     t.int('jobCount', {
-      async resolve (_, __, { photon }) {
-        return photon.jobs.count()
+      args: {
+        where: arg({ type: 'JobWhereInput' })
+      },
+      async resolve (_, { where }, { photon }) {
+        if (where != null) {
+          const result = await photon.jobs.findMany({
+            where,
+            select: { id: true }
+          })
+
+          return result.length
+        } else {
+          return photon.jobs.count()
+        }
       }
     })
     t.crud.job()

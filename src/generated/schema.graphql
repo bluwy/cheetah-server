@@ -402,10 +402,10 @@ type Query {
   companies(orderBy: CompanyOrderByInput, where: CompanyWhereInput): [Company!]!
   company(where: CompanyWhereUniqueInput!): Company
   customer(where: CustomerWhereUniqueInput!): Customer
-  customerCount: Int!
+  customerCount(where: CustomerWhereInput): Int!
   customers(after: ID, before: ID, first: Int, last: Int, orderBy: CustomerOrderByInput, skip: Int, where: CustomerWhereInput): [Customer!]!
   job(where: JobWhereUniqueInput!): Job
-  jobCount: Int!
+  jobCount(where: JobWhereInput): Int!
   jobs(after: ID, before: ID, first: Int, last: Int, orderBy: JobOrderByInput, skip: Int, where: JobWhereInput): [Job!]!
   staff(where: StaffWhereUniqueInput!): Staff
   staffs(orderBy: StaffOrderByInput, where: StaffWhereInput): [Staff!]!

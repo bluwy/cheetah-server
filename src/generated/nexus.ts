@@ -761,6 +761,9 @@ export interface NexusGenArgTypes {
     customer: { // args
       where: NexusGenInputs['CustomerWhereUniqueInput']; // CustomerWhereUniqueInput!
     }
+    customerCount: { // args
+      where?: NexusGenInputs['CustomerWhereInput'] | null; // CustomerWhereInput
+    }
     customers: { // args
       after?: string | null; // ID
       before?: string | null; // ID
@@ -772,6 +775,9 @@ export interface NexusGenArgTypes {
     }
     job: { // args
       where: NexusGenInputs['JobWhereUniqueInput']; // JobWhereUniqueInput!
+    }
+    jobCount: { // args
+      where?: NexusGenInputs['JobWhereInput'] | null; // JobWhereInput
     }
     jobs: { // args
       after?: string | null; // ID
