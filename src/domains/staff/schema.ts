@@ -135,6 +135,7 @@ export const Staff = objectType({
     t.model.username()
     t.model.fullName()
     t.model.passwordForgotten()
+    t.model.active()
   }
 })
 
@@ -167,5 +168,6 @@ export const StaffUpdateInput = inputObjectType({
   definition (t) {
     t.string('username')
     t.string('fullName')
+    t.boolean('active')
   }
 })

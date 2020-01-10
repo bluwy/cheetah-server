@@ -70,7 +70,6 @@ export interface NexusGenInputs {
   }
   AssignmentCreateInput: { // input type
     address: string; // String!
-    eta?: boolean | null; // Boolean
     preferTime?: any | null; // DateTime
     staffPrimary: NexusGenInputs['StaffWhereUniqueInput']; // StaffWhereUniqueInput!
     staffSecondary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
@@ -85,7 +84,6 @@ export interface NexusGenInputs {
     address?: string | null; // String
     checkIn?: any | null; // DateTime
     checkOut?: any | null; // DateTime
-    eta?: boolean | null; // Boolean
     preferTime?: any | null; // DateTime
     staffPrimary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
     staffSecondary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
@@ -212,7 +210,6 @@ export interface NexusGenInputs {
   JobCreateInput: { // input type
     address: string; // String!
     customer: NexusGenInputs['CustomerWhereUniqueInput']; // CustomerWhereUniqueInput!
-    eta?: boolean | null; // Boolean
     preferTime?: any | null; // DateTime
     staffPrimary: NexusGenInputs['StaffWhereUniqueInput']; // StaffWhereUniqueInput!
     staffSecondary?: NexusGenInputs['StaffWhereUniqueInput'] | null; // StaffWhereUniqueInput
@@ -289,6 +286,7 @@ export interface NexusGenInputs {
     username?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
   }
   StaffUpdateInput: { // input type
+    active?: boolean | null; // Boolean
     fullName?: string | null; // String
     username?: string | null; // String
   }
@@ -410,6 +408,7 @@ export interface NexusGenRootTypes {
   Mutation: {};
   Query: {};
   Staff: { // root type
+    active: boolean; // Boolean!
     fullName: string; // String!
     id: string; // ID!
     passwordForgotten: boolean; // Boolean!
@@ -595,6 +594,7 @@ export interface NexusGenFieldTypes {
     verifyStaffToken: NexusGenRootTypes['StaffVerifyTokenResponse'] | null; // StaffVerifyTokenResponse
   }
   Staff: { // field return type
+    active: boolean; // Boolean!
     fullName: string; // String!
     id: string; // ID!
     passwordForgotten: boolean; // Boolean!

@@ -103,7 +103,6 @@ type Assignment {
 
 input AssignmentCreateInput {
   address: String!
-  eta: Boolean
   preferTime: DateTime
   staffPrimary: StaffWhereUniqueInput!
   staffSecondary: StaffWhereUniqueInput
@@ -120,7 +119,6 @@ input AssignmentUpdateInput {
   address: String
   checkIn: DateTime
   checkOut: DateTime
-  eta: Boolean
   preferTime: DateTime
   staffPrimary: StaffWhereUniqueInput
   staffSecondary: StaffWhereUniqueInput
@@ -294,7 +292,6 @@ type Job {
 input JobCreateInput {
   address: String!
   customer: CustomerWhereUniqueInput!
-  eta: Boolean
   preferTime: DateTime
   staffPrimary: StaffWhereUniqueInput!
   staffSecondary: StaffWhereUniqueInput
@@ -422,6 +419,7 @@ type Query {
 }
 
 type Staff {
+  active: Boolean!
   fullName: String!
   id: ID!
   passwordForgotten: Boolean!
@@ -449,6 +447,7 @@ input StaffOrderByInput {
 }
 
 input StaffUpdateInput {
+  active: Boolean
   fullName: String
   username: String
 }
