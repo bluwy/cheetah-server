@@ -7,6 +7,6 @@ module.exports = {
   migrations: {
     tableName: 'knex_migrations',
     extension: 'ts',
-    stub: 'migrations/stub.ts'
+    stub: 'migrations/migration.stub'
   }
 }
