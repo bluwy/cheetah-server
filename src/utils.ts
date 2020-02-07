@@ -2,46 +2,48 @@ import Objection = require('objection')
 
 /**
  * Resolves a where input by appending `andWhere` with the parsed input.
- * I'm not sure how to do fluent chaining.
+ * Use with knex `modify` to hook this resolver. The function will do
+ * nothing if input is null to support fluent chaining
  *
  * @example
- * const query = Model.query()
- * resolveWhereInput(query)
- * const result = await query
+ * await Model.query().modify(resolveWhereInput, input)
  */
 export function resolveWhereInput(
   builder: Objection.QueryBuilder<any>,
-  input: Record<string, any>,
+  input?: Record<string, any>,
   alias?: string
 ) {
-  builder.andWhere(resolveWhereInputFn(input, alias))
+  if (input != null) {
+    builder.andWhere(resolveWhereInputFn(input, alias))
+  }
 }
 
 /**
  * Resolves an order by input by appending `orderBy` with the parse input.
- * I'm not sure how to do fluent chaining.
+ * Use with knex `modify` to hook this resolver. The function will do
+ * nothing if input is null to support fluent chaining
  *
  * @example
- * const query = Model.query()
- * resolveOrderByInput(query)
- * const result = await query
+ * await Model.query().modify(resolveOrderByInput, input)
  */
 export function resolveOrderByInput(
   builder: Objection.QueryBuilder<any>,
-  input: Record<string, any>,
+  input?: Record<string, any>,
   alias?: string
 ) {
-  Object.entries(input).forEach(([k, v]) => {
-    const key = alias != null ? `${alias}.${k}` : k
+  if (input != null) {
+    Object.entries(input).forEach(([k, v]) => {
+      const key = alias != null ? `${alias}.${k}` : k
 
-    if (typeof v === 'object') {
-      // A nested order
-      builder.leftJoinRelated(k)
-      resolveOrderByInput(builder, v, k)
-    } else {
-      builder.orderBy(key, v)
-    }
-  })
+      if (typeof v === 'object') {
+        // A nested order
+        builder.leftJoinRelated(k)
+        resolveOrderByInput(builder, v, k)
+      } else {
+        builder.orderBy(key, v)
+      }
+    })
+  }
 }
 
 /** Resolves the where input by returning a function for usage in knex's where function */
