@@ -4,20 +4,93 @@
  */
 
 import * as ctx from '../context'
+import { core } from 'nexus'
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    date<FieldName extends string>(
+      fieldName: FieldName,
+      opts?: core.ScalarInputFieldConfig<
+        core.GetGen3<'inputTypes', TypeName, FieldName>
+      >
+    ): void // "DateTime";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    date<FieldName extends string>(
+      fieldName: FieldName,
+      ...opts: core.ScalarOutSpread<TypeName, FieldName>
+    ): void // "DateTime";
+  }
+}
 
 declare global {
   interface NexusGen extends NexusGenTypes {}
 }
 
 export interface NexusGenInputs {
+  BooleanFilter: {
+    // input type
+    equals?: boolean | null // Boolean
+    not?: boolean | null // Boolean
+  }
   CompanyCreateInput: {
     // input type
     alias: string // String!
     name: string // String!
   }
+  DateTimeFilter: {
+    // input type
+    equals?: any | null // DateTime
+    gt?: any | null // DateTime
+    gte?: any | null // DateTime
+    in?: any[] | null // [DateTime!]
+    lt?: any | null // DateTime
+    lte?: any | null // DateTime
+    not?: any | null // DateTime
+    notIn?: any[] | null // [DateTime!]
+  }
+  FloatFilter: {
+    // input type
+    equals?: number | null // Float
+    gt?: number | null // Float
+    gte?: number | null // Float
+    in?: number[] | null // [Float!]
+    lt?: number | null // Float
+    lte?: number | null // Float
+    not?: number | null // Float
+    notIn?: number[] | null // [Float!]
+  }
+  IntFilter: {
+    // input type
+    equals?: number | null // Int
+    gt?: number | null // Int
+    gte?: number | null // Int
+    in?: number[] | null // [Int!]
+    lt?: number | null // Int
+    lte?: number | null // Int
+    not?: number | null // Int
+    notIn?: number[] | null // [Int!]
+  }
+  StringFilter: {
+    // input type
+    contains?: string | null // String
+    endsWith?: string | null // String
+    equals?: string | null // String
+    gt?: string | null // String
+    gte?: string | null // String
+    in?: string[] | null // [String!]
+    lt?: string | null // String
+    lte?: string | null // String
+    not?: string | null // String
+    notIn?: string[] | null // [String!]
+    startsWith?: string | null // String
+  }
 }
 
-export interface NexusGenEnums {}
+export interface NexusGenEnums {
+  OrderByArg: 'ASC' | 'DESC'
+}
 
 export interface NexusGenRootTypes {
   Company: {
@@ -33,10 +106,17 @@ export interface NexusGenRootTypes {
   Float: number
   Boolean: boolean
   ID: string
+  DateTime: any
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  BooleanFilter: NexusGenInputs['BooleanFilter']
   CompanyCreateInput: NexusGenInputs['CompanyCreateInput']
+  DateTimeFilter: NexusGenInputs['DateTimeFilter']
+  FloatFilter: NexusGenInputs['FloatFilter']
+  IntFilter: NexusGenInputs['IntFilter']
+  StringFilter: NexusGenInputs['StringFilter']
+  OrderByArg: NexusGenEnums['OrderByArg']
 }
 
 export interface NexusGenFieldTypes {
@@ -83,13 +163,25 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = 'Company' | 'Mutation' | 'Query'
 
-export type NexusGenInputNames = 'CompanyCreateInput'
+export type NexusGenInputNames =
+  | 'BooleanFilter'
+  | 'CompanyCreateInput'
+  | 'DateTimeFilter'
+  | 'FloatFilter'
+  | 'IntFilter'
+  | 'StringFilter'
 
-export type NexusGenEnumNames = never
+export type NexusGenEnumNames = 'OrderByArg'
 
 export type NexusGenInterfaceNames = never
 
-export type NexusGenScalarNames = 'Boolean' | 'Float' | 'ID' | 'Int' | 'String'
+export type NexusGenScalarNames =
+  | 'Boolean'
+  | 'DateTime'
+  | 'Float'
+  | 'ID'
+  | 'Int'
+  | 'String'
 
 export type NexusGenUnionNames = never
 
