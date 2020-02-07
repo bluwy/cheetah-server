@@ -39,6 +39,19 @@ export interface NexusGenInputs {
     alias: string // String!
     name: string // String!
   }
+  CompanyOrderByInput: {
+    // input type
+    alias?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    name?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+  }
+  CompanyWhereInput: {
+    // input type
+    alias?: NexusGenInputs['StringFilter'] | null // StringFilter
+    AND?: NexusGenInputs['CompanyWhereInput'][] | null // [CompanyWhereInput!]
+    name?: NexusGenInputs['StringFilter'] | null // StringFilter
+    NOT?: NexusGenInputs['CompanyWhereInput'][] | null // [CompanyWhereInput!]
+    OR?: NexusGenInputs['CompanyWhereInput'][] | null // [CompanyWhereInput!]
+  }
   DateTimeFilter: {
     // input type
     equals?: any | null // DateTime
@@ -112,6 +125,8 @@ export interface NexusGenRootTypes {
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   BooleanFilter: NexusGenInputs['BooleanFilter']
   CompanyCreateInput: NexusGenInputs['CompanyCreateInput']
+  CompanyOrderByInput: NexusGenInputs['CompanyOrderByInput']
+  CompanyWhereInput: NexusGenInputs['CompanyWhereInput']
   DateTimeFilter: NexusGenInputs['DateTimeFilter']
   FloatFilter: NexusGenInputs['FloatFilter']
   IntFilter: NexusGenInputs['IntFilter']
@@ -150,6 +165,13 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    companies: {
+      // args
+      first?: number | null // Int
+      orderBy?: NexusGenInputs['CompanyOrderByInput'] | null // CompanyOrderByInput
+      skip?: number | null // Int
+      where?: NexusGenInputs['CompanyWhereInput'] | null // CompanyWhereInput
+    }
     company: {
       // args
       id: string // ID!
@@ -166,6 +188,8 @@ export type NexusGenObjectNames = 'Company' | 'Mutation' | 'Query'
 export type NexusGenInputNames =
   | 'BooleanFilter'
   | 'CompanyCreateInput'
+  | 'CompanyOrderByInput'
+  | 'CompanyWhereInput'
   | 'DateTimeFilter'
   | 'FloatFilter'
   | 'IntFilter'
