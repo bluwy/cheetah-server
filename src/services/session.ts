@@ -1,4 +1,4 @@
-import { AuthenticationError } from 'apollo-server'
+import { CookieOptions, Request, Response } from 'express'
 import Redis from 'ioredis'
 import nanoid from 'nanoid'
 
@@ -23,70 +23,104 @@ import nanoid from 'nanoid'
 // - NOTE: The session token is of format: <user-id>:<session-id>. This is so
 //   clients only need to maintain one token for authentication.
 
-// Redis setup
+// Redis setup (Single client only since JS and Redis are both single-threaded)
 const redis = new Redis(process.env.REDIS_URL)
 
-// Everytime a session is active, renew it only between each interval in ms
-const renewSessionInterval = 1 * 60 * 60 * 1000 // 1 day
+export class SessionService {
+  readonly userIdCookie = 'connect.userid'
+  readonly sessionIdCookie = 'connect.sessionid'
+  readonly userIdKeyPrefix = 'user:'
 
-// Session time-to-live in ms
-const sessionTTL = 7 * 24 * 60 * 60 * 1000 // 7 days
+  // Everytime a session is active, renew it only between each interval in ms
+  readonly renewSessionInterval = 1 * 60 * 60 * 1000 // 1 day
+  // Session time-to-live in ms
+  readonly sessionTTL = 7 * 24 * 60 * 60 * 1000 // 7 days
 
-/** Utils to encode and decode a session token */
-export class SessionToken {
-  private static readonly separator = ':'
+  constructor(private req: Request, private res: Response) {}
 
-  static encode(userId: string, sessionId: string) {
-    return userId + this.separator + sessionId
-  }
-
-  static decode(sessionToken: string) {
-    const separatorIndex = sessionToken.indexOf(this.separator)
-    const userId = sessionToken.substring(0, separatorIndex)
-    const sessionId = sessionToken.substring(separatorIndex)
-
-    if (!userId || !sessionId) {
-      throw new AuthenticationError('Invalid session token')
+  /** Creates a session in Redis and add required cookies for authentication */
+  async createSession(userId: string): Promise<void> {
+    const sessionId = await this.redisCreateSession(userId)
+    const cookieOptions: CookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict'
     }
 
-    return { userId, sessionId }
+    this.res
+      .cookie(this.userIdCookie, userId, cookieOptions)
+      .cookie(this.sessionIdCookie, sessionId, cookieOptions)
   }
-}
 
-/** Saves a user session in Redis, returns the session token  */
-export async function createSession(userId: string): Promise<string> {
-  const key = 'user:' + userId
-  const sessionId = nanoid()
-  const score = getSessionExpirationDate()
+  /** Reads the cookie and check validity of cookie in Redis */
+  async checkSession(): Promise<boolean> {
+    const userId: string | undefined = this.req.cookies[this.userIdCookie]
+    const sessionId: string | undefined = this.req.cookies[this.sessionIdCookie]
 
-  // Adds the session id with expiration date
-  // NX: No update, only add
-  await redis.zadd(key, 'NX', `${score}`, sessionId)
+    if (!userId || !sessionId) {
+      return false
+    }
 
-  return SessionToken.encode(userId, sessionId)
-}
+    const expire = await this.redisGetSessionExpire(userId, sessionId)
 
-/** Checks session exist for session token, returns undefined if none found */
-export async function sessionExists(sessionToken: string): Promise<boolean> {
-  const { userId, sessionId } = SessionToken.decode(sessionToken)
-  const key = 'user:' + userId
+    // If has expiration date (exist) and eligible to renew session
+    if (expire && Date.now() - expire > this.renewSessionInterval) {
+      this.req.cookies()
+      await this.redisResetSessionExpire(userId, sessionId)
+    }
 
-  // Remove expired sessions for key
-  await redis.zremrangebyscore(key, '-inf', Date.now())
+    return !!expire
+  }
 
-  const expirationDate = +(await redis.zscore(key, sessionId))
+  /** Saves a user session in Redis, returns the session id  */
+  private async redisCreateSession(userId: string): Promise<string> {
+    const key = this.getUserIdKey(userId)
+    const sessionId = nanoid()
+    const score = this.getSessionExpire()
 
-  // If has expiration date (exist) and eligible to renew session
-  if (expirationDate && Date.now() - expirationDate > renewSessionInterval) {
-    const newScore = getSessionExpirationDate()
+    // Adds the session id with expiration date
+    // NX: No update, only add
+    await redis.zadd(key, 'NX', `${score}`, sessionId)
+
+    return sessionId
+  }
+
+  /**
+   * Gets session expiration date in ms for user id and session id,
+   * returns undefined if none found
+   */
+  private async redisGetSessionExpire(
+    userId: string,
+    sessionId: string
+  ): Promise<number> {
+    const key = this.getUserIdKey(userId)
+
+    // Remove expired sessions for key
+    await redis.zremrangebyscore(key, '-inf', Date.now())
+
+    const expire = +(await redis.zscore(key, sessionId))
+
+    return expire
+  }
+
+  /** Resets the session expiration date */
+  private async redisResetSessionExpire(
+    userId: string,
+    sessionId: string
+  ): Promise<void> {
+    const key = this.getUserIdKey(userId)
+    const newScore = this.getSessionExpire()
+
     // Updates the session id with new expiration date
     // XX: Only update, no add
     await redis.zadd(key, 'XX', `${newScore}`, sessionId)
   }
 
-  return !!expirationDate
-}
+  private getUserIdKey(userId: string) {
+    return this.userIdKeyPrefix + userId
+  }
 
-function getSessionExpirationDate() {
-  return Date.now() + sessionTTL
+  private getSessionExpire() {
+    return Date.now() + this.sessionTTL
+  }
 }
