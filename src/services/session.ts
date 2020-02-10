@@ -1,6 +1,6 @@
 import { CookieOptions, Request, Response } from 'express'
-import Redis from 'ioredis'
 import nanoid from 'nanoid'
+import { redis } from './redis'
 
 // How this Redis session db works?
 //
@@ -22,9 +22,6 @@ import nanoid from 'nanoid'
 //
 // - NOTE: The session token is of format: <user-id>:<session-id>. This is so
 //   clients only need to maintain one token for authentication.
-
-// Redis setup (Single client only since JS and Redis are both single-threaded)
-const redis = new Redis(process.env.REDIS_URL)
 
 export class SessionService {
   readonly userIdCookie = 'connect.userid'
