@@ -65,7 +65,6 @@ export class SessionService {
 
     // If has expiration date (exist) and eligible to renew session
     if (expire && Date.now() - expire > this.renewSessionInterval) {
-      this.req.cookies()
       await this.redisResetSessionExpire(userId, sessionId)
     }
 
