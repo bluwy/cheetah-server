@@ -1,122 +1,201 @@
-import { CookieOptions, Request, Response } from 'express'
+import { Request, Response, CookieOptions } from 'express'
 import nanoid from 'nanoid'
 import { redis } from './redis'
+import { getEnvVar } from '../utils/common'
 
-// How this Redis session db works?
-//
-// - Structure: Key to value => "user:<user-id>" to sorted set.
-//
-// - Sorted set is of session ids with score of expiration dates.
-//
-// - Whenever we login, we create a new session by creating a session id with
-//   its expiration date and add into the user's sorted set.
-//
-// - Whenever a request is sent, we validate it by checking if session id is in
-//   the user's sorted set.
-//
-// - Before querying its existence, we remove all the expired sessions.
-//
-// - After querying and if true, we also check if we want to renew it, based on
-//   the `renewSessionInterval` so active users don't need to re-login everytime
-//   the session expires.
-//
-// - NOTE: The session token is of format: <user-id>:<session-id>. This is so
-//   clients only need to maintain one token for authentication.
+export const sessionSecret = getEnvVar('SESSION_SECRET')
+export const sessionCookieName = getEnvVar('SESSION_COOKIE_NAME')
+export const expireKeyPrefix = getEnvVar('SESSION_EXPIRE_KEY_PREFIX')
+export const sessionKeyPrefix = getEnvVar('SESSION_SESSION_KEY_PREFIX')
+
+// Everytime a session is active, renew it only between each interval in ms
+export const renewSessionInterval = +getEnvVar('SESSION_RENEW_INTERVAL')
+
+// Session max age in ms
+export const sessionMaxAge = +getEnvVar('SESSION_MAX_AGE')
+
+// For Redis TTL
+const sessionTTL = sessionMaxAge / 1000
+
+const isProd = process.env.NODE_ENV === 'production'
+
+export const sessionCookieOptions: CookieOptions = {
+  maxAge: sessionMaxAge,
+  signed: true,
+  httpOnly: isProd,
+  secure: isProd,
+  sameSite: isProd ? 'strict' : 'none'
+}
+
+export type SessionType = 'STAFF' | 'ADMIN_BASIC' | 'ADMIN_FULL'
+
+export interface SessionData {
+  // General data
+  iat: number
+  userId: string
+  // Custom data
+  type: SessionType
+}
 
 export class SessionService {
-  readonly userIdCookie = 'connect.userid'
-  readonly sessionIdCookie = 'connect.sessionid'
-  readonly userIdKeyPrefix = 'user:'
+  session?: SessionData
 
-  // Everytime a session is active, renew it only between each interval in ms
-  readonly renewSessionInterval = 1 * 60 * 60 * 1000 // 1 day
-  // Session time-to-live in ms
-  readonly sessionTTL = 7 * 24 * 60 * 60 * 1000 // 7 days
+  private constructor(private req: Request, private res: Response) {}
 
-  constructor(private req: Request, private res: Response) {}
+  static async build(req: Request, res: Response): Promise<SessionService> {
+    const instance = new SessionService(req, res)
 
-  /** Creates a session in Redis and add required cookies for authentication */
-  async createSession(userId: string): Promise<void> {
-    const sessionId = await this.redisCreateSession(userId)
-    const cookieOptions: CookieOptions = {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict'
-    }
+    instance.initSession()
 
-    this.res
-      .cookie(this.userIdCookie, userId, cookieOptions)
-      .cookie(this.sessionIdCookie, sessionId, cookieOptions)
-  }
-
-  /** Reads the cookie and check validity of cookie in Redis */
-  async checkSession(): Promise<boolean> {
-    const userId: string | undefined = this.req.cookies[this.userIdCookie]
-    const sessionId: string | undefined = this.req.cookies[this.sessionIdCookie]
-
-    if (!userId || !sessionId) {
-      return false
-    }
-
-    const expire = await this.redisGetSessionExpire(userId, sessionId)
-
-    // If has expiration date (exist) and eligible to renew session
-    if (expire && Date.now() - expire > this.renewSessionInterval) {
-      await this.redisResetSessionExpire(userId, sessionId)
-    }
-
-    return !!expire
-  }
-
-  /** Saves a user session in Redis, returns the session id  */
-  private async redisCreateSession(userId: string): Promise<string> {
-    const key = this.getUserIdKey(userId)
-    const sessionId = nanoid()
-    const score = this.getSessionExpire()
-
-    // Adds the session id with expiration date
-    // NX: No update, only add
-    await redis.zadd(key, 'NX', `${score}`, sessionId)
-
-    return sessionId
+    return instance
   }
 
   /**
-   * Gets session expiration date in ms for user id and session id,
-   * returns undefined if none found
+   * Creates a session in Redis and add required cookies for authentication.
+   * Only creates if there's no session in the request.
    */
-  private async redisGetSessionExpire(
-    userId: string,
-    sessionId: string
-  ): Promise<number> {
-    const key = this.getUserIdKey(userId)
+  async login(data: PartialBy<SessionData, 'iat'>): Promise<void> {
+    if (this.session != null) {
+      throw new Error('Cannot login because session already exists')
+    }
 
-    // Remove expired sessions for key
-    await redis.zremrangebyscore(key, '-inf', Date.now())
+    const sessionId = nanoid()
+    const newData = { ...data, iat: Date.now() }
 
-    const expire = +(await redis.zscore(key, sessionId))
+    await this.redisSetSession(sessionId, newData)
 
-    return expire
+    this.setSessionCookie(sessionId)
   }
 
-  /** Resets the session expiration date */
-  private async redisResetSessionExpire(
-    userId: string,
+  /** Deletes session in Redis and deletes session cookie */
+  async logout(sessionId: string): Promise<void> {
+    if (this.session == null) {
+      throw new Error('Cannot create new session because one already exists')
+    }
+
+    await this.redisDeleteSession(sessionId)
+    this.deleteSessionCookie(sessionId)
+  }
+
+  /**
+   * Only prepares user session expire. This should be called per user sign up.
+   * Otherwise, session will throw error if user not registered.
+   * This prevents potential tampering that causes random user creation.
+   * */
+  async signup(userId: string): Promise<void> {
+    await this.redisResetUserExpire(userId)
+  }
+
+  /** Initializes the session property */
+  private async initSession(): Promise<void> {
+    const sessionId = this.req.signedCookies[sessionCookieName]
+    const sessionData = sessionId && (await this.redisGetSession(sessionId))
+    const userExpire =
+      sessionData && (await this.redisGetUserExpire(sessionData.userId))
+
+    if (sessionId == null || sessionData == null || userExpire == null) {
+      return
+    }
+
+    // If issue date less than user min expire time
+    if (sessionData.iat < userExpire) {
+      return
+    }
+
+    // If has expiration date (exist) and eligible to renew session
+    if (Date.now() - sessionData.iat > renewSessionInterval) {
+      // Set new max age
+      const newData = { ...sessionData, maxAge: sessionMaxAge }
+
+      await this.redisSetSession(sessionId, newData)
+
+      // Re-set session cookie, consequently re-setting new max age
+      this.setSessionCookie(sessionId)
+    }
+  }
+
+  //#region Redis
+
+  private async redisGetSession(
     sessionId: string
+  ): Promise<SessionData | undefined> {
+    const key = this.getSessionKey(sessionId)
+
+    const result = await redis.get(key)
+
+    if (result != null) {
+      return JSON.parse(result) as SessionData
+    }
+
+    return undefined
+  }
+
+  private async redisSetSession(
+    sessionId: string,
+    data: SessionData
   ): Promise<void> {
-    const key = this.getUserIdKey(userId)
-    const newScore = this.getSessionExpire()
+    const key = this.getSessionKey(sessionId)
+    const value = JSON.stringify(data)
 
-    // Updates the session id with new expiration date
-    // XX: Only update, no add
-    await redis.zadd(key, 'XX', `${newScore}`, sessionId)
+    await redis.setex(key, sessionTTL, value)
   }
 
-  private getUserIdKey(userId: string) {
-    return this.userIdKeyPrefix + userId
+  private async redisDeleteSession(sessionId: string): Promise<void> {
+    const key = this.getSessionKey(sessionId)
+
+    await redis.del(key)
   }
 
-  private getSessionExpire() {
-    return Date.now() + this.sessionTTL
+  private async redisGetUserExpire(userId: string): Promise<number> {
+    const key = this.getExpireKey(userId)
+    const expire = await redis.get(key)
+
+    // If user has no expire key, throw error
+    // Expire should be set on new user
+    if (expire == null) {
+      throw new Error('No expire key for user with id: ' + userId)
+    }
+
+    return +expire
   }
+
+  private async redisResetUserExpire(userId: string): Promise<void> {
+    const key = this.getExpireKey(userId)
+
+    await redis.set(key, Date.now())
+  }
+
+  //#endregion
+
+  //#region Cookies
+
+  // Triggered by login and init renewal
+  private setSessionCookie(sessionId: string) {
+    this.res.cookie(sessionCookieName, sessionId, sessionCookieOptions)
+  }
+
+  // Triggered by logout
+  private deleteSessionCookie(sessionId: string) {
+    const cookieOptions = { ...sessionCookieOptions }
+    cookieOptions.maxAge = undefined
+    cookieOptions.expires = new Date(0)
+
+    // Clear incase set by init renewal
+    this.res.clearCookie(sessionCookieName)
+    this.res.cookie(sessionCookieName, sessionId, cookieOptions)
+  }
+
+  //#endregion
+
+  //#region Utilities
+
+  private getExpireKey(userId: string) {
+    return expireKeyPrefix + userId
+  }
+
+  private getSessionKey(sessionId: string) {
+    return sessionKeyPrefix + sessionId
+  }
+
+  //#endregion
 }

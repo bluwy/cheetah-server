@@ -1,12 +1,14 @@
 import { hash, verify } from 'argon2'
 import nanoid from 'nanoid'
 import { redis } from './redis'
+import { getEnvVar } from '../utils/common'
+
+export const resetTokenKeyPrefix = getEnvVar('RESET_TOKEN_KEY_PREFIX')
+
+// Reset token time-to-live in seconds
+export const resetTokenTTL = +getEnvVar('RESET_TOKEN_TTL')
 
 export class PasswordService {
-  readonly resetTokenKeyPrefix = 'reset:'
-  // Reset token time-to-live in seconds
-  readonly resetTokenTTL = 1 * 60 * 60 // 1 hour
-
   /** Hashes the password using Argon2i */
   async hashPassword(password: string): Promise<string> {
     return hash(password)
@@ -22,7 +24,7 @@ export class PasswordService {
     const resetToken = nanoid()
     const key = this.getResetTokenKey(resetToken)
 
-    await redis.setex(key, this.resetTokenTTL, userId)
+    await redis.setex(key, resetTokenTTL, userId)
 
     return resetToken
   }
@@ -42,6 +44,6 @@ export class PasswordService {
   }
 
   private getResetTokenKey(resetToken: string) {
-    return this.resetTokenKeyPrefix + resetToken
+    return resetTokenKeyPrefix + resetToken
   }
 }

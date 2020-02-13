@@ -1,10 +1,11 @@
 import { send, setApiKey } from '@sendgrid/mail'
+import { getEnvVar } from '../utils/common'
 
-const fromAddress = process.env.MAIL_FROM_ADDRESS ?? 'bjorn@bjornlu.com'
-const toAddress = process.env.MAIL_TO_ADDRESS ?? fromAddress
+const sendgridApiKey = getEnvVar('SENDGRID_API_KEY')
+const fromAddress = getEnvVar('EMAIL_FROM_ADDRESS')
+const toAddress = getEnvVar('EMAIL_TO_ADDRESS')
 
-// Setup SendGrid API key
-setApiKey(process.env.SENDGRID_API_KEY ?? '')
+setApiKey(sendgridApiKey)
 
 export class MailService {
   async sendResetPasswordEmail(username: string, resetLink: string) {
