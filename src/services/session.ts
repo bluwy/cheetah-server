@@ -3,7 +3,7 @@ import nanoid from 'nanoid'
 import { redis } from './redis'
 import { getEnvVar } from '../utils/common'
 
-export const sessionSecret = getEnvVar('SESSION_SECRET')
+export const sessionIdLength = +getEnvVar('SESSION_ID_LENGTH')
 export const sessionCookieName = getEnvVar('SESSION_COOKIE_NAME')
 export const expireKeyPrefix = getEnvVar('SESSION_EXPIRE_KEY_PREFIX')
 export const sessionKeyPrefix = getEnvVar('SESSION_SESSION_KEY_PREFIX')
@@ -21,7 +21,6 @@ const isProd = process.env.NODE_ENV === 'production'
 
 export const sessionCookieOptions: CookieOptions = {
   maxAge: sessionMaxAge,
-  signed: true,
   httpOnly: isProd,
   secure: isProd,
   sameSite: isProd ? 'strict' : 'none'
@@ -59,7 +58,7 @@ export class SessionService {
       throw new Error('Cannot login because session already exists')
     }
 
-    const sessionId = nanoid()
+    const sessionId = nanoid(sessionIdLength)
     const newData = { ...data, iat: Date.now() }
 
     await this.redisSetSession(sessionId, newData)
@@ -88,7 +87,7 @@ export class SessionService {
 
   /** Initializes the session property */
   private async initSession(): Promise<void> {
-    const sessionId = this.req.signedCookies[sessionCookieName]
+    const sessionId = this.req.cookies[sessionCookieName]
     const sessionData = sessionId && (await this.redisGetSession(sessionId))
     const userExpire =
       sessionData && (await this.redisGetUserExpire(sessionData.userId))
