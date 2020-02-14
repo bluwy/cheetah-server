@@ -29,6 +29,36 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AdminCreateInput: {
+    // input type
+    password: string // String!
+    privilege: NexusGenEnums['AdminPrivilege'] // AdminPrivilege!
+    username: string // String!
+  }
+  AdminOrderByInput: {
+    // input type
+    privilege?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    username?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+  }
+  AdminPrivilegeFilter: {
+    // input type
+    equals?: NexusGenEnums['AdminPrivilege'] | null // AdminPrivilege
+    in?: NexusGenEnums['AdminPrivilege'][] | null // [AdminPrivilege!]
+    not?: NexusGenEnums['AdminPrivilege'] | null // AdminPrivilege
+    notIn?: NexusGenEnums['AdminPrivilege'][] | null // [AdminPrivilege!]
+  }
+  AdminUpdateInput: {
+    // input type
+    username?: string | null // String
+  }
+  AdminWhereInput: {
+    // input type
+    AND?: NexusGenInputs['AdminWhereInput'][] | null // [AdminWhereInput!]
+    NOT?: NexusGenInputs['AdminWhereInput'][] | null // [AdminWhereInput!]
+    OR?: NexusGenInputs['AdminWhereInput'][] | null // [AdminWhereInput!]
+    privilege?: NexusGenInputs['AdminPrivilegeFilter'] | null // AdminPrivilegeFilter
+    username?: NexusGenInputs['StringFilter'] | null // StringFilter
+  }
   BooleanFilter: {
     // input type
     equals?: boolean | null // Boolean
@@ -102,10 +132,17 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  AdminPrivilege: 'BASIC' | 'FULL'
   OrderByArg: 'ASC' | 'DESC'
 }
 
 export interface NexusGenRootTypes {
+  Admin: {
+    // root type
+    id: string // ID!
+    privilege: NexusGenEnums['AdminPrivilege'] // AdminPrivilege!
+    username: string // String!
+  }
   Company: {
     // root type
     alias: string // String!
@@ -125,6 +162,11 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  AdminCreateInput: NexusGenInputs['AdminCreateInput']
+  AdminOrderByInput: NexusGenInputs['AdminOrderByInput']
+  AdminPrivilegeFilter: NexusGenInputs['AdminPrivilegeFilter']
+  AdminUpdateInput: NexusGenInputs['AdminUpdateInput']
+  AdminWhereInput: NexusGenInputs['AdminWhereInput']
   BooleanFilter: NexusGenInputs['BooleanFilter']
   CompanyCreateInput: NexusGenInputs['CompanyCreateInput']
   CompanyOrderByInput: NexusGenInputs['CompanyOrderByInput']
@@ -133,10 +175,17 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   FloatFilter: NexusGenInputs['FloatFilter']
   IntFilter: NexusGenInputs['IntFilter']
   StringFilter: NexusGenInputs['StringFilter']
+  AdminPrivilege: NexusGenEnums['AdminPrivilege']
   OrderByArg: NexusGenEnums['OrderByArg']
 }
 
 export interface NexusGenFieldTypes {
+  Admin: {
+    // field return type
+    id: string // ID!
+    privilege: NexusGenEnums['AdminPrivilege'] // AdminPrivilege!
+    username: string // String!
+  }
   Company: {
     // field return type
     alias: string // String!
@@ -147,28 +196,81 @@ export interface NexusGenFieldTypes {
   }
   Mutation: {
     // field return type
+    createAdmin: NexusGenRootTypes['Admin'] // Admin!
     createCompany: NexusGenRootTypes['Company'] // Company!
+    deleteAdmin: boolean // Boolean!
     deleteCompany: boolean // Boolean!
+    loginAdmin: boolean // Boolean!
+    logoutAdmin: boolean // Boolean!
+    resetAdminPassword: boolean // Boolean!
+    sendAdminResetPasswordEmail: boolean // Boolean!
+    updateAdmin: NexusGenRootTypes['Admin'] // Admin!
+    updateAdminPassword: boolean // Boolean!
   }
   Query: {
     // field return type
+    admin: NexusGenRootTypes['Admin'] // Admin!
+    admins: NexusGenRootTypes['Admin'][] // [Admin!]!
     companies: NexusGenRootTypes['Company'][] // [Company!]!
     company: NexusGenRootTypes['Company'] // Company!
+    thisAdmin: NexusGenRootTypes['Admin'] // Admin!
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createAdmin: {
+      // args
+      data: NexusGenInputs['AdminCreateInput'] // AdminCreateInput!
+    }
     createCompany: {
       // args
       data: NexusGenInputs['CompanyCreateInput'] // CompanyCreateInput!
+    }
+    deleteAdmin: {
+      // args
+      id: string // ID!
     }
     deleteCompany: {
       // args
       id: string // ID!
     }
+    loginAdmin: {
+      // args
+      password: string // String!
+      username: string // String!
+    }
+    resetAdminPassword: {
+      // args
+      newPassword: string // String!
+      resetToken: string // String!
+    }
+    sendAdminResetPasswordEmail: {
+      // args
+      username: string // String!
+    }
+    updateAdmin: {
+      // args
+      data: NexusGenInputs['AdminUpdateInput'] // AdminUpdateInput!
+    }
+    updateAdminPassword: {
+      // args
+      newPassword: string // String!
+      oldPassword: string // String!
+    }
   }
   Query: {
+    admin: {
+      // args
+      id: string // ID!
+    }
+    admins: {
+      // args
+      first?: number | null // Int
+      orderBy?: NexusGenInputs['AdminOrderByInput'] | null // AdminOrderByInput
+      skip?: number | null // Int
+      where?: NexusGenInputs['AdminWhereInput'] | null // AdminWhereInput
+    }
     companies: {
       // args
       first?: number | null // Int
@@ -187,9 +289,14 @@ export interface NexusGenAbstractResolveReturnTypes {}
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = 'Company' | 'Mutation' | 'Query'
+export type NexusGenObjectNames = 'Admin' | 'Company' | 'Mutation' | 'Query'
 
 export type NexusGenInputNames =
+  | 'AdminCreateInput'
+  | 'AdminOrderByInput'
+  | 'AdminPrivilegeFilter'
+  | 'AdminUpdateInput'
+  | 'AdminWhereInput'
   | 'BooleanFilter'
   | 'CompanyCreateInput'
   | 'CompanyOrderByInput'
@@ -199,7 +306,7 @@ export type NexusGenInputNames =
   | 'IntFilter'
   | 'StringFilter'
 
-export type NexusGenEnumNames = 'OrderByArg'
+export type NexusGenEnumNames = 'AdminPrivilege' | 'OrderByArg'
 
 export type NexusGenInterfaceNames = never
 
