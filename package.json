@@ -24,7 +24,8 @@
     "nanoid": "^2.1.11",
     "nexus": "^0.12.0-rc.9",
     "objection": "^2.1.2",
-    "pg": "^7.18.1"
+    "pg": "^7.18.1",
+    "uuid": "^3.4.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
@@ -33,6 +34,7 @@
     "@types/ioredis": "^4.14.7",
     "@types/nanoid": "^2.1.0",
     "@types/node": "^13.7.0",
+    "@types/uuid": "^3.4.7",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
     "dotenv": "^8.2.0",
