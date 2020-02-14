@@ -109,8 +109,10 @@ export interface NexusGenRootTypes {
   Company: {
     // root type
     alias: string // String!
+    createdAt: any // DateTime!
     id: string // ID!
     name: string // String!
+    updatedAt: any // DateTime!
   }
   Mutation: {}
   Query: {}
@@ -138,8 +140,10 @@ export interface NexusGenFieldTypes {
   Company: {
     // field return type
     alias: string // String!
+    createdAt: any // DateTime!
     id: string // ID!
     name: string // String!
+    updatedAt: any // DateTime!
   }
   Mutation: {
     // field return type

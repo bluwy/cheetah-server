@@ -1,4 +1,4 @@
-import Objection = require('objection')
+import Objection from 'objection'
 
 /**
  * Resolves a where input by appending `andWhere` with the parsed input.
@@ -159,7 +159,6 @@ function resolveFilterFn(key: string, filter: Record<string, any>) {
 function resolveWhereAndFn(andInput: Record<string, any>[], alias?: string) {
   return (builder: Objection.QueryBuilder<any>) => {
     andInput.forEach(input => {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       builder.andWhere(resolveWhereInputFn(input, alias))
     })
   }
@@ -178,7 +177,7 @@ function resolveWhereOrFn(andInput: Record<string, any>[], alias?: string) {
 function resolveWhereNotFn(andInput: Record<string, any>[], alias?: string) {
   return (builder: Objection.QueryBuilder<any>) => {
     andInput.forEach(input => {
-      builder.andWhereNot(resolveWhereInputFn(input, alias))
+      builder.whereNot(resolveWhereInputFn(input, alias))
     })
   }
 }

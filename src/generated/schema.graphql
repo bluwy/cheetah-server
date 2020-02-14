@@ -8,8 +8,10 @@ input BooleanFilter {
 
 type Company {
   alias: String!
+  createdAt: DateTime!
   id: ID!
   name: String!
+  updatedAt: DateTime!
 }
 
 input CompanyCreateInput {

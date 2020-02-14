@@ -1,7 +1,7 @@
-import { JSONSchema, Model } from 'objection'
+import { JSONSchema } from 'objection'
+import { BaseModel } from './BaseModel'
 
-export class Company extends Model {
-  id!: string
+export class Company extends BaseModel {
   name!: string
   alias!: string
 
@@ -11,7 +11,6 @@ export class Company extends Model {
     type: 'object',
     required: ['name', 'alias'],
     properties: {
-      id: { type: 'integer' },
       name: { type: 'string' },
       alias: { type: 'string' }
     }

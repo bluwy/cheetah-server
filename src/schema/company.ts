@@ -8,7 +8,8 @@ import {
   queryField
 } from 'nexus'
 import { Company } from '../models/Company'
-import { resolveOrderByInput, resolveWhereInput } from '../utils'
+import { addBaseModelFields } from '../utils/nexus'
+import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const company = queryField('company', {
   type: 'Company',
@@ -59,17 +60,16 @@ export const deleteCompany = mutationField('deleteCompany', {
     id: idArg({ required: true })
   },
   async resolve(_, { id }) {
-    // Returns delete count
-    const result = await Company.query().deleteById(id)
-    // True if have deletes
-    return result > 0
+    const deleteCount = await Company.query().deleteById(id)
+
+    return deleteCount > 0
   }
 })
 
 export const CompanyObject = objectType({
   name: 'Company',
   definition(t) {
-    t.id('id')
+    addBaseModelFields(t)
     t.string('name')
     t.string('alias')
   }
