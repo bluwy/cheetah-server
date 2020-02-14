@@ -1,4 +1,5 @@
-import { Request, Response, CookieOptions } from 'express'
+import { ForbiddenError } from 'apollo-server-express'
+import { CookieOptions, Request, Response } from 'express'
 import nanoid from 'nanoid'
 import { redis } from './redis'
 import { getEnvVar } from '../utils/common'
@@ -28,16 +29,24 @@ export const sessionCookieOptions: CookieOptions = {
 
 export type SessionType = 'STAFF' | 'ADMIN_BASIC' | 'ADMIN_FULL'
 
-export interface SessionData {
-  // General data
-  iat: number
+export interface BaseSessionData {
   userId: string
-  // Custom data
+  iat: number
+}
+
+export interface CustomSessionData {
   type: SessionType
 }
 
+export type SessionData = BaseSessionData & CustomSessionData
+
+export interface Session {
+  id: string
+  data: SessionData
+}
+
 export class SessionService {
-  session?: SessionData
+  private session?: Session
 
   private constructor(private req: Request, private res: Response) {}
 
@@ -49,31 +58,9 @@ export class SessionService {
     return instance
   }
 
-  /**
-   * Creates a session in Redis and add required cookies for authentication.
-   * Only creates if there's no session in the request.
-   */
-  async login(data: PartialBy<SessionData, 'iat'>): Promise<void> {
-    if (this.session != null) {
-      throw new Error('Cannot login because session already exists')
-    }
-
-    const sessionId = nanoid(sessionIdLength)
-    const newData = { ...data, iat: Date.now() }
-
-    await this.redisSetSession(sessionId, newData)
-
-    this.setSessionCookie(sessionId)
-  }
-
-  /** Deletes session in Redis and deletes session cookie */
-  async logout(sessionId: string): Promise<void> {
-    if (this.session == null) {
-      throw new Error('Cannot create new session because one already exists')
-    }
-
-    await this.redisDeleteSession(sessionId)
-    this.deleteSessionCookie(sessionId)
+  /** Gets the current session. DO NOT modify this. */
+  getSession(): Session | undefined {
+    return this.session
   }
 
   /**
@@ -85,7 +72,39 @@ export class SessionService {
     await this.redisResetUserExpire(userId)
   }
 
-  /** Initializes the session property */
+  /**
+   * Creates a session in Redis and add required cookies for authentication.
+   * Only creates if there's no session in the request.
+   */
+  async login(data: PartialBy<SessionData, 'iat'>): Promise<void> {
+    if (this.session != null) {
+      throw new ForbiddenError('Cannot login because session already exists')
+    }
+
+    const sessionId = nanoid(sessionIdLength)
+    const newData = { ...data, iat: Date.now() }
+
+    await this.redisSetSession(sessionId, newData)
+
+    this.setSessionCookie(sessionId)
+  }
+
+  /** Deletes session in Redis and deletes session cookie */
+  async logout(): Promise<void> {
+    if (this.session == null) {
+      throw new ForbiddenError('Cannot logout because there is no session')
+    }
+
+    await this.redisDeleteSession(this.session.id)
+    this.deleteSessionCookie(this.session.id)
+  }
+
+  /** Logs user out of all sessions */
+  async logoutAll(userId: string): Promise<void> {
+    await this.redisResetUserExpire(userId)
+  }
+
+  /** Gets the current session, run only on init */
   private async initSession(): Promise<void> {
     const sessionId = this.req.cookies[sessionCookieName]
     const sessionData = sessionId && (await this.redisGetSession(sessionId))
@@ -101,7 +120,7 @@ export class SessionService {
       return
     }
 
-    // If has expiration date (exist) and eligible to renew session
+    // Renew session check
     if (Date.now() - sessionData.iat > renewSessionInterval) {
       // Set new max age
       const newData = { ...sessionData, maxAge: sessionMaxAge }
@@ -110,6 +129,13 @@ export class SessionService {
 
       // Re-set session cookie, consequently re-setting new max age
       this.setSessionCookie(sessionId)
+    }
+
+    // Set session here. Nowhere else should modify this
+    // (Caveat of non-async constructor)
+    this.session = {
+      id: sessionId,
+      data: sessionData
     }
   }
 
