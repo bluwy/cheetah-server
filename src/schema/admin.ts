@@ -28,6 +28,7 @@ export const admin = queryField('admin', {
   }
 })
 
+// Use session id
 export const thisAdmin = queryField('thisAdmin', {
   type: 'Admin',
   async resolve(_, __, { sessionService }) {
@@ -77,9 +78,13 @@ export const createAdmin = mutationField('createAdmin', {
       required: true
     })
   },
-  async resolve(_, { data }, { sessionService }) {
+  async resolve(_, { data }, { passwordService, sessionService }) {
+    const { password, ...rest } = data
+    const hash = await passwordService.hashPassword(password)
+    const newData = { ...rest, hash }
+
     const admin = await Admin.query()
-      .insert(data)
+      .insert(newData)
       .returning('*')
 
     await sessionService.signup(admin.id)
@@ -114,7 +119,11 @@ export const deleteAdmin = mutationField('deleteAdmin', {
   async resolve(_, { id }) {
     const deleteCount = await Admin.query().deleteById(id)
 
-    return deleteCount > 0
+    if (deleteCount <= 0) {
+      throw new UserInputError('Admin not found with id: ' + id)
+    }
+
+    return true
   }
 })
 
@@ -166,42 +175,46 @@ export const resetAdminPassword = mutationField('resetAdminPassword', {
   }
 })
 
-export const updateAdminPassword = mutationField('updateAdminPassword', {
-  type: 'Boolean',
-  args: {
-    oldPassword: stringArg({ required: true }),
-    newPassword: stringArg({ required: true })
-  },
-  async resolve(
-    _,
-    { oldPassword, newPassword },
-    { passwordService, sessionService }
-  ) {
-    const sessionData = sessionService.getSession()?.data
+// Use session id
+export const updateThisAdminPassword = mutationField(
+  'updateThisAdminPassword',
+  {
+    type: 'Boolean',
+    args: {
+      oldPassword: stringArg({ required: true }),
+      newPassword: stringArg({ required: true })
+    },
+    async resolve(
+      _,
+      { oldPassword, newPassword },
+      { passwordService, sessionService }
+    ) {
+      const sessionData = sessionService.getSession()?.data
 
-    if (sessionData == null) {
-      throw new AuthenticationError('Not authenticated')
+      if (sessionData == null) {
+        throw new AuthenticationError('Not authenticated')
+      }
+
+      const admin = await Admin.query()
+        .findById(sessionData.userId)
+        .select('hash')
+
+      if (admin == null) {
+        throw new Error('Admin not found with id: ' + sessionData.userId)
+      }
+
+      if (await passwordService.verifyPassword(admin.hash, oldPassword)) {
+        const newHash = await passwordService.hashPassword(newPassword)
+
+        await Admin.query().update({ hash: newHash })
+
+        return true
+      }
+
+      throw new AuthenticationError('Invalid password')
     }
-
-    const admin = await Admin.query()
-      .findById(sessionData.userId)
-      .select('hash')
-
-    if (admin == null) {
-      throw new Error('Admin not found with id: ' + sessionData.userId)
-    }
-
-    if (await passwordService.verifyPassword(admin.hash, oldPassword)) {
-      const newHash = await passwordService.hashPassword(newPassword)
-
-      await Admin.query().update({ hash: newHash })
-
-      return true
-    }
-
-    throw new AuthenticationError('Invalid password')
   }
-})
+)
 
 export const loginAdmin = mutationField('loginAdmin', {
   type: 'Boolean',

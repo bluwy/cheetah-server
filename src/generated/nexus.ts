@@ -205,7 +205,7 @@ export interface NexusGenFieldTypes {
     resetAdminPassword: boolean // Boolean!
     sendAdminResetPasswordEmail: boolean // Boolean!
     updateAdmin: NexusGenRootTypes['Admin'] // Admin!
-    updateAdminPassword: boolean // Boolean!
+    updateThisAdminPassword: boolean // Boolean!
   }
   Query: {
     // field return type
@@ -253,7 +253,7 @@ export interface NexusGenArgTypes {
       // args
       data: NexusGenInputs['AdminUpdateInput'] // AdminUpdateInput!
     }
-    updateAdminPassword: {
+    updateThisAdminPassword: {
       // args
       newPassword: string // String!
       oldPassword: string // String!

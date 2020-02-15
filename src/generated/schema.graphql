@@ -123,7 +123,7 @@ type Mutation {
   resetAdminPassword(newPassword: String!, resetToken: String!): Boolean!
   sendAdminResetPasswordEmail(username: String!): Boolean!
   updateAdmin(data: AdminUpdateInput!): Admin!
-  updateAdminPassword(newPassword: String!, oldPassword: String!): Boolean!
+  updateThisAdminPassword(newPassword: String!, oldPassword: String!): Boolean!
 }
 
 enum OrderByArg {
