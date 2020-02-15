@@ -2,8 +2,10 @@
 ### Do not make changes to this file directly
 
 type Admin {
+  createdAt: DateTime!
   id: ID!
   privilege: AdminPrivilege!
+  updatedAt: DateTime!
   username: String!
 }
 
@@ -116,11 +118,17 @@ input IntFilter {
 type Mutation {
   createAdmin(data: AdminCreateInput!): Admin!
   createCompany(data: CompanyCreateInput!): Company!
+  createStaff(data: StaffCreateInput!): Staff!
   deleteAdmin(id: ID): Boolean!
   deleteCompany(id: ID!): Boolean!
+  deleteStaff(id: ID): Boolean!
+  linkStaffDeviceId(deviceId: String!): Boolean!
   loginAdmin(password: String!, username: String!): Boolean!
+  loginStaff(deviceId: String!): Boolean!
   logoutAdmin: Boolean!
+  logoutStaff: Boolean!
   resetAdminPassword(newPassword: String!, resetToken: String!): Boolean!
+  resetStaffDeviceId(id: ID!): Boolean!
   sendAdminResetPasswordEmail(username: String!): Boolean!
   updateAdmin(data: AdminUpdateInput!, id: ID): Admin!
   updateAdminPassword(
@@ -128,6 +136,7 @@ type Mutation {
     newPassword: String!
     oldPassword: String!
   ): Boolean!
+  updateStaff(data: StaffUpdateInput!, id: ID): Staff!
 }
 
 enum OrderByArg {
@@ -150,6 +159,49 @@ type Query {
     where: CompanyWhereInput
   ): [Company!]!
   company(id: ID!): Company!
+  staff(id: ID): Staff!
+  staffs(
+    first: Int
+    orderBy: StaffOrderByInput
+    skip: Int
+    where: StaffWhereInput
+  ): [Staff!]!
+}
+
+type Staff {
+  active: Boolean!
+  createdAt: DateTime!
+  fullName: String!
+  id: ID!
+  linked: Boolean!
+  updatedAt: DateTime!
+  username: String!
+}
+
+input StaffCreateInput {
+  fullName: String!
+  username: String!
+}
+
+input StaffOrderByInput {
+  active: OrderByArg
+  fullName: OrderByArg
+  username: OrderByArg
+}
+
+input StaffUpdateInput {
+  active: Boolean
+  fullName: String
+  username: String
+}
+
+input StaffWhereInput {
+  active: BooleanFilter
+  AND: [StaffWhereInput!]
+  fullName: StringFilter
+  NOT: [StaffWhereInput!]
+  OR: [StaffWhereInput!]
+  username: StringFilter
 }
 
 input StringFilter {

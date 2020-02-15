@@ -185,7 +185,7 @@ export class SessionService {
     // If user has no expire key, throw error
     // Expire should be set on new user
     if (expire == null) {
-      throw new Error('No expire key for user with id: ' + userId)
+      throw new Error(`No expire key for user with id: ${userId}`)
     }
 
     return +expire

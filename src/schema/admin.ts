@@ -11,7 +11,12 @@ import {
   stringArg
 } from 'nexus'
 import { Admin, adminPrivileges } from '../models/Admin'
-import { enumFilter, filterInputNonNullable, modelTyping } from '../utils/nexus'
+import {
+  addBaseModelFields,
+  enumFilter,
+  filterInputNonNullable,
+  modelTyping
+} from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const admin = queryField('admin', {
@@ -106,7 +111,7 @@ export const deleteAdmin = mutationField('deleteAdmin', {
     const deleteCount = await Admin.query().deleteById(adminId)
 
     if (deleteCount <= 0) {
-      throw new UserInputError('Admin not found with id: ' + id)
+      throw new UserInputError(`Admin not found with id: ${adminId}`)
     }
 
     return true
@@ -183,7 +188,7 @@ export const updateAdminPassword = mutationField('updateAdminPassword', {
       .select('hash')
 
     if (admin == null) {
-      throw new Error('Admin not found with id: ' + adminId)
+      throw new UserInputError(`Admin not found with id: ${adminId}`)
     }
 
     if (await passwordService.verifyPassword(admin.hash, oldPassword)) {
@@ -216,18 +221,18 @@ export const loginAdmin = mutationField('loginAdmin', {
       .first()
 
     if (
-      admin != null &&
-      (await passwordService.verifyPassword(admin.hash, password))
+      admin == null ||
+      !(await passwordService.verifyPassword(admin.hash, password))
     ) {
-      await sessionService.login({
-        userId: admin.id,
-        type: admin.privilege === 'FULL' ? 'ADMIN_FULL' : 'ADMIN_BASIC'
-      })
-
-      return true
+      throw new AuthenticationError('Invalid username or password')
     }
 
-    throw new AuthenticationError('Invalid username or password')
+    await sessionService.login({
+      userId: admin.id,
+      type: admin.privilege === 'FULL' ? 'ADMIN_FULL' : 'ADMIN_BASIC'
+    })
+
+    return true
   }
 })
 
@@ -244,7 +249,7 @@ export const AdminType = objectType({
   name: 'Admin',
   rootTyping: modelTyping(Admin),
   definition(t) {
-    t.id('id')
+    addBaseModelFields(t)
     t.string('username')
     t.field('privilege', { type: 'AdminPrivilege' })
   }
