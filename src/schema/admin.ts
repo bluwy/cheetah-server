@@ -11,7 +11,7 @@ import {
   stringArg
 } from 'nexus'
 import { Admin, adminPrivileges } from '../models/Admin'
-import { enumFilter, filterInputNonNullable } from '../utils/nexus'
+import { enumFilter, filterInputNonNullable, modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const admin = queryField('admin', {
@@ -240,8 +240,9 @@ export const logoutAdmin = mutationField('logoutAdmin', {
   }
 })
 
-export const AdminObject = objectType({
+export const AdminType = objectType({
   name: 'Admin',
+  rootTyping: modelTyping(Admin),
   definition(t) {
     t.id('id')
     t.string('username')

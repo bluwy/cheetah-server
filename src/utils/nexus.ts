@@ -1,5 +1,7 @@
+import path from 'path'
 import { inputObjectType } from 'nexus'
-import { ObjectDefinitionBlock } from 'nexus/dist/core'
+import { ObjectDefinitionBlock, RootTypingImport } from 'nexus/dist/core'
+import { Model } from 'objection'
 
 /** Add basic `id`, `createdAt` and `updatedAt` */
 export function addBaseModelFields(t: ObjectDefinitionBlock<any>) {
@@ -34,4 +36,23 @@ export function filterInputNonNullable<T>(
   })
 
   return input
+}
+
+/**
+ * Generate root typing for a model for a nexus object
+ *
+ * @example
+ * objectType({
+ *   name: 'SomeModel',
+ *   rootTyping: modelTyping(SomeModel)
+ * })
+ */
+export function modelTyping(
+  model: typeof Model,
+  fileName?: string
+): RootTypingImport {
+  return {
+    path: path.join(__dirname, `../models/${fileName ?? model.name}`),
+    name: model.name
+  }
 }

@@ -18,6 +18,9 @@ export const schema = makeSchema({
         alias: 'ctx',
         source: path.join(__dirname, 'context.ts')
       }
-    ]
+    ],
+    backingTypeMap: {
+      DateTime: 'Date'
+    }
   }
 })

@@ -4,6 +4,7 @@
  */
 
 import * as ctx from '../context'
+import { Admin } from '../models/Admin'
 import { core } from 'nexus'
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
@@ -84,14 +85,14 @@ export interface NexusGenInputs {
   }
   DateTimeFilter: {
     // input type
-    equals?: any | null // DateTime
-    gt?: any | null // DateTime
-    gte?: any | null // DateTime
-    in?: any[] | null // [DateTime!]
-    lt?: any | null // DateTime
-    lte?: any | null // DateTime
-    not?: any | null // DateTime
-    notIn?: any[] | null // [DateTime!]
+    equals?: Date | null // DateTime
+    gt?: Date | null // DateTime
+    gte?: Date | null // DateTime
+    in?: Date[] | null // [DateTime!]
+    lt?: Date | null // DateTime
+    lte?: Date | null // DateTime
+    not?: Date | null // DateTime
+    notIn?: Date[] | null // [DateTime!]
   }
   FloatFilter: {
     // input type
@@ -137,19 +138,14 @@ export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
-  Admin: {
-    // root type
-    id: string // ID!
-    privilege: NexusGenEnums['AdminPrivilege'] // AdminPrivilege!
-    username: string // String!
-  }
+  Admin: Admin
   Company: {
     // root type
     alias: string // String!
-    createdAt: any // DateTime!
+    createdAt: Date // DateTime!
     id: string // ID!
     name: string // String!
-    updatedAt: any // DateTime!
+    updatedAt: Date // DateTime!
   }
   Mutation: {}
   Query: {}
@@ -158,7 +154,7 @@ export interface NexusGenRootTypes {
   Float: number
   Boolean: boolean
   ID: string
-  DateTime: any
+  DateTime: Date
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
@@ -189,10 +185,10 @@ export interface NexusGenFieldTypes {
   Company: {
     // field return type
     alias: string // String!
-    createdAt: any // DateTime!
+    createdAt: Date // DateTime!
     id: string // ID!
     name: string // String!
-    updatedAt: any // DateTime!
+    updatedAt: Date // DateTime!
   }
   Mutation: {
     // field return type
