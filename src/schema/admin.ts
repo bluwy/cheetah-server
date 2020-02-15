@@ -1,8 +1,4 @@
-import {
-  AuthenticationError,
-  ForbiddenError,
-  UserInputError
-} from 'apollo-server-express'
+import { AuthenticationError, UserInputError } from 'apollo-server-express'
 import {
   arg,
   enumType,
@@ -21,31 +17,13 @@ import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 export const admin = queryField('admin', {
   type: 'Admin',
   args: {
-    id: idArg({ required: true })
+    id: idArg()
   },
-  async resolve(_, { id }) {
-    return Admin.query().findById(id)
-  }
-})
+  async resolve(_, { id }, { sessionService }) {
+    const adminId =
+      id != null ? id : sessionService.getSession(true).data.userId
 
-// Use session id
-export const thisAdmin = queryField('thisAdmin', {
-  type: 'Admin',
-  async resolve(_, __, { sessionService }) {
-    const sessionData = sessionService.getSession()?.data
-
-    if (sessionData == null) {
-      throw new AuthenticationError('Not authenticated')
-    }
-
-    if (
-      sessionData.type === 'ADMIN_BASIC' ||
-      sessionData.type === 'ADMIN_FULL'
-    ) {
-      return Admin.query().findById(sessionData.userId)
-    }
-
-    throw new ForbiddenError('Not an admin')
+    return Admin.query().findById(adminId)
   }
 })
 
@@ -96,15 +74,20 @@ export const createAdmin = mutationField('createAdmin', {
 export const updateAdmin = mutationField('updateAdmin', {
   type: 'Admin',
   args: {
+    id: idArg(),
     data: arg({
       type: 'AdminUpdateInput',
       required: true
     })
   },
-  async resolve(_, { data }) {
+  async resolve(_, { id, data }, { sessionService }) {
+    const adminId =
+      id != null ? id : sessionService.getSession(true).data.userId
+
     data = filterInputNonNullable(data, ['username'])
 
     return Admin.query()
+      .findById(adminId)
       .update(data as any)
       .returning('*')
       .first()
@@ -114,10 +97,13 @@ export const updateAdmin = mutationField('updateAdmin', {
 export const deleteAdmin = mutationField('deleteAdmin', {
   type: 'Boolean',
   args: {
-    id: idArg({ required: true })
+    id: idArg()
   },
-  async resolve(_, { id }) {
-    const deleteCount = await Admin.query().deleteById(id)
+  async resolve(_, { id }, { sessionService }) {
+    const adminId =
+      id != null ? id : sessionService.getSession(true).data.userId
+
+    const deleteCount = await Admin.query().deleteById(adminId)
 
     if (deleteCount <= 0) {
       throw new UserInputError('Admin not found with id: ' + id)
@@ -159,14 +145,16 @@ export const resetAdminPassword = mutationField('resetAdminPassword', {
     { resetToken, newPassword },
     { passwordService, sessionService }
   ) {
-    const userId = await passwordService.checkResetToken(resetToken)
+    const adminId = await passwordService.checkResetToken(resetToken)
 
-    if (userId != null) {
+    if (adminId != null) {
       const hash = await passwordService.hashPassword(newPassword)
 
-      await Admin.query().update({ hash })
+      await Admin.query()
+        .findById(adminId)
+        .update({ hash })
 
-      await sessionService.logoutAll(userId)
+      await sessionService.logoutAll(adminId)
 
       return true
     }
@@ -175,46 +163,42 @@ export const resetAdminPassword = mutationField('resetAdminPassword', {
   }
 })
 
-// Use session id
-export const updateThisAdminPassword = mutationField(
-  'updateThisAdminPassword',
-  {
-    type: 'Boolean',
-    args: {
-      oldPassword: stringArg({ required: true }),
-      newPassword: stringArg({ required: true })
-    },
-    async resolve(
-      _,
-      { oldPassword, newPassword },
-      { passwordService, sessionService }
-    ) {
-      const sessionData = sessionService.getSession()?.data
+export const updateAdminPassword = mutationField('updateAdminPassword', {
+  type: 'Boolean',
+  args: {
+    id: idArg(),
+    oldPassword: stringArg({ required: true }),
+    newPassword: stringArg({ required: true })
+  },
+  async resolve(
+    _,
+    { id, oldPassword, newPassword },
+    { passwordService, sessionService }
+  ) {
+    const adminId =
+      id != null ? id : sessionService.getSession(true).data.userId
 
-      if (sessionData == null) {
-        throw new AuthenticationError('Not authenticated')
-      }
+    const admin = await Admin.query()
+      .findById(adminId)
+      .select('hash')
 
-      const admin = await Admin.query()
-        .findById(sessionData.userId)
-        .select('hash')
-
-      if (admin == null) {
-        throw new Error('Admin not found with id: ' + sessionData.userId)
-      }
-
-      if (await passwordService.verifyPassword(admin.hash, oldPassword)) {
-        const newHash = await passwordService.hashPassword(newPassword)
-
-        await Admin.query().update({ hash: newHash })
-
-        return true
-      }
-
-      throw new AuthenticationError('Invalid password')
+    if (admin == null) {
+      throw new Error('Admin not found with id: ' + adminId)
     }
+
+    if (await passwordService.verifyPassword(admin.hash, oldPassword)) {
+      const newHash = await passwordService.hashPassword(newPassword)
+
+      await Admin.query()
+        .findById(adminId)
+        .update({ hash: newHash })
+
+      return true
+    }
+
+    throw new AuthenticationError('Invalid password')
   }
-)
+})
 
 export const loginAdmin = mutationField('loginAdmin', {
   type: 'Boolean',

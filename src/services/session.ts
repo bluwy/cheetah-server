@@ -1,4 +1,4 @@
-import { ForbiddenError } from 'apollo-server-express'
+import { AuthenticationError, ForbiddenError } from 'apollo-server-express'
 import { CookieOptions, Request, Response } from 'express'
 import nanoid from 'nanoid'
 import { redis } from './redis'
@@ -59,7 +59,14 @@ export class SessionService {
   }
 
   /** Gets the current session. DO NOT modify this. */
-  getSession(): Session | undefined {
+  getSession(): Session | undefined
+  getSession(force: true): Session
+  getSession(force: false): Session | undefined
+  getSession(force?: boolean): Session | undefined {
+    if (force && this.session == null) {
+      throw new AuthenticationError('Session not authenticated')
+    }
+
     return this.session
   }
 

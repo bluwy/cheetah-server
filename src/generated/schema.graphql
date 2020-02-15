@@ -116,14 +116,18 @@ input IntFilter {
 type Mutation {
   createAdmin(data: AdminCreateInput!): Admin!
   createCompany(data: CompanyCreateInput!): Company!
-  deleteAdmin(id: ID!): Boolean!
+  deleteAdmin(id: ID): Boolean!
   deleteCompany(id: ID!): Boolean!
   loginAdmin(password: String!, username: String!): Boolean!
   logoutAdmin: Boolean!
   resetAdminPassword(newPassword: String!, resetToken: String!): Boolean!
   sendAdminResetPasswordEmail(username: String!): Boolean!
-  updateAdmin(data: AdminUpdateInput!): Admin!
-  updateThisAdminPassword(newPassword: String!, oldPassword: String!): Boolean!
+  updateAdmin(data: AdminUpdateInput!, id: ID): Admin!
+  updateAdminPassword(
+    id: ID
+    newPassword: String!
+    oldPassword: String!
+  ): Boolean!
 }
 
 enum OrderByArg {
@@ -132,7 +136,7 @@ enum OrderByArg {
 }
 
 type Query {
-  admin(id: ID!): Admin!
+  admin(id: ID): Admin!
   admins(
     first: Int
     orderBy: AdminOrderByInput
@@ -146,7 +150,6 @@ type Query {
     where: CompanyWhereInput
   ): [Company!]!
   company(id: ID!): Company!
-  thisAdmin: Admin!
 }
 
 input StringFilter {

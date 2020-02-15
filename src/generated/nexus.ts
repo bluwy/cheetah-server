@@ -205,7 +205,7 @@ export interface NexusGenFieldTypes {
     resetAdminPassword: boolean // Boolean!
     sendAdminResetPasswordEmail: boolean // Boolean!
     updateAdmin: NexusGenRootTypes['Admin'] // Admin!
-    updateThisAdminPassword: boolean // Boolean!
+    updateAdminPassword: boolean // Boolean!
   }
   Query: {
     // field return type
@@ -213,7 +213,6 @@ export interface NexusGenFieldTypes {
     admins: NexusGenRootTypes['Admin'][] // [Admin!]!
     companies: NexusGenRootTypes['Company'][] // [Company!]!
     company: NexusGenRootTypes['Company'] // Company!
-    thisAdmin: NexusGenRootTypes['Admin'] // Admin!
   }
 }
 
@@ -229,7 +228,7 @@ export interface NexusGenArgTypes {
     }
     deleteAdmin: {
       // args
-      id: string // ID!
+      id?: string | null // ID
     }
     deleteCompany: {
       // args
@@ -252,9 +251,11 @@ export interface NexusGenArgTypes {
     updateAdmin: {
       // args
       data: NexusGenInputs['AdminUpdateInput'] // AdminUpdateInput!
+      id?: string | null // ID
     }
-    updateThisAdminPassword: {
+    updateAdminPassword: {
       // args
+      id?: string | null // ID
       newPassword: string // String!
       oldPassword: string // String!
     }
@@ -262,7 +263,7 @@ export interface NexusGenArgTypes {
   Query: {
     admin: {
       // args
-      id: string // ID!
+      id?: string | null // ID
     }
     admins: {
       // args
