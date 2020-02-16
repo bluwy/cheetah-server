@@ -56,3 +56,27 @@ export function modelTyping(
     name: model.name
   }
 }
+
+type ObjectTransform<T extends object, K = keyof T> = {
+  from: K
+  to: string
+  value: (from: any) => any
+}
+
+export function transformObj<T extends object>(
+  obj: T,
+  transforms: ObjectTransform<T>[]
+) {
+  transforms.forEach(transform => {
+    if (obj[transform.from]) {
+      const fromValue = obj[transform.from]
+
+      obj[transform.to as keyof T] =
+        transform.value != null ? transform.value(fromValue) : fromValue
+
+      delete obj[transform.from]
+    }
+  })
+
+  return obj
+}

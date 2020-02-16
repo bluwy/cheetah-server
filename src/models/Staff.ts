@@ -15,7 +15,7 @@ export class Staff extends BaseModel {
     properties: {
       username: { type: 'string' },
       fullName: { type: 'string' },
-      deviceId: { type: 'string' },
+      deviceId: { type: ['string', 'null'] },
       active: { type: 'boolean' }
     }
   }

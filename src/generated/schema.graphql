@@ -75,6 +75,67 @@ input CompanyWhereInput {
   OR: [CompanyWhereInput!]
 }
 
+type Customer {
+  active: Boolean!
+  addresses: [String!]!
+  code: String!
+  companyBelong: Company!
+  email: String
+  name: String!
+  phoneNumber: String
+  staffPrimary: Staff!
+  staffSecondary: Staff!
+}
+
+input CustomerCreateInput {
+  active: Boolean!
+  addresses: [String!]!
+  code: String!
+  companyBelongId: ID!
+  email: String
+  name: String!
+  phoneNumber: String
+  staffPrimaryId: ID!
+  staffSecondaryId: ID!
+}
+
+input CustomerOrderByInput {
+  active: OrderByArg
+  code: OrderByArg
+  companyBelong: CompanyOrderByInput
+  email: OrderByArg
+  name: OrderByArg
+  phoneNumber: OrderByArg
+  staffPrimary: StaffOrderByInput
+  staffSecondary: StaffOrderByInput
+}
+
+input CustomerUpdateInput {
+  active: Boolean
+  addresses: [String!]
+  code: String
+  companyBelongId: ID
+  email: String
+  name: String
+  phoneNumber: String
+  staffPrimaryId: ID
+  staffSecondaryId: ID
+}
+
+input CustomerWhereInput {
+  active: BooleanFilter
+  AND: [CustomerWhereInput!]
+  code: StringFilter
+  companyBelong: CompanyWhereInput
+  email: StringFilter
+  name: StringFilter
+  NOT: [CustomerWhereInput!]
+  OR: [CustomerWhereInput!]
+  phoneNumber: StringFilter
+  staffPrimary: StaffWhereInput
+  staffSecondary: StaffWhereInput
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
@@ -118,9 +179,11 @@ input IntFilter {
 type Mutation {
   createAdmin(data: AdminCreateInput!): Admin!
   createCompany(data: CompanyCreateInput!): Company!
+  createCustomer(data: CustomerCreateInput!): Customer!
   createStaff(data: StaffCreateInput!): Staff!
   deleteAdmin(id: ID): Boolean!
   deleteCompany(id: ID!): Boolean!
+  deleteCustomer(id: ID!): Boolean!
   deleteStaff(id: ID): Boolean!
   linkStaffDeviceId(deviceId: String!): Boolean!
   loginAdmin(password: String!, username: String!): Boolean!
@@ -136,6 +199,7 @@ type Mutation {
     newPassword: String!
     oldPassword: String!
   ): Boolean!
+  updateCustomer(data: CustomerUpdateInput!, id: ID!): Customer!
   updateStaff(data: StaffUpdateInput!, id: ID): Staff!
 }
 
@@ -159,6 +223,13 @@ type Query {
     where: CompanyWhereInput
   ): [Company!]!
   company(id: ID!): Company!
+  customer(id: ID!): Customer!
+  customers(
+    first: Int
+    orderBy: CustomerOrderByInput
+    skip: Int
+    where: CustomerWhereInput
+  ): [Customer!]!
   staff(id: ID): Staff!
   staffs(
     first: Int
