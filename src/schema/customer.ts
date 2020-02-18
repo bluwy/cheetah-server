@@ -1,3 +1,4 @@
+import { UserInputError } from 'apollo-server-express'
 import {
   arg,
   idArg,
@@ -140,6 +141,10 @@ export const deleteCustomer = mutationField('deleteCustomer', {
   },
   async resolve(_, { id }) {
     const deleteCount = await Customer.query().deleteById(id)
+
+    if (deleteCount <= 0) {
+      throw new UserInputError(`Customer not found with id: ${id}`)
+    }
 
     return deleteCount > 0
   }

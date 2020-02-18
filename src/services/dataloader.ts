@@ -34,7 +34,7 @@ export class DataLoaderService {
     return loader
   }
 
-  modelRelatedLoader<T extends Model, V extends Model>(
+  modelRelatedLoader<T extends Model, V extends Model | Model[]>(
     model: typeof Model,
     relation: keyof T
   ): DataLoader<T, V> {

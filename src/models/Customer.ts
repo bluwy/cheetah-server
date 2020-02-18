@@ -19,7 +19,7 @@ export class Customer extends BaseModel {
 
   static jsonSchema: JSONSchema = {
     type: 'object',
-    required: ['remarks'],
+    required: ['code', 'name', 'active', 'addresses'],
     properties: {
       code: { type: 'string' },
       name: { type: 'string' },
