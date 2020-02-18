@@ -128,7 +128,7 @@ export const updateCustomer = mutationField('updateCustomer', {
 
     return Customer.query()
       .findById(id)
-      .update(data as any)
+      .patch(data as any)
       .returning('*')
       .first()
   }

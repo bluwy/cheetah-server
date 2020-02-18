@@ -93,7 +93,7 @@ export const updateAdmin = mutationField('updateAdmin', {
 
     return Admin.query()
       .findById(adminId)
-      .update(data as any)
+      .patch(data as any)
       .returning('*')
       .first()
   }
@@ -157,7 +157,7 @@ export const resetAdminPassword = mutationField('resetAdminPassword', {
 
       await Admin.query()
         .findById(adminId)
-        .update({ hash })
+        .patch({ hash })
 
       await sessionService.logoutAll(adminId)
 
@@ -196,7 +196,7 @@ export const updateAdminPassword = mutationField('updateAdminPassword', {
 
       await Admin.query()
         .findById(adminId)
-        .update({ hash: newHash })
+        .patch({ hash: newHash })
 
       return true
     }

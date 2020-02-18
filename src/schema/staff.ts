@@ -87,7 +87,7 @@ export const updateStaff = mutationField('updateStaff', {
 
     return Staff.query()
       .findById(staffId)
-      .update(data as any)
+      .patch(data as any)
       .returning('*')
       .first()
   }
@@ -122,7 +122,7 @@ export const linkStaffDeviceId = mutationField('linkStaffDeviceId', {
 
     const updateCount = await Staff.query()
       .findById(sessionData.userId)
-      .update({ deviceId })
+      .patch({ deviceId })
 
     if (updateCount <= 0) {
       throw new UserInputError(`Staff not found with id: ${sessionData.userId}`)
@@ -140,7 +140,7 @@ export const resetStaffDeviceId = mutationField('resetStaffDeviceId', {
   async resolve(_, { id }) {
     const updateCount = await Staff.query()
       .findById(id)
-      .update({ deviceId: null })
+      .patch({ deviceId: null })
 
     if (updateCount <= 0) {
       throw new UserInputError(`Staff not found with id: ${id}`)
