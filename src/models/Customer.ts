@@ -13,11 +13,11 @@ export class Customer extends BaseModel {
 
   companyBelongId!: string
   staffPrimaryId!: string
-  staffSecondaryId!: string
+  staffSecondaryId!: string | null
 
   companyBelong!: Company
   staffPrimary!: Staff
-  staffSecondary!: Staff
+  staffSecondary!: Staff | null
 
   static tableName = 'Customer'
 

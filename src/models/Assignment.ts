@@ -12,11 +12,11 @@ export class Assignment extends BaseModel {
   expired!: boolean
 
   staffPrimaryId!: string
-  staffSecondaryId!: string
+  staffSecondaryId!: string | null
   jobId!: string
 
   staffPrimary!: Staff
-  staffSecondary!: Staff
+  staffSecondary!: Staff | null
   tasks!: Task[]
   actions!: Action[]
 
