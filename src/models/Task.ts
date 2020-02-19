@@ -1,4 +1,3 @@
-import { JSONSchema } from 'objection'
 import { BaseModel } from './BaseModel'
 
 export const taskTypes = [
@@ -17,14 +16,4 @@ export class Task extends BaseModel {
   done!: boolean
 
   static tableName = 'Task'
-
-  static jsonSchema: JSONSchema = {
-    type: 'object',
-    required: ['type', 'remarks'],
-    properties: {
-      type: { type: 'string' },
-      remarks: { type: 'string' },
-      done: { type: 'boolean' }
-    }
-  }
 }

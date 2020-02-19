@@ -1,4 +1,4 @@
-import { JSONSchema, Model, RelationMappings } from 'objection'
+import { Model, RelationMappings } from 'objection'
 import { Action } from './Action'
 import { BaseModel } from './BaseModel'
 import { Staff } from './Staff'
@@ -18,18 +18,10 @@ export class Assignment extends BaseModel {
 
   static tableName = 'Assignment'
 
-  static jsonSchema: JSONSchema = {
-    type: 'object',
-    properties: {
-      address: { type: 'string' },
-      expired: { type: 'boolean' }
-    }
-  }
-
   static relationMappings(): RelationMappings {
     return {
       staffPrimary: {
-        relation: Model.HasOneRelation,
+        relation: Model.BelongsToOneRelation,
         modelClass: Staff,
         join: {
           from: 'Assignment.staffPrimaryId',
@@ -37,7 +29,7 @@ export class Assignment extends BaseModel {
         }
       },
       staffSecondary: {
-        relation: Model.HasOneRelation,
+        relation: Model.BelongsToOneRelation,
         modelClass: Staff,
         join: {
           from: 'Assignment.staffSecondaryId',

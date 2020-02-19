@@ -1,4 +1,3 @@
-import { JSONSchema } from 'objection'
 import { BaseModel } from './BaseModel'
 
 export const adminPrivileges = ['BASIC', 'FULL'] as const
@@ -10,14 +9,4 @@ export class Admin extends BaseModel {
   privilege!: AdminPrivilege
 
   static tableName = 'Admin'
-
-  static jsonSchema: JSONSchema = {
-    type: 'object',
-    required: ['username', 'hash', 'privilege'],
-    properties: {
-      username: { type: 'string' },
-      hash: { type: 'string' },
-      privilege: { type: 'string' }
-    }
-  }
 }
