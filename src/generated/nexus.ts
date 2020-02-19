@@ -4,11 +4,11 @@
  */
 
 import * as ctx from '../context'
-import { Admin } from '../models/Admin'
+import { Admin, AdminPrivilege } from '../models/Admin'
 import { Customer } from '../models/Customer'
 import { Job } from '../models/Job'
 import { Assignment } from '../models/Assignment'
-import { Task } from '../models/Task'
+import { Task, TaskType } from '../models/Task'
 import { Action } from '../models/Action'
 import { Staff } from '../models/Staff'
 import { core } from 'nexus'
@@ -283,9 +283,9 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  AdminPrivilege: 'BASIC' | 'FULL'
+  AdminPrivilege: AdminPrivilege
   OrderByArg: 'ASC' | 'DESC'
-  TaskType: 'COMPLAINT' | 'DELIVERY' | 'OTHERS' | 'SERVICE' | 'TRANSPORT'
+  TaskType: TaskType
 }
 
 export interface NexusGenRootTypes {

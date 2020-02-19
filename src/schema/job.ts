@@ -1,3 +1,4 @@
+import path from 'path'
 import { UserInputError } from 'apollo-server-express'
 import {
   arg,
@@ -14,7 +15,7 @@ import { Assignment } from '../models/Assignment'
 import { Customer } from '../models/Customer'
 import { Job } from '../models/Job'
 import { Staff } from '../models/Staff'
-import { Task, taskTypes } from '../models/Task'
+import { Task, TaskType } from '../models/Task'
 import { validateNonNullProps } from '../utils/common'
 import { addBaseModelFields, enumFilter, modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
@@ -409,9 +410,13 @@ export const JobOrderByInput = inputObjectType({
 
 export const TaskTypeFilter = enumFilter('TaskType')
 
-export const TaskType = enumType({
+export const TaskTypeEnum = enumType({
   name: 'TaskType',
-  members: taskTypes
+  members: Object.values(TaskType),
+  rootTyping: {
+    path: path.join(__dirname, '../models/Task'),
+    name: 'TaskType'
+  }
 })
 
 type TaskInput = NexusInput<'TaskInput'>

@@ -1,3 +1,4 @@
+import path from 'path'
 import { AuthenticationError, UserInputError } from 'apollo-server-express'
 import {
   arg,
@@ -10,13 +11,8 @@ import {
   queryField,
   stringArg
 } from 'nexus'
-import { Admin, adminPrivileges } from '../models/Admin'
-import {
-  addBaseModelFields,
-  enumFilter,
-  filterInputNonNullable,
-  modelTyping
-} from '../utils/nexus'
+import { Admin, AdminPrivilege } from '../models/Admin'
+import { addBaseModelFields, enumFilter, modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const admin = queryField('admin', {
@@ -89,11 +85,11 @@ export const updateAdmin = mutationField('updateAdmin', {
     const adminId =
       id != null ? id : sessionService.getSession(true).data.userId
 
-    data = filterInputNonNullable(data, ['username'])
-
     return Admin.query()
       .findById(adminId)
-      .patch(data as any)
+      .patch({
+        username: data.username ?? undefined
+      })
       .returning('*')
       .first()
   }
@@ -294,5 +290,9 @@ export const AdminPrivilegeFilter = enumFilter('AdminPrivilege')
 
 export const AdminPrivilegeEnum = enumType({
   name: 'AdminPrivilege',
-  members: adminPrivileges
+  members: Object.values(AdminPrivilege),
+  rootTyping: {
+    path: path.join(__dirname, '../models/Admin'),
+    name: 'AdminPrivilege'
+  }
 })

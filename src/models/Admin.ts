@@ -1,8 +1,10 @@
 import { JSONSchema } from 'objection'
 import { BaseModel } from './BaseModel'
 
-export const adminPrivileges = ['BASIC', 'FULL'] as const
-export type AdminPrivilege = typeof adminPrivileges[number]
+export enum AdminPrivilege {
+  Basic = 'BASIC',
+  Full = 'FULL'
+}
 
 export class Admin extends BaseModel {
   username!: string
@@ -17,7 +19,7 @@ export class Admin extends BaseModel {
     properties: {
       username: { type: 'string' },
       hash: { type: 'string' },
-      privilege: { type: 'string', enum: adminPrivileges as any }
+      privilege: { type: 'string', enum: Object.values(AdminPrivilege) }
     }
   }
 }
