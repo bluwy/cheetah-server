@@ -1,4 +1,4 @@
-import { Model, RelationMappings } from 'objection'
+import { JSONSchema, Model, RelationMappings } from 'objection'
 import { Action } from './Action'
 import { BaseModel } from './BaseModel'
 import { Staff } from './Staff'
@@ -11,12 +11,34 @@ export class Assignment extends BaseModel {
   checkOut!: Date | null
   expired!: boolean
 
+  staffPrimaryId!: string
+  staffSecondaryId!: string
+  jobId!: string
+
   staffPrimary!: Staff
   staffSecondary!: Staff
   tasks!: Task[]
   actions!: Action[]
 
   static tableName = 'Assignment'
+
+  static jsonSchema: JSONSchema = {
+    type: 'object',
+    required: [
+      'address',
+      'expired',
+      'staffPrimaryId',
+      'staffSecondaryId',
+      'jobId'
+    ],
+    properties: {
+      address: { type: 'string' },
+      expired: { type: 'boolean' },
+      staffPrimaryId: { type: 'string' },
+      staffSecondaryId: { type: 'string' },
+      jobId: { type: 'string' }
+    }
+  }
 
   static relationMappings(): RelationMappings {
     return {

@@ -1,4 +1,4 @@
-import { RelationMappings, Model } from 'objection'
+import { JSONSchema, RelationMappings, Model } from 'objection'
 import { BaseModel } from './BaseModel'
 import { Company } from './Company'
 import { Staff } from './Staff'
@@ -11,11 +11,39 @@ export class Customer extends BaseModel {
   email!: string | null
   phoneNumber!: string | null
 
+  companyBelongId!: string
+  staffPrimaryId!: string
+  staffSecondaryId!: string
+
   companyBelong!: Company
   staffPrimary!: Staff
   staffSecondary!: Staff
 
   static tableName = 'Customer'
+
+  static jsonSchema: JSONSchema = {
+    type: 'object',
+    required: [
+      'code',
+      'name',
+      'active',
+      'addresses',
+      'companyBelongId',
+      'staffPrimaryId',
+      'staffSecondaryId'
+    ],
+    properties: {
+      code: { type: 'string' },
+      name: { type: 'string' },
+      active: { type: 'boolean' },
+      addresses: { type: 'array', items: { type: 'string' } },
+      email: { type: ['string', 'null'] },
+      phoneNumber: { type: ['string', 'null'] },
+      companyBelongId: { type: 'string' },
+      staffPrimaryId: { type: 'string' },
+      staffSecondaryId: { type: 'string' }
+    }
+  }
 
   static relationMappings(): RelationMappings {
     return {
