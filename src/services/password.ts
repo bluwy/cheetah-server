@@ -43,6 +43,15 @@ export class PasswordService {
     return userId
   }
 
+  /** Deletes a reset token in Redis, typically called after `checkResetToken` valid */
+  async deleteResetToken(resetToken: string): Promise<boolean> {
+    const key = this.getResetTokenKey(resetToken)
+
+    const deleteCount = await redis.del(key)
+
+    return deleteCount > 0
+  }
+
   private getResetTokenKey(resetToken: string) {
     return resetTokenKeyPrefix + resetToken
   }

@@ -9,3 +9,5 @@ export type NonNullRecord<T> = { [P in keyof T]: Exclude<T[P], null> }
 
 export type NonNullRecordBy<T, K extends keyof T> = Omit<T, K> &
   NonNullRecord<Pick<T, K>>
+
+export type RequiredRecord<T> = Required<{ [P in keyof T]: NonNullable<T[P]> }>

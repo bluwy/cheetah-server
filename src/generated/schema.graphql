@@ -140,7 +140,7 @@ input CustomerCreateInput {
   name: String!
   phoneNumber: String
   staffPrimaryId: ID!
-  staffSecondaryId: ID!
+  staffSecondaryId: ID
 }
 
 input CustomerOrderByInput {
@@ -273,8 +273,8 @@ type Mutation {
   resetAdminPassword(newPassword: String!, resetToken: String!): Boolean!
   resetStaffDeviceId(id: ID!): Boolean!
   sendAdminResetPasswordEmail(username: String!): Boolean!
-  setActions(assignmentId: ID!, data: [ActionInput!]!): Assignment!
-  setTasks(assignmentId: ID!, data: [TaskInput!]!): Assignment!
+  setActions(assignmentId: ID!, data: [ActionInput!]!): Boolean!
+  setTasks(assignmentId: ID!, data: [TaskInput!]!): Boolean!
   setTasksDone(ids: [ID!]!): Boolean!
   updateAdmin(data: AdminUpdateInput!, id: ID): Admin!
   updateAdminPassword(

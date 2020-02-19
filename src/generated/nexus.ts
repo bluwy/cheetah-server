@@ -121,7 +121,7 @@ export interface NexusGenInputs {
     name: string // String!
     phoneNumber?: string | null // String
     staffPrimaryId: string // ID!
-    staffSecondaryId: string // ID!
+    staffSecondaryId?: string | null // ID
   }
   CustomerOrderByInput: {
     // input type
@@ -434,8 +434,8 @@ export interface NexusGenFieldTypes {
     resetAdminPassword: boolean // Boolean!
     resetStaffDeviceId: boolean // Boolean!
     sendAdminResetPasswordEmail: boolean // Boolean!
-    setActions: NexusGenRootTypes['Assignment'] // Assignment!
-    setTasks: NexusGenRootTypes['Assignment'] // Assignment!
+    setActions: boolean // Boolean!
+    setTasks: boolean // Boolean!
     setTasksDone: boolean // Boolean!
     updateAdmin: NexusGenRootTypes['Admin'] // Admin!
     updateAdminPassword: boolean // Boolean!

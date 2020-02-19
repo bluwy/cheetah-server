@@ -12,8 +12,11 @@ import {
   stringArg
 } from 'nexus'
 import { Admin, AdminPrivilege } from '../models/Admin'
+import { getEnvVar } from '../utils/common'
 import { addBaseModelFields, enumFilter, modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
+
+const resetPasswordLink = getEnvVar('RESET_PASSWORD_LINK')
 
 export const admin = queryField('admin', {
   type: 'Admin',
@@ -58,12 +61,14 @@ export const createAdmin = mutationField('createAdmin', {
     })
   },
   async resolve(_, { data }, { passwordService, sessionService }) {
-    const { password, ...rest } = data
-    const hash = await passwordService.hashPassword(password)
-    const newData = { ...rest, hash }
+    const hash = await passwordService.hashPassword(data.password)
 
     const admin = await Admin.query()
-      .insert(newData)
+      .insert({
+        username: data.username,
+        privilege: data.privilege,
+        hash
+      })
       .returning('*')
 
     await sessionService.signup(admin.id)
@@ -121,11 +126,17 @@ export const sendAdminResetPasswordEmail = mutationField(
     args: {
       username: stringArg({ required: true })
     },
-    async resolve(_, { username }, { mailService }) {
-      const admin = await Admin.query().findOne('username', username)
+    async resolve(_, { username }, { mailService, passwordService }) {
+      const admin = await Admin.query()
+        .findOne('username', username)
+        .select('id')
 
       if (admin != null) {
-        await mailService.sendResetPasswordEmail(username, '')
+        const resetToken = await passwordService.generateResetToken(admin.id)
+
+        const newLink = resetPasswordLink + resetToken
+
+        await mailService.sendResetPasswordEmail(username, newLink)
 
         return true
       }
@@ -151,9 +162,17 @@ export const resetAdminPassword = mutationField('resetAdminPassword', {
     if (adminId != null) {
       const hash = await passwordService.hashPassword(newPassword)
 
-      await Admin.query()
+      const patchCount = await Admin.query()
         .findById(adminId)
         .patch({ hash })
+
+      await passwordService.deleteResetToken(resetToken)
+
+      // If no patch, throw to prevent additional Redis access.
+      // Redis wouldn't have the user id saved anyway.
+      if (patchCount <= 0) {
+        throw new UserInputError(`Admin not found with id: ${adminId}`)
+      }
 
       await sessionService.logoutAll(adminId)
 
@@ -225,7 +244,7 @@ export const loginAdmin = mutationField('loginAdmin', {
 
     await sessionService.login({
       userId: admin.id,
-      type: admin.privilege === 'FULL' ? 'ADMIN_FULL' : 'ADMIN_BASIC'
+      type: admin.privilege
     })
 
     return true

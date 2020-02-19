@@ -83,11 +83,13 @@ export const updateStaff = mutationField('updateStaff', {
     const staffId =
       id != null ? id : sessionService.getSession(true).data.userId
 
-    data = filterInputNonNullable(data, ['username', 'fullName', 'active'])
-
     return Staff.query()
       .findById(staffId)
-      .patch(data as any)
+      .patch({
+        username: data.username ?? undefined,
+        fullName: data.fullName ?? undefined,
+        active: data.active ?? undefined
+      })
       .returning('*')
       .first()
   }
@@ -118,14 +120,14 @@ export const linkStaffDeviceId = mutationField('linkStaffDeviceId', {
     deviceId: stringArg({ required: true })
   },
   async resolve(_, { deviceId }, { sessionService }) {
-    const sessionData = sessionService.getSession(true).data
+    const staffId = sessionService.getSession(true).data.userId
 
     const updateCount = await Staff.query()
-      .findById(sessionData.userId)
+      .findById(staffId)
       .patch({ deviceId })
 
     if (updateCount <= 0) {
-      throw new UserInputError(`Staff not found with id: ${sessionData.userId}`)
+      throw new UserInputError(`Staff not found with id: ${staffId}`)
     }
 
     return true

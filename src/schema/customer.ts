@@ -11,11 +11,7 @@ import {
 import { Company } from '../models/Company'
 import { Customer } from '../models/Customer'
 import { Staff } from '../models/Staff'
-import {
-  filterInputNonNullable,
-  modelTyping,
-  transformObj
-} from '../utils/nexus'
+import { modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const customer = queryField('customer', {
@@ -55,32 +51,8 @@ export const createCustomer = mutationField('createCustomer', {
     data: arg({ type: 'CustomerCreateInput', required: true })
   },
   async resolve(_, { data }) {
-    data = transformObj(data, [
-      {
-        from: 'companyBelongId',
-        to: 'companyBelong',
-        value: from => {
-          from
-        }
-      },
-      {
-        from: 'staffPrimaryId',
-        to: 'staffPrimary',
-        value: from => {
-          from
-        }
-      },
-      {
-        from: 'staffSecondaryId',
-        to: 'staffSecondary',
-        value: from => {
-          from
-        }
-      }
-    ])
-
     return Customer.query()
-      .insertGraph(data as any)
+      .insert(data)
       .returning('*')
   }
 })
@@ -92,43 +64,20 @@ export const updateCustomer = mutationField('updateCustomer', {
     data: arg({ type: 'CustomerUpdateInput', required: true })
   },
   async resolve(_, { id, data }) {
-    data = filterInputNonNullable(data, [
-      'code',
-      'name',
-      'active',
-      'addresses',
-      'companyBelongId',
-      'staffPrimaryId',
-      'staffSecondaryId'
-    ])
-
-    data = transformObj(data, [
-      {
-        from: 'companyBelongId',
-        to: 'companyBelong',
-        value: from => {
-          from
-        }
-      },
-      {
-        from: 'staffPrimaryId',
-        to: 'staffPrimary',
-        value: from => {
-          from
-        }
-      },
-      {
-        from: 'staffSecondaryId',
-        to: 'staffSecondary',
-        value: from => {
-          from
-        }
-      }
-    ])
-
+    // Manual undefined to convert null to undefined for non-nullable columns
     return Customer.query()
       .findById(id)
-      .patch(data as any)
+      .patch({
+        code: data.code ?? undefined,
+        name: data.name ?? undefined,
+        active: data.active ?? undefined,
+        addresses: data.addresses ?? undefined,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        companyBelongId: data.companyBelongId ?? undefined,
+        staffPrimaryId: data.staffPrimaryId ?? undefined,
+        staffSecondaryId: data.staffSecondaryId
+      })
       .returning('*')
       .first()
   }
@@ -198,7 +147,7 @@ export const CustomerCreateInput = inputObjectType({
     t.string('phoneNumber')
     t.id('companyBelongId', { required: true })
     t.id('staffPrimaryId', { required: true })
-    t.id('staffSecondaryId', { required: true })
+    t.id('staffSecondaryId')
   }
 })
 
