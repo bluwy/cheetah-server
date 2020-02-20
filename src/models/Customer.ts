@@ -26,7 +26,6 @@ export class Customer extends BaseModel {
     required: [
       'code',
       'name',
-      'active',
       'addresses',
       'companyBelongId',
       'staffPrimaryId',

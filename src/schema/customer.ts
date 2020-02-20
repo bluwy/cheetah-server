@@ -147,7 +147,6 @@ export const CustomerCreateInput = inputObjectType({
   definition(t) {
     t.string('code', { required: true })
     t.string('name', { required: true })
-    t.boolean('active', { required: true })
     t.list.string('addresses', { required: true })
     t.string('email')
     t.string('phoneNumber')

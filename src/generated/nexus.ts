@@ -114,7 +114,6 @@ export interface NexusGenInputs {
   }
   CustomerCreateInput: {
     // input type
-    active: boolean // Boolean!
     addresses: string[] // [String!]!
     code: string // String!
     companyBelongId: string // ID!

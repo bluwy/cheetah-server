@@ -20,7 +20,7 @@ export class Task extends BaseModel {
 
   static jsonSchema: JSONSchema = {
     type: 'object',
-    required: ['type', 'remarks', 'done'],
+    required: ['type', 'remarks'],
     properties: {
       type: { type: 'string', enum: Object.values(TaskType) },
       remarks: { type: 'string' },

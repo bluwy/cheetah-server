@@ -21,7 +21,12 @@ import { ifUser, isAdmin, isAuthed, isStaff } from '../utils/auth'
 import { validateNonNullProps } from '../utils/common'
 import { addBaseModelFields, enumFilter, modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
-import { NexusInput, NonNullRecord, RequiredRecord } from '../utils/types'
+import {
+  NexusInput,
+  NonNullRecord,
+  RequiredRecord,
+  RequiredRecordBy
+} from '../utils/types'
 
 export const job = queryField('job', {
   type: 'Job',
@@ -261,7 +266,13 @@ export const setTasks = mutationField('setTasks', {
       }
 
       if (toInsertData.length > 0) {
-        await Task.query(trx).insert(toInsertData)
+        await Task.query(trx).insert(
+          toInsertData.map(v => ({
+            type: v.type,
+            remarks: v.remarks,
+            done: v.done ?? false
+          }))
+        )
       }
 
       return true
@@ -346,7 +357,11 @@ export const setActions = mutationField('setActions', {
       }
 
       if (toInsertData.length > 0) {
-        await Action.query(trx).insert(toInsertData)
+        await Action.query(trx).insert(
+          toInsertData.map(v => ({
+            remarks: v.remarks
+          }))
+        )
       }
 
       return true
@@ -553,7 +568,10 @@ export const TaskTypeEnum = enumType({
 })
 
 type TaskInput = NexusInput<'TaskInput'>
-type InsertTaskInput = RequiredRecord<Omit<TaskInput, 'id'>>
+type InsertTaskInput = RequiredRecordBy<
+  Omit<TaskInput, 'id'>,
+  'type' | 'remarks'
+>
 type UpdateTaskInput = NonNullRecord<TaskInput>
 
 /** Validates task input for insert/update usage */
@@ -565,7 +583,8 @@ function validateTasks(tasks: TaskInput[]) {
       validateNonNullProps(task, { mutate: true })
     } else {
       // Is insert
-      validateNonNullProps(task)
+      delete task.id
+      validateNonNullProps(task, { props: ['type', 'remarks'] })
     }
   })
 }
@@ -583,7 +602,8 @@ function validateActions(actions: ActionInput[]) {
       validateNonNullProps(action, { mutate: true })
     } else {
       // Is insert
-      validateNonNullProps(action)
+      delete action.id
+      validateNonNullProps(action, { props: ['remarks'] })
     }
   })
 }

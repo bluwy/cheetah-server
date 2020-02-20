@@ -79,7 +79,7 @@ export const updateStaff = mutationField('updateStaff', {
       required: true
     })
   },
-  authorize: ifUser(isAdminFull),
+  authorize: (_, { id }, ctx) => (id != null ? isAdminFull(ctx) : isStaff(ctx)),
   async resolve(_, { id, data }, { sessionService }) {
     const staffId =
       id != null ? id : sessionService.getSession(true).data.userId
@@ -101,7 +101,7 @@ export const deleteStaff = mutationField('deleteStaff', {
   args: {
     id: idArg()
   },
-  authorize: ifUser(isAdminFull),
+  authorize: (_, { id }, ctx) => (id != null ? isAdminFull(ctx) : isStaff(ctx)),
   async resolve(_, { id }, { sessionService }) {
     const staffId =
       id != null ? id : sessionService.getSession(true).data.userId

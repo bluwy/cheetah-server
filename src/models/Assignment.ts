@@ -24,13 +24,7 @@ export class Assignment extends BaseModel {
 
   static jsonSchema: JSONSchema = {
     type: 'object',
-    required: [
-      'address',
-      'expired',
-      'staffPrimaryId',
-      'staffSecondaryId',
-      'jobId'
-    ],
+    required: ['address', 'staffPrimaryId', 'staffSecondaryId', 'jobId'],
     properties: {
       address: { type: 'string' },
       expired: { type: 'boolean' },

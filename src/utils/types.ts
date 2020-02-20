@@ -11,3 +11,6 @@ export type NonNullRecordBy<T, K extends keyof T> = Omit<T, K> &
   NonNullRecord<Pick<T, K>>
 
 export type RequiredRecord<T> = Required<{ [P in keyof T]: NonNullable<T[P]> }>
+
+export type RequiredRecordBy<T, K extends keyof T> = Omit<T, K> &
+  RequiredRecord<Pick<T, K>>

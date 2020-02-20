@@ -11,7 +11,7 @@ export class Staff extends BaseModel {
 
   static jsonSchema: JSONSchema = {
     type: 'object',
-    required: ['username', 'fullName', 'active'],
+    required: ['username', 'fullName'],
     properties: {
       username: { type: 'string' },
       fullName: { type: 'string' },
