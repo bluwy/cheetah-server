@@ -7,7 +7,7 @@ export class Staff extends BaseModel {
   deviceId!: string | null
   active!: boolean
 
-  static tableName = 'Admin'
+  static tableName = 'Staff'
 
   static jsonSchema: JSONSchema = {
     type: 'object',

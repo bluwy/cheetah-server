@@ -10,6 +10,7 @@ export class BaseModel extends Model {
   $beforeInsert() {
     this.id = uuidv4()
     this.createdAt = new Date()
+    this.updatedAt = new Date()
   }
 
   $beforeUpdate() {
