@@ -1,6 +1,6 @@
 import { hash, verify } from 'argon2'
 import nanoid from 'nanoid'
-import { redis } from './redis'
+import { redis } from '../redis'
 import { getEnvVar } from '../utils/common'
 
 export const resetTokenKeyPrefix = getEnvVar('RESET_TOKEN_KEY_PREFIX')

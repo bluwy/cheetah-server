@@ -1,8 +1,9 @@
 import { AuthenticationError, ForbiddenError } from 'apollo-server-express'
 import { CookieOptions, Request, Response } from 'express'
 import nanoid from 'nanoid'
-import { redis } from './redis'
+import { redis } from '../redis'
 import { getEnvVar } from '../utils/common'
+import { PartialBy } from '../utils/types'
 
 export const sessionIdLength = +getEnvVar('SESSION_ID_LENGTH')
 export const sessionCookieName = getEnvVar('SESSION_COOKIE_NAME')

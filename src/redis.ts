@@ -7,3 +7,10 @@ import Redis from 'ioredis'
 //   while writing Nexus code with Docker not upped
 
 export const redis = new Redis(process.env.REDIS_URL, { lazyConnect: true })
+
+if (process.env['LOG_REDIS']) {
+  ;(async () => {
+    const monitor = await redis.monitor()
+    monitor.on('monitor', (_, cmd) => console.log('[REDIS]', cmd.join(' ')))
+  })()
+}
