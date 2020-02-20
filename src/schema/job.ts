@@ -17,6 +17,7 @@ import { Customer } from '../models/Customer'
 import { Job } from '../models/Job'
 import { Staff } from '../models/Staff'
 import { Task, TaskType } from '../models/Task'
+import { ifUser, isAdmin, isAuthed, isStaff } from '../utils/auth'
 import { validateNonNullProps } from '../utils/common'
 import { addBaseModelFields, enumFilter, modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
@@ -27,6 +28,7 @@ export const job = queryField('job', {
   args: {
     id: idArg({ required: true })
   },
+  authorize: ifUser(isAuthed),
   async resolve(_, { id }) {
     return Job.query().findById(id)
   }
@@ -41,6 +43,7 @@ export const jobs = queryField('jobs', {
     where: arg({ type: 'JobWhereInput' }),
     orderBy: arg({ type: 'JobOrderByInput' })
   },
+  authorize: ifUser(isAuthed),
   async resolve(_, { skip, first, where, orderBy }) {
     skip = skip ?? 0
     first = first != null ? Math.min(first, 50) : 10
@@ -58,6 +61,7 @@ export const createJob = mutationField('createJob', {
   args: {
     data: arg({ type: 'JobCreateInput', required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { data }, { jobService }) {
     const code = await jobService.genJobCode(data.customerId)
 
@@ -94,6 +98,7 @@ export const updateJob = mutationField('updateJob', {
     id: idArg({ required: true }),
     data: arg({ type: 'JobUpdateInput', required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { id, data }) {
     return Job.query()
       .findById(id)
@@ -110,6 +115,7 @@ export const deleteJob = mutationField('deleteJob', {
   args: {
     id: idArg({ required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { id }) {
     const deleteCount = await Job.query().deleteById(id)
 
@@ -128,6 +134,7 @@ export const createAssignment = mutationField('createAssignment', {
     jobId: idArg({ required: true }),
     data: arg({ type: 'AssignmentCreateInput', required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { jobId, data }) {
     return Assignment.transaction(async trx => {
       const assignment = await Assignment.query(trx)
@@ -155,21 +162,39 @@ export const adminUpdateAssignment = mutationField('adminUpdateAssignment', {
     id: idArg({ required: true }),
     data: arg({ type: 'AdminAssignmentUpdateInput', required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { id, data }) {
-    return Assignment.transaction(async trx => {
-      return Assignment.query(trx)
-        .findById(id)
-        .patch({
-          address: data.address ?? undefined,
-          preferTime: data.preferTime,
-          checkIn: data.checkIn,
-          checkOut: data.checkOut,
-          staffPrimaryId: data.staffPrimaryId ?? undefined,
-          staffSecondaryId: data.staffSecondaryId
-        })
-        .returning('*')
-        .first()
-    })
+    return Assignment.query()
+      .findById(id)
+      .patch({
+        address: data.address ?? undefined,
+        preferTime: data.preferTime,
+        checkIn: data.checkIn,
+        checkOut: data.checkOut,
+        staffPrimaryId: data.staffPrimaryId ?? undefined,
+        staffSecondaryId: data.staffSecondaryId
+      })
+      .returning('*')
+      .first()
+  }
+})
+
+export const staffUpdateAssignment = mutationField('staffUpdateAssignment', {
+  type: 'Assignment',
+  args: {
+    id: idArg({ required: true }),
+    data: arg({ type: 'StaffAssignmentUpdateInput', required: true })
+  },
+  authorize: ifUser(isStaff),
+  async resolve(_, { id, data }) {
+    return Assignment.query()
+      .findById(id)
+      .patch({
+        checkIn: data.checkIn,
+        checkOut: data.checkOut
+      })
+      .returning('*')
+      .first()
   }
 })
 
@@ -179,6 +204,7 @@ export const setTasks = mutationField('setTasks', {
     assignmentId: idArg({ required: true }),
     data: arg({ type: 'TaskInput', list: true, required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { assignmentId, data }) {
     validateTasks(data)
 
@@ -248,6 +274,7 @@ export const setTasksDone = mutationField('setTasksDone', {
   args: {
     ids: idArg({ list: true, required: true })
   },
+  authorize: ifUser(isStaff),
   async resolve(_, { ids }) {
     const patchCount = await Task.query()
       .findByIds(ids)
@@ -269,6 +296,7 @@ export const setActions = mutationField('setActions', {
     assignmentId: idArg({ required: true }),
     data: arg({ type: 'ActionInput', list: true, required: true })
   },
+  authorize: ifUser(isAuthed),
   async resolve(_, { assignmentId, data }) {
     validateActions(data)
 

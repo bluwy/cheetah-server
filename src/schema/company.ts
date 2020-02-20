@@ -9,6 +9,7 @@ import {
   queryField
 } from 'nexus'
 import { Company } from '../models/Company'
+import { ifUser, isAdmin, isAdminFull } from '../utils/auth'
 import { addBaseModelFields } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
@@ -17,6 +18,7 @@ export const company = queryField('company', {
   args: {
     id: idArg({ required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { id }) {
     return Company.query().findById(id)
   }
@@ -31,6 +33,7 @@ export const companies = queryField('companies', {
     where: arg({ type: 'CompanyWhereInput' }),
     orderBy: arg({ type: 'CompanyOrderByInput' })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { skip, first, where, orderBy }) {
     skip = skip ?? 0
     first = first != null ? Math.min(first, 50) : 10
@@ -48,6 +51,7 @@ export const createCompany = mutationField('createCompany', {
   args: {
     data: arg({ type: 'CompanyCreateInput', required: true })
   },
+  authorize: ifUser(isAdminFull),
   async resolve(_, { data }) {
     return Company.query()
       .insert(data)
@@ -60,6 +64,7 @@ export const deleteCompany = mutationField('deleteCompany', {
   args: {
     id: idArg({ required: true })
   },
+  authorize: ifUser(isAdminFull),
   async resolve(_, { id }) {
     const deleteCount = await Company.query().deleteById(id)
 

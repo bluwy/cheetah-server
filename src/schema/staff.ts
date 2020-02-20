@@ -10,11 +10,8 @@ import {
   stringArg
 } from 'nexus'
 import { Staff } from '../models/Staff'
-import {
-  addBaseModelFields,
-  filterInputNonNullable,
-  modelTyping
-} from '../utils/nexus'
+import { ifUser, isAdmin, isAdminFull, isStaff } from '../utils/auth'
+import { addBaseModelFields, modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const staff = queryField('staff', {
@@ -22,6 +19,7 @@ export const staff = queryField('staff', {
   args: {
     id: idArg()
   },
+  authorize: (_, { id }, ctx) => (id != null ? isAdmin(ctx) : isStaff(ctx)),
   async resolve(_, { id }, { sessionService }) {
     const staffId =
       id != null ? id : sessionService.getSession(true).data.userId
@@ -39,6 +37,7 @@ export const staffs = queryField('staffs', {
     where: arg({ type: 'StaffWhereInput' }),
     orderBy: arg({ type: 'StaffOrderByInput' })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { skip, first, where, orderBy }) {
     skip = skip ?? 0
     first = first != null ? Math.min(first, 50) : 10
@@ -59,6 +58,7 @@ export const createStaff = mutationField('createStaff', {
       required: true
     })
   },
+  authorize: ifUser(isAdminFull),
   async resolve(_, { data }, { sessionService }) {
     const staff = await Staff.query()
       .insert(data)
@@ -79,6 +79,7 @@ export const updateStaff = mutationField('updateStaff', {
       required: true
     })
   },
+  authorize: ifUser(isAdminFull),
   async resolve(_, { id, data }, { sessionService }) {
     const staffId =
       id != null ? id : sessionService.getSession(true).data.userId
@@ -100,6 +101,7 @@ export const deleteStaff = mutationField('deleteStaff', {
   args: {
     id: idArg()
   },
+  authorize: ifUser(isAdminFull),
   async resolve(_, { id }, { sessionService }) {
     const staffId =
       id != null ? id : sessionService.getSession(true).data.userId
@@ -117,17 +119,16 @@ export const deleteStaff = mutationField('deleteStaff', {
 export const linkStaffDeviceId = mutationField('linkStaffDeviceId', {
   type: 'Boolean',
   args: {
+    username: stringArg({ required: true }),
     deviceId: stringArg({ required: true })
   },
-  async resolve(_, { deviceId }, { sessionService }) {
-    const staffId = sessionService.getSession(true).data.userId
-
+  async resolve(_, { username, deviceId }) {
     const updateCount = await Staff.query()
-      .findById(staffId)
       .patch({ deviceId })
+      .where('username', username)
 
     if (updateCount <= 0) {
-      throw new UserInputError(`Staff not found with id: ${staffId}`)
+      throw new UserInputError('Invalid username')
     }
 
     return true
@@ -139,6 +140,7 @@ export const resetStaffDeviceId = mutationField('resetStaffDeviceId', {
   args: {
     id: idArg({ required: true })
   },
+  authorize: ifUser(isAdminFull),
   async resolve(_, { id }) {
     const updateCount = await Staff.query()
       .findById(id)
@@ -178,6 +180,7 @@ export const loginStaff = mutationField('loginStaff', {
 
 export const logoutStaff = mutationField('logoutStaff', {
   type: 'Boolean',
+  authorize: ifUser(isStaff),
   async resolve(_, __, { sessionService }) {
     await sessionService.logout()
 

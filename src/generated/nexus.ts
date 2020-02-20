@@ -11,6 +11,7 @@ import { Assignment } from '../models/Assignment'
 import { Task, TaskType } from '../models/Task'
 import { Action } from '../models/Action'
 import { Staff } from '../models/Staff'
+import { FieldAuthorizeResolver } from 'nexus/dist/plugins/fieldAuthorizePlugin'
 import { core } from 'nexus'
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
@@ -437,6 +438,7 @@ export interface NexusGenFieldTypes {
     setActions: boolean // Boolean!
     setTasks: boolean // Boolean!
     setTasksDone: boolean // Boolean!
+    staffUpdateAssignment: NexusGenRootTypes['Assignment'] // Assignment!
     updateAdmin: NexusGenRootTypes['Admin'] // Admin!
     updateAdminPassword: boolean // Boolean!
     updateCustomer: NexusGenRootTypes['Customer'] // Customer!
@@ -532,6 +534,7 @@ export interface NexusGenArgTypes {
     linkStaffDeviceId: {
       // args
       deviceId: string // String!
+      username: string // String!
     }
     loginAdmin: {
       // args
@@ -568,6 +571,11 @@ export interface NexusGenArgTypes {
     setTasksDone: {
       // args
       ids: string[] // [ID!]!
+    }
+    staffUpdateAssignment: {
+      // args
+      data: NexusGenInputs['StaffAssignmentUpdateInput'] // StaffAssignmentUpdateInput!
+      id: string // ID!
     }
     updateAdmin: {
       // args
@@ -755,6 +763,16 @@ declare global {
   interface NexusGenPluginFieldConfig<
     TypeName extends string,
     FieldName extends string
-  > {}
+  > {
+    /**
+     * Authorization for an individual field. Returning "true"
+     * or "Promise<true>" means the field can be accessed.
+     * Returning "false" or "Promise<false>" will respond
+     * with a "Not Authorized" error for the field.
+     * Returning or throwing an error will also prevent the
+     * resolver from executing.
+     */
+    authorize?: FieldAuthorizeResolver<TypeName, FieldName>
+  }
   interface NexusGenPluginSchemaConfig {}
 }

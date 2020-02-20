@@ -11,6 +11,7 @@ import {
 import { Company } from '../models/Company'
 import { Customer } from '../models/Customer'
 import { Staff } from '../models/Staff'
+import { ifUser, isAdmin } from '../utils/auth'
 import { modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
@@ -19,6 +20,7 @@ export const customer = queryField('customer', {
   args: {
     id: idArg({ required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { id }) {
     return Customer.query().findById(id)
   }
@@ -33,6 +35,7 @@ export const customers = queryField('customers', {
     where: arg({ type: 'CustomerWhereInput' }),
     orderBy: arg({ type: 'CustomerOrderByInput' })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { skip, first, where, orderBy }) {
     skip = skip ?? 0
     first = first != null ? Math.min(first, 50) : 10
@@ -50,6 +53,7 @@ export const createCustomer = mutationField('createCustomer', {
   args: {
     data: arg({ type: 'CustomerCreateInput', required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { data }) {
     return Customer.query()
       .insert(data)
@@ -63,6 +67,7 @@ export const updateCustomer = mutationField('updateCustomer', {
     id: idArg({ required: true }),
     data: arg({ type: 'CustomerUpdateInput', required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { id, data }) {
     // Manual undefined to convert null to undefined for non-nullable columns
     return Customer.query()
@@ -88,6 +93,7 @@ export const deleteCustomer = mutationField('deleteCustomer', {
   args: {
     id: idArg({ required: true })
   },
+  authorize: ifUser(isAdmin),
   async resolve(_, { id }) {
     const deleteCount = await Customer.query().deleteById(id)
 

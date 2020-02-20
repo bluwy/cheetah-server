@@ -265,7 +265,7 @@ type Mutation {
   deleteCustomer(id: ID!): Boolean!
   deleteJob(id: ID!): Boolean!
   deleteStaff(id: ID): Boolean!
-  linkStaffDeviceId(deviceId: String!): Boolean!
+  linkStaffDeviceId(deviceId: String!, username: String!): Boolean!
   loginAdmin(password: String!, username: String!): Boolean!
   loginStaff(deviceId: String!): Boolean!
   logoutAdmin: Boolean!
@@ -276,6 +276,7 @@ type Mutation {
   setActions(assignmentId: ID!, data: [ActionInput!]!): Boolean!
   setTasks(assignmentId: ID!, data: [TaskInput!]!): Boolean!
   setTasksDone(ids: [ID!]!): Boolean!
+  staffUpdateAssignment(data: StaffAssignmentUpdateInput!, id: ID!): Assignment!
   updateAdmin(data: AdminUpdateInput!, id: ID): Admin!
   updateAdminPassword(
     id: ID
