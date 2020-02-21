@@ -1,4 +1,3 @@
-import path from 'path'
 import { AuthenticationError, UserInputError } from 'apollo-server-express'
 import {
   arg,
@@ -320,7 +319,7 @@ export const AdminPrivilegeEnum = enumType({
   name: 'AdminPrivilege',
   members: Object.values(AdminPrivilege),
   rootTyping: {
-    path: path.join(__dirname, '../models/Admin'),
+    path: '../models/Admin',
     name: 'AdminPrivilege'
   }
 })

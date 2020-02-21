@@ -1,4 +1,3 @@
-import path from 'path'
 import { UserInputError } from 'apollo-server-express'
 import {
   arg,
@@ -543,6 +542,9 @@ export const ActionInput = inputObjectType({
 export const JobWhereInput = inputObjectType({
   name: 'JobWhereInput',
   definition(t) {
+    t.list.field('AND', { type: 'JobWhereInput' })
+    t.list.field('OR', { type: 'JobWhereInput' })
+    t.list.field('NOT', { type: 'JobWhereInput' })
     t.field('code', { type: 'StringFilter' })
     t.field('customer', { type: 'CustomerWhereInput' })
   }
@@ -562,7 +564,7 @@ export const TaskTypeEnum = enumType({
   name: 'TaskType',
   members: Object.values(TaskType),
   rootTyping: {
-    path: path.join(__dirname, '../models/Task'),
+    path: '../models/Task',
     name: 'TaskType'
   }
 })

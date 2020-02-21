@@ -250,8 +250,11 @@ input JobUpdateInput {
 }
 
 input JobWhereInput {
+  AND: [JobWhereInput!]
   code: StringFilter
   customer: CustomerWhereInput
+  NOT: [JobWhereInput!]
+  OR: [JobWhereInput!]
 }
 
 type Mutation {

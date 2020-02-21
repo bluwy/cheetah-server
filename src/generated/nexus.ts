@@ -213,8 +213,11 @@ export interface NexusGenInputs {
   }
   JobWhereInput: {
     // input type
+    AND?: NexusGenInputs['JobWhereInput'][] | null // [JobWhereInput!]
     code?: NexusGenInputs['StringFilter'] | null // StringFilter
     customer?: NexusGenInputs['CustomerWhereInput'] | null // CustomerWhereInput
+    NOT?: NexusGenInputs['JobWhereInput'][] | null // [JobWhereInput!]
+    OR?: NexusGenInputs['JobWhereInput'][] | null // [JobWhereInput!]
   }
   StaffAssignmentUpdateInput: {
     // input type

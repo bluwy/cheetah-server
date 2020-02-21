@@ -1,4 +1,3 @@
-import path from 'path'
 import { inputObjectType } from 'nexus'
 import { ObjectDefinitionBlock, RootTypingImport } from 'nexus/dist/core'
 import { Model } from 'objection'
@@ -52,7 +51,7 @@ export function modelTyping(
   fileName?: string
 ): RootTypingImport {
   return {
-    path: path.join(__dirname, `../models/${fileName ?? model.name}`),
+    path: `../models/${fileName ?? model.name}`,
     name: model.name
   }
 }
