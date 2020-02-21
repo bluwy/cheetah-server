@@ -53,10 +53,11 @@ export const jobs = queryField('jobs', {
     first = first != null ? Math.min(first, 50) : 10
 
     return Job.query()
+      .alias('j')
       .offset(skip)
       .limit(first)
-      .modify(resolveWhereInput, where)
-      .modify(resolveOrderByInput, orderBy)
+      .modify(resolveWhereInput, where, 'j')
+      .modify(resolveOrderByInput, orderBy, 'j')
   }
 })
 

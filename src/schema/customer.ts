@@ -41,10 +41,11 @@ export const customers = queryField('customers', {
     first = first != null ? Math.min(first, 50) : 10
 
     return Customer.query()
+      .alias('c')
       .offset(skip)
       .limit(first)
-      .modify(resolveWhereInput, where)
-      .modify(resolveOrderByInput, orderBy)
+      .modify(resolveWhereInput, where, 'c')
+      .modify(resolveOrderByInput, orderBy, 'c')
   }
 })
 

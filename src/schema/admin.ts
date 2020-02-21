@@ -47,10 +47,11 @@ export const admins = queryField('admins', {
     first = first != null ? Math.min(first, 50) : 10
 
     return Admin.query()
+      .alias('a')
       .offset(skip)
       .limit(first)
-      .modify(resolveWhereInput, where)
-      .modify(resolveOrderByInput, orderBy)
+      .modify(resolveWhereInput, where, 'a')
+      .modify(resolveOrderByInput, orderBy, 'a')
   }
 })
 

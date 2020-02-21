@@ -43,10 +43,11 @@ export const staffs = queryField('staffs', {
     first = first != null ? Math.min(first, 50) : 10
 
     return Staff.query()
+      .alias('s')
       .offset(skip)
       .limit(first)
-      .modify(resolveWhereInput, where)
-      .modify(resolveOrderByInput, orderBy)
+      .modify(resolveWhereInput, where, 's')
+      .modify(resolveOrderByInput, orderBy, 's')
   }
 })
 

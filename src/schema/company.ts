@@ -39,10 +39,11 @@ export const companies = queryField('companies', {
     first = first != null ? Math.min(first, 50) : 10
 
     return Company.query()
+      .alias('c')
       .offset(skip)
       .limit(first)
-      .modify(resolveWhereInput, where)
-      .modify(resolveOrderByInput, orderBy)
+      .modify(resolveWhereInput, where, 'c')
+      .modify(resolveOrderByInput, orderBy, 'c')
   }
 })
 
