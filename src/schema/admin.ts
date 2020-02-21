@@ -251,7 +251,8 @@ export const loginAdmin = mutationField('loginAdmin', {
 
     await sessionService.login({
       userId: admin.id,
-      type: admin.privilege
+      type:
+        admin.privilege === AdminPrivilege.Full ? 'ADMIN_FULL' : 'ADMIN_BASIC'
     })
 
     return true

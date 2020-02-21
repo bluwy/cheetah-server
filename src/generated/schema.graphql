@@ -124,11 +124,14 @@ type Customer {
   addresses: [String!]!
   code: String!
   companyBelong: Company!
+  createdAt: DateTime!
   email: String
+  id: ID!
   name: String!
   phoneNumber: String
   staffPrimary: Staff!
   staffSecondary: Staff!
+  updatedAt: DateTime!
 }
 
 input CustomerCreateInput {

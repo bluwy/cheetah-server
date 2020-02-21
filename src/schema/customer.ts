@@ -12,7 +12,7 @@ import { Company } from '../models/Company'
 import { Customer } from '../models/Customer'
 import { Staff } from '../models/Staff'
 import { ifUser, isAdmin } from '../utils/auth'
-import { modelTyping } from '../utils/nexus'
+import { addBaseModelFields, modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const customer = queryField('customer', {
@@ -109,6 +109,7 @@ export const CustomerType = objectType({
   name: 'Customer',
   rootTyping: modelTyping(Customer),
   definition(t) {
+    addBaseModelFields(t)
     t.string('code')
     t.string('name')
     t.boolean('active')

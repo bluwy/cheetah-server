@@ -397,11 +397,14 @@ export interface NexusGenFieldTypes {
     addresses: string[] // [String!]!
     code: string // String!
     companyBelong: NexusGenRootTypes['Company'] // Company!
+    createdAt: Date // DateTime!
     email: string | null // String
+    id: string // ID!
     name: string // String!
     phoneNumber: string | null // String
     staffPrimary: NexusGenRootTypes['Staff'] // Staff!
     staffSecondary: NexusGenRootTypes['Staff'] // Staff!
+    updatedAt: Date // DateTime!
   }
   Job: {
     // field return type
