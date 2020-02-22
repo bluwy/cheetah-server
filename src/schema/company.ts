@@ -28,20 +28,13 @@ export const companies = queryField('companies', {
   type: 'Company',
   list: true,
   args: {
-    skip: intArg(),
-    first: intArg(),
     where: arg({ type: 'CompanyWhereInput' }),
     orderBy: arg({ type: 'CompanyOrderByInput' })
   },
   authorize: ifUser(isAdmin),
-  async resolve(_, { skip, first, where, orderBy }) {
-    skip = skip ?? 0
-    first = first != null ? Math.min(first, 50) : 10
-
+  async resolve(_, { where, orderBy }) {
     return Company.query()
       .alias('c')
-      .offset(skip)
-      .limit(first)
       .modify(resolveWhereInput, where, 'c')
       .modify(resolveOrderByInput, orderBy, 'c')
   }

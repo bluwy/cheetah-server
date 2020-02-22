@@ -36,20 +36,13 @@ export const admins = queryField('admins', {
   type: 'Admin',
   list: true,
   args: {
-    skip: intArg(),
-    first: intArg(),
     where: arg({ type: 'AdminWhereInput' }),
     orderBy: arg({ type: 'AdminOrderByInput' })
   },
   authorize: ifUser(isAdminFull),
-  async resolve(_, { skip, first, where, orderBy }) {
-    skip = skip ?? 0
-    first = first != null ? Math.min(first, 50) : 10
-
+  async resolve(_, { where, orderBy }) {
     return Admin.query()
       .alias('a')
-      .offset(skip)
-      .limit(first)
       .modify(resolveWhereInput, where, 'a')
       .modify(resolveOrderByInput, orderBy, 'a')
   }

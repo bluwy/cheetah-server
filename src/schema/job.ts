@@ -27,6 +27,22 @@ import {
   RequiredRecordBy
 } from '../utils/types'
 
+export const jobCount = queryField('jobCount', {
+  type: 'Int',
+  args: {
+    where: arg({ type: 'JobWhereInput' })
+  },
+  authorize: ifUser(isAuthed),
+  async resolve(_, { where }) {
+    const result = await Job.query()
+      .alias('j')
+      .modify(resolveWhereInput, where, 'j')
+      .count('j.id as count')
+
+    return (result[0] as any).count
+  }
+})
+
 export const job = queryField('job', {
   type: 'Job',
   args: {
@@ -42,15 +58,24 @@ export const jobs = queryField('jobs', {
   type: 'Job',
   list: true,
   args: {
-    skip: intArg(),
-    first: intArg(),
+    skip: intArg({ default: 0 }),
+    first: intArg({ default: 10 }),
     where: arg({ type: 'JobWhereInput' }),
     orderBy: arg({ type: 'JobOrderByInput' })
   },
   authorize: ifUser(isAuthed),
   async resolve(_, { skip, first, where, orderBy }) {
-    skip = skip ?? 0
-    first = first != null ? Math.min(first, 50) : 10
+    if (skip == null) {
+      skip = 0
+    } else if (skip < 0) {
+      throw new UserInputError(`'skip' must be >= 0`)
+    }
+
+    if (first == null) {
+      first = 10
+    } else if (first <= 0 || first > 30) {
+      throw new UserInputError(`'first' must be > 0 and <= 30`)
+    }
 
     return Job.query()
       .alias('j')

@@ -32,20 +32,13 @@ export const staffs = queryField('staffs', {
   type: 'Staff',
   list: true,
   args: {
-    skip: intArg(),
-    first: intArg(),
     where: arg({ type: 'StaffWhereInput' }),
     orderBy: arg({ type: 'StaffOrderByInput' })
   },
   authorize: ifUser(isAdmin),
-  async resolve(_, { skip, first, where, orderBy }) {
-    skip = skip ?? 0
-    first = first != null ? Math.min(first, 50) : 10
-
+  async resolve(_, { where, orderBy }) {
     return Staff.query()
       .alias('s')
-      .offset(skip)
-      .limit(first)
       .modify(resolveWhereInput, where, 's')
       .modify(resolveOrderByInput, orderBy, 's')
   }

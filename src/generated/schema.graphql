@@ -300,40 +300,27 @@ enum OrderByArg {
 
 type Query {
   admin(id: ID): Admin!
-  admins(
-    first: Int
-    orderBy: AdminOrderByInput
-    skip: Int
-    where: AdminWhereInput
-  ): [Admin!]!
-  companies(
-    first: Int
-    orderBy: CompanyOrderByInput
-    skip: Int
-    where: CompanyWhereInput
-  ): [Company!]!
+  admins(orderBy: AdminOrderByInput, where: AdminWhereInput): [Admin!]!
+  companies(orderBy: CompanyOrderByInput, where: CompanyWhereInput): [Company!]!
   company(id: ID!): Company!
   customer(id: ID!): Customer!
+  customerCount(where: CustomerWhereInput): Int!
   customers(
-    first: Int
+    first: Int = 10
     orderBy: CustomerOrderByInput
-    skip: Int
+    skip: Int = 0
     where: CustomerWhereInput
   ): [Customer!]!
   job(id: ID!): Job!
+  jobCount(where: JobWhereInput): Int!
   jobs(
-    first: Int
+    first: Int = 10
     orderBy: JobOrderByInput
-    skip: Int
+    skip: Int = 0
     where: JobWhereInput
   ): [Job!]!
   staff(id: ID): Staff!
-  staffs(
-    first: Int
-    orderBy: StaffOrderByInput
-    skip: Int
-    where: StaffWhereInput
-  ): [Staff!]!
+  staffs(orderBy: StaffOrderByInput, where: StaffWhereInput): [Staff!]!
 }
 
 type Staff {

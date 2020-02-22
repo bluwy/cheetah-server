@@ -15,6 +15,22 @@ import { ifUser, isAdmin } from '../utils/auth'
 import { addBaseModelFields, modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
+export const customerCount = queryField('customerCount', {
+  type: 'Int',
+  args: {
+    where: arg({ type: 'CustomerWhereInput' })
+  },
+  authorize: ifUser(isAdmin),
+  async resolve(_, { where }) {
+    const result = await Customer.query()
+      .alias('c')
+      .modify(resolveWhereInput, where, 'c')
+      .count('c.id as count')
+
+    return (result[0] as any).count
+  }
+})
+
 export const customer = queryField('customer', {
   type: 'Customer',
   args: {
@@ -30,15 +46,24 @@ export const customers = queryField('customers', {
   type: 'Customer',
   list: true,
   args: {
-    skip: intArg(),
-    first: intArg(),
+    skip: intArg({ default: 0 }),
+    first: intArg({ default: 10 }),
     where: arg({ type: 'CustomerWhereInput' }),
     orderBy: arg({ type: 'CustomerOrderByInput' })
   },
   authorize: ifUser(isAdmin),
   async resolve(_, { skip, first, where, orderBy }) {
-    skip = skip ?? 0
-    first = first != null ? Math.min(first, 50) : 10
+    if (skip == null) {
+      skip = 0
+    } else if (skip < 0) {
+      throw new UserInputError(`'skip' must be >= 0`)
+    }
+
+    if (first == null) {
+      first = 10
+    } else if (first <= 0 || first > 30) {
+      throw new UserInputError(`'first' must be > 0 and <= 30`)
+    }
 
     return Customer.query()
       .alias('c')
