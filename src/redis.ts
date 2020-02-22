@@ -9,8 +9,8 @@ import Redis from 'ioredis'
 export const redis = new Redis(process.env.REDIS_URL, { lazyConnect: true })
 
 if (process.env['LOG_REDIS']) {
-  ;(async () => {
+  redis.on('connect', async () => {
     const monitor = await redis.monitor()
     monitor.on('monitor', (_, cmd) => console.log('[REDIS]', cmd.join(' ')))
-  })()
+  })
 }
