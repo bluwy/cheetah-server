@@ -10,7 +10,7 @@ import {
 } from 'nexus'
 import { Staff } from '../models/Staff'
 import { ifUser, isAdmin, isAdminFull, isStaff } from '../utils/auth'
-import { addBaseModelFields, modelTyping } from '../utils/nexus'
+import { addBaseModelFields } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const staff = queryField('staff', {
@@ -183,13 +183,16 @@ export const logoutStaff = mutationField('logoutStaff', {
 
 export const StaffType = objectType({
   name: 'Staff',
-  rootTyping: modelTyping(Staff),
   definition(t) {
     addBaseModelFields(t)
     t.string('username')
     t.string('fullName')
     t.boolean('active')
     t.boolean('linked', root => root.deviceId != null)
+  },
+  rootTyping: {
+    path: '../models/Staff',
+    name: 'Staff'
   }
 })
 

@@ -69,12 +69,16 @@ export const deleteCompany = mutationField('deleteCompany', {
   }
 })
 
-export const CompanyObject = objectType({
+export const CompanyType = objectType({
   name: 'Company',
   definition(t) {
     addBaseModelFields(t)
     t.string('name')
     t.string('alias')
+  },
+  rootTyping: {
+    path: '../models/Company',
+    name: 'Company'
   }
 })
 

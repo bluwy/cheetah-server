@@ -7,18 +7,18 @@ import {
   intArg,
   mutationField,
   objectType,
-  queryField
+  queryField,
+  stringArg
 } from 'nexus'
 import { raw } from 'objection'
 import { Action } from '../models/Action'
-import { Assignment } from '../models/Assignment'
 import { Customer } from '../models/Customer'
-import { Job } from '../models/Job'
+import { Job, JobState } from '../models/Job'
 import { Staff } from '../models/Staff'
 import { Task, TaskType } from '../models/Task'
 import { ifUser, isAdmin, isAuthed, isStaff } from '../utils/auth'
 import { validateNonNullProps } from '../utils/common'
-import { addBaseModelFields, enumFilter, modelTyping } from '../utils/nexus'
+import { addBaseModelFields, enumFilter } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 import {
   NexusInput,
@@ -100,22 +100,16 @@ export const createJob = mutationField('createJob', {
       const job = await Job.query(trx)
         .insert({
           code,
-          customerId: data.customerId
+          address: data.address,
+          preferTime: data.preferTime,
+          customerId: data.customerId,
+          staffPrimaryId: data.staffPrimaryId,
+          staffSecondaryId: data.staffSecondaryId
         })
         .returning('*')
 
-      const assignment = await Assignment.query(trx)
-        .insert({
-          address: data.address,
-          preferTime: data.preferTime,
-          staffPrimaryId: data.staffPrimaryId,
-          staffSecondaryId: data.staffSecondaryId,
-          jobId: job.id
-        })
-        .returning('id')
-
       await Task.query(trx).insert(
-        data.tasks.map(v => ({ assignmentId: assignment.id, ...v }))
+        data.tasks.map(v => ({ jobId: job.id, ...v }))
       )
 
       return job
@@ -123,18 +117,45 @@ export const createJob = mutationField('createJob', {
   }
 })
 
-export const updateJob = mutationField('updateJob', {
+export const adminUpdateJob = mutationField('adminUpdateJob', {
   type: 'Job',
   args: {
     id: idArg({ required: true }),
-    data: arg({ type: 'JobUpdateInput', required: true })
+    data: arg({ type: 'AdminJobUpdateInput', required: true })
   },
   authorize: ifUser(isAdmin),
   async resolve(_, { id, data }) {
     return Job.query()
       .findById(id)
       .patch({
-        customerId: data.customerId ?? undefined
+        customerId: data.customerId ?? undefined,
+        address: data.address ?? undefined,
+        preferTime: data.preferTime,
+        checkIn: data.checkIn,
+        checkOut: data.checkOut,
+        staffPrimaryId: data.staffPrimaryId ?? undefined,
+        staffSecondaryId: data.staffSecondaryId,
+        state: data.state ?? undefined
+      })
+      .returning('*')
+      .first()
+  }
+})
+
+export const staffUpdateJob = mutationField('staffUpdateJob', {
+  type: 'Job',
+  args: {
+    id: idArg({ required: true }),
+    data: arg({ type: 'StaffJobUpdateInput', required: true })
+  },
+  authorize: ifUser(isStaff),
+  async resolve(_, { id, data }) {
+    return Job.query()
+      .findById(id)
+      .patch({
+        checkIn: data.checkIn,
+        checkOut: data.checkOut,
+        state: data.state ?? undefined
       })
       .returning('*')
       .first()
@@ -158,90 +179,65 @@ export const deleteJob = mutationField('deleteJob', {
   }
 })
 
-// For re-assignment
-export const createAssignment = mutationField('createAssignment', {
-  type: 'Assignment',
+export const reassignJob = mutationField('reassignJob', {
+  type: 'ReassignJobResponse',
   args: {
-    jobId: idArg({ required: true }),
-    data: arg({ type: 'AssignmentCreateInput', required: true })
+    jobCode: stringArg({ required: true }),
+    data: arg({ type: 'ReassignJobInput', required: true })
   },
   authorize: ifUser(isAdmin),
-  async resolve(_, { jobId, data }) {
-    return Assignment.transaction(async trx => {
-      const assignment = await Assignment.query(trx)
+  async resolve(_, { jobCode, data }) {
+    return Job.transaction(async trx => {
+      const oriJob = await Job.query(trx)
+        .patch({
+          state: JobState.Expired
+        })
+        .where('code', jobCode)
+        .andWhere('state', '!=', JobState.Expired)
+        .returning('*')
+        .first()
+
+      if (oriJob == null) {
+        throw new UserInputError('Invalid job code or job already expired')
+      }
+
+      const newJob = await Job.query(trx)
         .insert({
+          code: oriJob.code,
           address: data.address,
           preferTime: data.preferTime,
+          customerId: oriJob.customerId,
           staffPrimaryId: data.staffPrimaryId,
-          staffSecondaryId: data.staffSecondaryId,
-          jobId: jobId
+          staffSecondaryId: data.staffSecondaryId
         })
         .returning('*')
 
       await Task.query(trx).insert(
-        data.tasks.map(v => ({ assignmentId: assignment.id, ...v }))
+        data.tasks.map(v => ({
+          type: v.type,
+          remarks: v.remarks,
+          jobId: newJob.id
+        }))
       )
 
-      return assignment
+      return { oriJob, newJob }
     })
-  }
-})
-
-export const adminUpdateAssignment = mutationField('adminUpdateAssignment', {
-  type: 'Assignment',
-  args: {
-    id: idArg({ required: true }),
-    data: arg({ type: 'AdminAssignmentUpdateInput', required: true })
-  },
-  authorize: ifUser(isAdmin),
-  async resolve(_, { id, data }) {
-    return Assignment.query()
-      .findById(id)
-      .patch({
-        address: data.address ?? undefined,
-        preferTime: data.preferTime,
-        checkIn: data.checkIn,
-        checkOut: data.checkOut,
-        staffPrimaryId: data.staffPrimaryId ?? undefined,
-        staffSecondaryId: data.staffSecondaryId
-      })
-      .returning('*')
-      .first()
-  }
-})
-
-export const staffUpdateAssignment = mutationField('staffUpdateAssignment', {
-  type: 'Assignment',
-  args: {
-    id: idArg({ required: true }),
-    data: arg({ type: 'StaffAssignmentUpdateInput', required: true })
-  },
-  authorize: ifUser(isStaff),
-  async resolve(_, { id, data }) {
-    return Assignment.query()
-      .findById(id)
-      .patch({
-        checkIn: data.checkIn,
-        checkOut: data.checkOut
-      })
-      .returning('*')
-      .first()
   }
 })
 
 export const setTasks = mutationField('setTasks', {
   type: 'Boolean',
   args: {
-    assignmentId: idArg({ required: true }),
+    jobId: idArg({ required: true }),
     data: arg({ type: 'TaskInput', list: true, required: true })
   },
   authorize: ifUser(isAdmin),
-  async resolve(_, { assignmentId, data }) {
+  async resolve(_, { jobId, data }) {
     validateTasks(data)
 
     return Task.transaction(async trx => {
-      const tasks = await Assignment.relatedQuery('tasks', trx)
-        .for(assignmentId)
+      const tasks = await Job.relatedQuery('tasks', trx)
+        .for(jobId)
         .select('id')
 
       const taskIds = tasks.map(v => v.id)
@@ -296,7 +292,8 @@ export const setTasks = mutationField('setTasks', {
           toInsertData.map(v => ({
             type: v.type,
             remarks: v.remarks,
-            done: v.done ?? false
+            done: v.done ?? false,
+            jobId: jobId
           }))
         )
       }
@@ -330,16 +327,16 @@ export const setTasksDone = mutationField('setTasksDone', {
 export const setActions = mutationField('setActions', {
   type: 'Boolean',
   args: {
-    assignmentId: idArg({ required: true }),
+    jobId: idArg({ required: true }),
     data: arg({ type: 'ActionInput', list: true, required: true })
   },
   authorize: ifUser(isAuthed),
-  async resolve(_, { assignmentId, data }) {
+  async resolve(_, { jobId, data }) {
     validateActions(data)
 
     return Action.transaction(async trx => {
-      const actions = await Assignment.relatedQuery('actions', trx)
-        .for(assignmentId)
+      const actions = await Job.relatedQuery('actions', trx)
+        .for(jobId)
         .select('id')
 
       const actionIds = actions.map(v => v.id)
@@ -385,7 +382,8 @@ export const setActions = mutationField('setActions', {
       if (toInsertData.length > 0) {
         await Action.query(trx).insert(
           toInsertData.map(v => ({
-            remarks: v.remarks
+            remarks: v.remarks,
+            jobId: jobId
           }))
         )
       }
@@ -397,10 +395,14 @@ export const setActions = mutationField('setActions', {
 
 export const JobType = objectType({
   name: 'Job',
-  rootTyping: modelTyping(Job),
   definition(t) {
     addBaseModelFields(t)
     t.string('code')
+    t.string('address')
+    t.date('preferTime', { nullable: true })
+    t.date('checkIn', { nullable: true })
+    t.date('checkOut', { nullable: true })
+    t.field('state', { type: 'JobState', nullable: true })
     t.field('customer', {
       type: 'Customer',
       resolve: async (root, _, { dataLoaderService }) => {
@@ -409,33 +411,11 @@ export const JobType = objectType({
           .load(root)
       }
     })
-    t.field('assignments', {
-      type: 'Assignment',
-      list: true,
-      resolve: async (root, _, { dataLoaderService }) => {
-        return dataLoaderService
-          .modelRelatedLoader<Job, Assignment[]>(Job, 'assignments')
-          .load(root)
-      }
-    })
-  }
-})
-
-export const AssignmentType = objectType({
-  name: 'Assignment',
-  rootTyping: modelTyping(Assignment),
-  definition(t) {
-    addBaseModelFields(t)
-    t.string('address')
-    t.date('preferTime', { nullable: true })
-    t.date('checkIn', { nullable: true })
-    t.date('checkOut', { nullable: true })
-    t.boolean('expired')
     t.field('staffPrimary', {
       type: 'Staff',
       resolve: async (root, _, { dataLoaderService }) => {
         return dataLoaderService
-          .modelRelatedLoader<Assignment, Staff>(Assignment, 'staffPrimary')
+          .modelRelatedLoader<Job, Staff>(Job, 'staffPrimary')
           .load(root)
       }
     })
@@ -443,7 +423,7 @@ export const AssignmentType = objectType({
       type: 'Staff',
       resolve: async (root, _, { dataLoaderService }) => {
         return dataLoaderService
-          .modelRelatedLoader<Assignment, Staff>(Assignment, 'staffSecondary')
+          .modelRelatedLoader<Job, Staff>(Job, 'staffSecondary')
           .load(root)
       }
     })
@@ -452,7 +432,7 @@ export const AssignmentType = objectType({
       list: true,
       resolve: async (root, _, { dataLoaderService }) => {
         return dataLoaderService
-          .modelRelatedLoader<Assignment, Task[]>(Assignment, 'tasks')
+          .modelRelatedLoader<Job, Task[]>(Job, 'tasks')
           .load(root)
       }
     })
@@ -461,39 +441,55 @@ export const AssignmentType = objectType({
       list: true,
       resolve: async (root, _, { dataLoaderService }) => {
         return dataLoaderService
-          .modelRelatedLoader<Assignment, Action[]>(Assignment, 'actions')
+          .modelRelatedLoader<Job, Action[]>(Job, 'actions')
           .load(root)
       }
     })
+  },
+  rootTyping: {
+    path: '../models/Job',
+    name: 'Job'
   }
 })
 
 export const TaskObjectType = objectType({
   name: 'Task',
-  rootTyping: modelTyping(Task),
   definition(t) {
     addBaseModelFields(t)
     t.field('type', { type: 'TaskType' })
     t.string('remarks')
     t.boolean('done')
+  },
+  rootTyping: {
+    path: '../models/Task',
+    name: 'Task'
   }
 })
 
 export const ActionType = objectType({
   name: 'Action',
-  rootTyping: modelTyping(Action),
   definition(t) {
     addBaseModelFields(t)
     t.string('remarks')
+  },
+  rootTyping: {
+    path: '../models/Action',
+    name: 'Action'
+  }
+})
+
+export const ReassignJobResponse = objectType({
+  name: 'ReassignJobResponse',
+  definition(t) {
+    t.field('oriJob', { type: 'Job' })
+    t.field('newJob', { type: 'Job' })
   }
 })
 
 export const JobCreateInput = inputObjectType({
   name: 'JobCreateInput',
   definition(t) {
-    // Job
     t.id('customerId', { required: true })
-    // Assignment
     t.string('address', { required: true })
     t.date('preferTime')
     t.id('staffPrimaryId', { required: true })
@@ -502,41 +498,37 @@ export const JobCreateInput = inputObjectType({
   }
 })
 
-export const JobUpdateInput = inputObjectType({
-  name: 'JobUpdateInput',
+export const AdminJobUpdateInput = inputObjectType({
+  name: 'AdminJobUpdateInput',
   definition(t) {
     t.id('customerId')
-  }
-})
-
-export const AssignmentCreateInput = inputObjectType({
-  name: 'AssignmentCreateInput',
-  definition(t) {
-    t.string('address', { required: true })
-    t.date('preferTime')
-    t.id('staffPrimaryId', { required: true })
-    t.id('staffSecondaryId')
-    t.list.field('tasks', { type: 'TaskCreateInput', required: true })
-  }
-})
-
-export const AdminAssignmentUpdateInput = inputObjectType({
-  name: 'AdminAssignmentUpdateInput',
-  definition(t) {
     t.string('address')
     t.date('preferTime')
     t.date('checkIn')
     t.date('checkOut')
+    t.field('state', { type: 'JobState' })
     t.id('staffPrimaryId')
     t.id('staffSecondaryId')
   }
 })
 
-export const StaffAssignmentUpdateInput = inputObjectType({
-  name: 'StaffAssignmentUpdateInput',
+export const StaffJobUpdateInput = inputObjectType({
+  name: 'StaffJobUpdateInput',
   definition(t) {
     t.date('checkIn')
     t.date('checkOut')
+    t.field('state', { type: 'JobState' })
+  }
+})
+
+export const ReassignJobInput = inputObjectType({
+  name: 'ReassignJobInput',
+  definition(t) {
+    t.string('address', { required: true })
+    t.date('preferTime')
+    t.id('staffPrimaryId', { required: true })
+    t.id('staffSecondaryId')
+    t.list.field('tasks', { type: 'TaskCreateInput', required: true })
   }
 })
 
@@ -573,7 +565,14 @@ export const JobWhereInput = inputObjectType({
     t.list.field('OR', { type: 'JobWhereInput' })
     t.list.field('NOT', { type: 'JobWhereInput' })
     t.field('code', { type: 'StringFilter' })
+    t.field('address', { type: 'StringFilter' })
+    t.field('preferTime', { type: 'DateTimeFilter' })
+    t.field('checkIn', { type: 'DateTimeFilter' })
+    t.field('checkOut', { type: 'DateTimeFilter' })
+    t.field('state', { type: 'JobStateFilter' })
     t.field('customer', { type: 'CustomerWhereInput' })
+    t.field('staffPrimary', { type: 'StaffWhereInput' })
+    t.field('staffSecondary', { type: 'StaffWhereInput' })
   }
 })
 
@@ -581,7 +580,25 @@ export const JobOrderByInput = inputObjectType({
   name: 'JobOrderByInput',
   definition(t) {
     t.field('code', { type: 'OrderByArg' })
+    t.field('address', { type: 'OrderByArg' })
+    t.field('preferTime', { type: 'OrderByArg' })
+    t.field('checkIn', { type: 'OrderByArg' })
+    t.field('checkOut', { type: 'OrderByArg' })
+    t.field('state', { type: 'OrderByArg' })
     t.field('customer', { type: 'CustomerOrderByInput' })
+    t.field('staffPrimary', { type: 'StaffOrderByInput' })
+    t.field('staffSecondary', { type: 'StaffOrderByInput' })
+  }
+})
+
+export const JobStateFilter = enumFilter('JobState')
+
+export const JobStateEnum = enumType({
+  name: 'JobState',
+  members: Object.values(JobState),
+  rootTyping: {
+    path: '../models/Job',
+    name: 'JobState'
   }
 })
 

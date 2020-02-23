@@ -21,19 +21,21 @@ type Admin {
   username: String!
 }
 
-input AdminAssignmentUpdateInput {
-  address: String
-  checkIn: DateTime
-  checkOut: DateTime
-  preferTime: DateTime
-  staffPrimaryId: ID
-  staffSecondaryId: ID
-}
-
 input AdminCreateInput {
   password: String!
   privilege: AdminPrivilege!
   username: String!
+}
+
+input AdminJobUpdateInput {
+  address: String
+  checkIn: DateTime
+  checkOut: DateTime
+  customerId: ID
+  preferTime: DateTime
+  staffPrimaryId: ID
+  staffSecondaryId: ID
+  state: JobState
 }
 
 input AdminOrderByInput {
@@ -63,29 +65,6 @@ input AdminWhereInput {
   OR: [AdminWhereInput!]
   privilege: AdminPrivilegeFilter
   username: StringFilter
-}
-
-type Assignment {
-  actions: [Action!]!
-  address: String!
-  checkIn: DateTime
-  checkOut: DateTime
-  createdAt: DateTime!
-  expired: Boolean!
-  id: ID!
-  preferTime: DateTime
-  staffPrimary: Staff!
-  staffSecondary: Staff!
-  tasks: [Task!]!
-  updatedAt: DateTime!
-}
-
-input AssignmentCreateInput {
-  address: String!
-  preferTime: DateTime
-  staffPrimaryId: ID!
-  staffSecondaryId: ID
-  tasks: [TaskCreateInput!]!
 }
 
 input BooleanFilter {
@@ -223,11 +202,19 @@ input IntFilter {
 }
 
 type Job {
-  assignments: [Assignment!]!
+  actions: [Action!]!
+  address: String!
+  checkIn: DateTime
+  checkOut: DateTime
   code: String!
   createdAt: DateTime!
   customer: Customer!
   id: ID!
+  preferTime: DateTime
+  staffPrimary: Staff!
+  staffSecondary: Staff!
+  state: JobState
+  tasks: [Task!]!
   updatedAt: DateTime!
 }
 
@@ -241,26 +228,49 @@ input JobCreateInput {
 }
 
 input JobOrderByInput {
+  address: OrderByArg
+  checkIn: OrderByArg
+  checkOut: OrderByArg
   code: OrderByArg
   customer: CustomerOrderByInput
+  preferTime: OrderByArg
+  staffPrimary: StaffOrderByInput
+  staffSecondary: StaffOrderByInput
+  state: OrderByArg
 }
 
-input JobUpdateInput {
-  customerId: ID
+enum JobState {
+  DONE
+  EXPIRED
+  FOLLOW_UP
+  REVIEWED
+}
+
+input JobStateFilter {
+  equals: JobState
+  in: [JobState!]
+  not: JobState
+  notIn: [JobState!]
 }
 
 input JobWhereInput {
+  address: StringFilter
   AND: [JobWhereInput!]
+  checkIn: DateTimeFilter
+  checkOut: DateTimeFilter
   code: StringFilter
   customer: CustomerWhereInput
   NOT: [JobWhereInput!]
   OR: [JobWhereInput!]
+  preferTime: DateTimeFilter
+  staffPrimary: StaffWhereInput
+  staffSecondary: StaffWhereInput
+  state: JobStateFilter
 }
 
 type Mutation {
-  adminUpdateAssignment(data: AdminAssignmentUpdateInput!, id: ID!): Assignment!
+  adminUpdateJob(data: AdminJobUpdateInput!, id: ID!): Job!
   createAdmin(data: AdminCreateInput!): Admin!
-  createAssignment(data: AssignmentCreateInput!, jobId: ID!): Assignment!
   createCompany(data: CompanyCreateInput!): Company!
   createCustomer(data: CustomerCreateInput!): Customer!
   createJob(data: JobCreateInput!): Job!
@@ -275,13 +285,14 @@ type Mutation {
   loginStaff(deviceId: String!): Boolean!
   logoutAdmin: Boolean!
   logoutStaff: Boolean!
+  reassignJob(data: ReassignJobInput!, jobCode: String!): ReassignJobResponse!
   resetAdminPassword(newPassword: String!, resetToken: String!): Boolean!
   resetStaffDeviceId(id: ID!): Boolean!
   sendAdminResetPasswordEmail(username: String!): Boolean!
-  setActions(assignmentId: ID!, data: [ActionInput!]!): Boolean!
-  setTasks(assignmentId: ID!, data: [TaskInput!]!): Boolean!
+  setActions(data: [ActionInput!]!, jobId: ID!): Boolean!
+  setTasks(data: [TaskInput!]!, jobId: ID!): Boolean!
   setTasksDone(ids: [ID!]!): Boolean!
-  staffUpdateAssignment(data: StaffAssignmentUpdateInput!, id: ID!): Assignment!
+  staffUpdateJob(data: StaffJobUpdateInput!, id: ID!): Job!
   updateAdmin(data: AdminUpdateInput!, id: ID): Admin!
   updateAdminPassword(
     id: ID
@@ -289,7 +300,6 @@ type Mutation {
     oldPassword: String!
   ): Boolean!
   updateCustomer(data: CustomerUpdateInput!, id: ID!): Customer!
-  updateJob(data: JobUpdateInput!, id: ID!): Job!
   updateStaff(data: StaffUpdateInput!, id: ID): Staff!
 }
 
@@ -323,6 +333,19 @@ type Query {
   staffs(orderBy: StaffOrderByInput, where: StaffWhereInput): [Staff!]!
 }
 
+input ReassignJobInput {
+  address: String!
+  preferTime: DateTime
+  staffPrimaryId: ID!
+  staffSecondaryId: ID
+  tasks: [TaskCreateInput!]!
+}
+
+type ReassignJobResponse {
+  newJob: Job!
+  oriJob: Job!
+}
+
 type Staff {
   active: Boolean!
   createdAt: DateTime!
@@ -333,14 +356,15 @@ type Staff {
   username: String!
 }
 
-input StaffAssignmentUpdateInput {
-  checkIn: DateTime
-  checkOut: DateTime
-}
-
 input StaffCreateInput {
   fullName: String!
   username: String!
+}
+
+input StaffJobUpdateInput {
+  checkIn: DateTime
+  checkOut: DateTime
+  state: JobState
 }
 
 input StaffOrderByInput {

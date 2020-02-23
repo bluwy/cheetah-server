@@ -4,16 +4,16 @@ import { BaseModel } from './BaseModel'
 export class Action extends BaseModel {
   remarks!: string
 
-  assignmentId!: string
+  jobId!: string
 
   static tableName = 'Action'
 
   static jsonSchema: JSONSchema = {
     type: 'object',
-    required: ['remarks', 'assignmentId'],
+    required: ['remarks', 'jobId'],
     properties: {
       remarks: { type: 'string' },
-      assignmentId: { type: 'string' }
+      jobId: { type: 'string' }
     }
   }
 }

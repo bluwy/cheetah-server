@@ -12,7 +12,7 @@ import { Company } from '../models/Company'
 import { Customer } from '../models/Customer'
 import { Staff } from '../models/Staff'
 import { ifUser, isAdmin } from '../utils/auth'
-import { addBaseModelFields, modelTyping } from '../utils/nexus'
+import { addBaseModelFields } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const customerCount = queryField('customerCount', {
@@ -134,7 +134,6 @@ export const deleteCustomer = mutationField('deleteCustomer', {
 
 export const CustomerType = objectType({
   name: 'Customer',
-  rootTyping: modelTyping(Customer),
   definition(t) {
     addBaseModelFields(t)
     t.string('code')
@@ -167,6 +166,10 @@ export const CustomerType = objectType({
           .load(root)
       }
     })
+  },
+  rootTyping: {
+    path: '../models/Customer',
+    name: 'Customer'
   }
 })
 

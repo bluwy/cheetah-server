@@ -37,25 +37,6 @@ export function filterInputNonNullable<T>(
   return input
 }
 
-/**
- * Generate root typing for a model for a nexus object
- *
- * @example
- * objectType({
- *   name: 'SomeModel',
- *   rootTyping: modelTyping(SomeModel)
- * })
- */
-export function modelTyping(
-  model: typeof Model,
-  fileName?: string
-): RootTypingImport {
-  return {
-    path: `../models/${fileName ?? model.name}`,
-    name: model.name
-  }
-}
-
 type ObjectTransform<T extends object, K = keyof T> = {
   from: K
   to: string

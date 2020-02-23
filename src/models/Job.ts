@@ -1,24 +1,59 @@
 import { JSONSchema, Model, RelationMappings } from 'objection'
-import { Assignment } from './Assignment'
+import { Action } from './Action'
 import { BaseModel } from './BaseModel'
 import { Customer } from './Customer'
+import { Staff } from './Staff'
+import { Task } from './Task'
+
+// The final state should be either expired or reviewed
+export enum JobState {
+  // Done, no further action needed except to be reviewed
+  Done = 'DONE',
+  // Done but needs follow up
+  FollowUp = 'FOLLOW_UP',
+  // Job has been reassigned
+  Expired = 'EXPIRED',
+  // Admin has reviewed results
+  Reviewed = 'REVIEWED'
+}
 
 export class Job extends BaseModel {
   code!: string
+  address!: string
+  preferTime!: Date | null
+  checkIn!: Date | null
+  checkOut!: Date | null
+  state!: JobState | null
 
   customerId!: string
+  staffPrimaryId!: string
+  staffSecondaryId!: string | null
 
   customer!: Customer
-  assignments!: Assignment[]
+  staffPrimary!: Staff
+  staffSecondary!: Staff | null
+  tasks!: Task[]
+  actions!: Action[]
 
   static tableName = 'Job'
 
   static jsonSchema: JSONSchema = {
     type: 'object',
-    required: ['code', 'customerId'],
+    required: [
+      'code',
+      'address',
+      'customerId',
+      'address',
+      'staffPrimaryId',
+      'staffSecondaryId'
+    ],
     properties: {
       code: { type: 'string' },
-      customerId: { type: 'string' }
+      address: { type: 'string' },
+      state: { type: 'string', enum: Object.values(JobState) },
+      customerId: { type: 'string' },
+      staffPrimaryId: { type: 'string' },
+      staffSecondaryId: { type: 'string' }
     }
   }
 
@@ -32,12 +67,36 @@ export class Job extends BaseModel {
           to: 'Customer.id'
         }
       },
-      assignments: {
+      staffPrimary: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Staff,
+        join: {
+          from: 'Job.staffPrimaryId',
+          to: 'Staff.id'
+        }
+      },
+      staffSecondary: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Staff,
+        join: {
+          from: 'Job.staffSecondaryId',
+          to: 'Staff.id'
+        }
+      },
+      tasks: {
         relation: Model.HasManyRelation,
-        modelClass: Assignment,
+        modelClass: Task,
         join: {
           from: 'Job.id',
-          to: 'Assignment.jobId'
+          to: 'Task.jobId'
+        }
+      },
+      actions: {
+        relation: Model.HasManyRelation,
+        modelClass: Action,
+        join: {
+          from: 'Job.id',
+          to: 'Action.jobId'
         }
       }
     }

@@ -14,17 +14,18 @@ export class Task extends BaseModel {
   remarks!: string
   done!: boolean
 
-  assignmentId!: string
+  jobId!: string
 
   static tableName = 'Task'
 
   static jsonSchema: JSONSchema = {
     type: 'object',
-    required: ['type', 'remarks'],
+    required: ['type', 'remarks', 'jobId'],
     properties: {
       type: { type: 'string', enum: Object.values(TaskType) },
       remarks: { type: 'string' },
-      done: { type: 'boolean' }
+      done: { type: 'boolean' },
+      jobId: { type: 'string' }
     }
   }
 }

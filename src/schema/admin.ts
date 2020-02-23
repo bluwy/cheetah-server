@@ -12,7 +12,7 @@ import {
 import { Admin, AdminPrivilege } from '../models/Admin'
 import { ifUser, isAdmin, isAdminFull } from '../utils/auth'
 import { getEnvVar } from '../utils/common'
-import { addBaseModelFields, enumFilter, modelTyping } from '../utils/nexus'
+import { addBaseModelFields, enumFilter } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 const RESET_PASSWORD_LINK = getEnvVar('RESET_PASSWORD_LINK')
@@ -263,11 +263,14 @@ export const logoutAdmin = mutationField('logoutAdmin', {
 
 export const AdminType = objectType({
   name: 'Admin',
-  rootTyping: modelTyping(Admin),
   definition(t) {
     addBaseModelFields(t)
     t.string('username')
     t.field('privilege', { type: 'AdminPrivilege' })
+  },
+  rootTyping: {
+    path: '../models/Admin',
+    name: 'Admin'
   }
 })
 

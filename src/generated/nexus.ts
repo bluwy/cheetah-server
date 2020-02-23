@@ -5,9 +5,9 @@
 
 import * as ctx from '../context'
 import { Admin, AdminPrivilege } from '../models/Admin'
+import { Company } from '../models/Company'
 import { Customer } from '../models/Customer'
-import { Job } from '../models/Job'
-import { Assignment } from '../models/Assignment'
+import { Job, JobState } from '../models/Job'
 import { Task, TaskType } from '../models/Task'
 import { Action } from '../models/Action'
 import { Staff } from '../models/Staff'
@@ -42,20 +42,22 @@ export interface NexusGenInputs {
     id?: string | null // ID
     remarks?: string | null // String
   }
-  AdminAssignmentUpdateInput: {
-    // input type
-    address?: string | null // String
-    checkIn?: Date | null // DateTime
-    checkOut?: Date | null // DateTime
-    preferTime?: Date | null // DateTime
-    staffPrimaryId?: string | null // ID
-    staffSecondaryId?: string | null // ID
-  }
   AdminCreateInput: {
     // input type
     password: string // String!
     privilege: NexusGenEnums['AdminPrivilege'] // AdminPrivilege!
     username: string // String!
+  }
+  AdminJobUpdateInput: {
+    // input type
+    address?: string | null // String
+    checkIn?: Date | null // DateTime
+    checkOut?: Date | null // DateTime
+    customerId?: string | null // ID
+    preferTime?: Date | null // DateTime
+    staffPrimaryId?: string | null // ID
+    staffSecondaryId?: string | null // ID
+    state?: NexusGenEnums['JobState'] | null // JobState
   }
   AdminOrderByInput: {
     // input type
@@ -80,14 +82,6 @@ export interface NexusGenInputs {
     OR?: NexusGenInputs['AdminWhereInput'][] | null // [AdminWhereInput!]
     privilege?: NexusGenInputs['AdminPrivilegeFilter'] | null // AdminPrivilegeFilter
     username?: NexusGenInputs['StringFilter'] | null // StringFilter
-  }
-  AssignmentCreateInput: {
-    // input type
-    address: string // String!
-    preferTime?: Date | null // DateTime
-    staffPrimaryId: string // ID!
-    staffSecondaryId?: string | null // ID
-    tasks: NexusGenInputs['TaskCreateInput'][] // [TaskCreateInput!]!
   }
   BooleanFilter: {
     // input type
@@ -204,30 +198,56 @@ export interface NexusGenInputs {
   }
   JobOrderByInput: {
     // input type
+    address?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    checkIn?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    checkOut?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     code?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     customer?: NexusGenInputs['CustomerOrderByInput'] | null // CustomerOrderByInput
+    preferTime?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    staffPrimary?: NexusGenInputs['StaffOrderByInput'] | null // StaffOrderByInput
+    staffSecondary?: NexusGenInputs['StaffOrderByInput'] | null // StaffOrderByInput
+    state?: NexusGenEnums['OrderByArg'] | null // OrderByArg
   }
-  JobUpdateInput: {
+  JobStateFilter: {
     // input type
-    customerId?: string | null // ID
+    equals?: NexusGenEnums['JobState'] | null // JobState
+    in?: NexusGenEnums['JobState'][] | null // [JobState!]
+    not?: NexusGenEnums['JobState'] | null // JobState
+    notIn?: NexusGenEnums['JobState'][] | null // [JobState!]
   }
   JobWhereInput: {
     // input type
+    address?: NexusGenInputs['StringFilter'] | null // StringFilter
     AND?: NexusGenInputs['JobWhereInput'][] | null // [JobWhereInput!]
+    checkIn?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
+    checkOut?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     code?: NexusGenInputs['StringFilter'] | null // StringFilter
     customer?: NexusGenInputs['CustomerWhereInput'] | null // CustomerWhereInput
     NOT?: NexusGenInputs['JobWhereInput'][] | null // [JobWhereInput!]
     OR?: NexusGenInputs['JobWhereInput'][] | null // [JobWhereInput!]
+    preferTime?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
+    staffPrimary?: NexusGenInputs['StaffWhereInput'] | null // StaffWhereInput
+    staffSecondary?: NexusGenInputs['StaffWhereInput'] | null // StaffWhereInput
+    state?: NexusGenInputs['JobStateFilter'] | null // JobStateFilter
   }
-  StaffAssignmentUpdateInput: {
+  ReassignJobInput: {
     // input type
-    checkIn?: Date | null // DateTime
-    checkOut?: Date | null // DateTime
+    address: string // String!
+    preferTime?: Date | null // DateTime
+    staffPrimaryId: string // ID!
+    staffSecondaryId?: string | null // ID
+    tasks: NexusGenInputs['TaskCreateInput'][] // [TaskCreateInput!]!
   }
   StaffCreateInput: {
     // input type
     fullName: string // String!
     username: string // String!
+  }
+  StaffJobUpdateInput: {
+    // input type
+    checkIn?: Date | null // DateTime
+    checkOut?: Date | null // DateTime
+    state?: NexusGenEnums['JobState'] | null // JobState
   }
   StaffOrderByInput: {
     // input type
@@ -287,6 +307,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   AdminPrivilege: AdminPrivilege
+  JobState: JobState
   OrderByArg: 'ASC' | 'DESC'
   TaskType: TaskType
 }
@@ -294,19 +315,16 @@ export interface NexusGenEnums {
 export interface NexusGenRootTypes {
   Action: Action
   Admin: Admin
-  Assignment: Assignment
-  Company: {
-    // root type
-    alias: string // String!
-    createdAt: Date // DateTime!
-    id: string // ID!
-    name: string // String!
-    updatedAt: Date // DateTime!
-  }
+  Company: Company
   Customer: Customer
   Job: Job
   Mutation: {}
   Query: {}
+  ReassignJobResponse: {
+    // root type
+    newJob: NexusGenRootTypes['Job'] // Job!
+    oriJob: NexusGenRootTypes['Job'] // Job!
+  }
   Staff: Staff
   Task: Task
   String: string
@@ -319,13 +337,12 @@ export interface NexusGenRootTypes {
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   ActionInput: NexusGenInputs['ActionInput']
-  AdminAssignmentUpdateInput: NexusGenInputs['AdminAssignmentUpdateInput']
   AdminCreateInput: NexusGenInputs['AdminCreateInput']
+  AdminJobUpdateInput: NexusGenInputs['AdminJobUpdateInput']
   AdminOrderByInput: NexusGenInputs['AdminOrderByInput']
   AdminPrivilegeFilter: NexusGenInputs['AdminPrivilegeFilter']
   AdminUpdateInput: NexusGenInputs['AdminUpdateInput']
   AdminWhereInput: NexusGenInputs['AdminWhereInput']
-  AssignmentCreateInput: NexusGenInputs['AssignmentCreateInput']
   BooleanFilter: NexusGenInputs['BooleanFilter']
   CompanyCreateInput: NexusGenInputs['CompanyCreateInput']
   CompanyOrderByInput: NexusGenInputs['CompanyOrderByInput']
@@ -339,10 +356,11 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   IntFilter: NexusGenInputs['IntFilter']
   JobCreateInput: NexusGenInputs['JobCreateInput']
   JobOrderByInput: NexusGenInputs['JobOrderByInput']
-  JobUpdateInput: NexusGenInputs['JobUpdateInput']
+  JobStateFilter: NexusGenInputs['JobStateFilter']
   JobWhereInput: NexusGenInputs['JobWhereInput']
-  StaffAssignmentUpdateInput: NexusGenInputs['StaffAssignmentUpdateInput']
+  ReassignJobInput: NexusGenInputs['ReassignJobInput']
   StaffCreateInput: NexusGenInputs['StaffCreateInput']
+  StaffJobUpdateInput: NexusGenInputs['StaffJobUpdateInput']
   StaffOrderByInput: NexusGenInputs['StaffOrderByInput']
   StaffUpdateInput: NexusGenInputs['StaffUpdateInput']
   StaffWhereInput: NexusGenInputs['StaffWhereInput']
@@ -351,6 +369,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   TaskInput: NexusGenInputs['TaskInput']
   TaskTypeFilter: NexusGenInputs['TaskTypeFilter']
   AdminPrivilege: NexusGenEnums['AdminPrivilege']
+  JobState: NexusGenEnums['JobState']
   OrderByArg: NexusGenEnums['OrderByArg']
   TaskType: NexusGenEnums['TaskType']
 }
@@ -370,21 +389,6 @@ export interface NexusGenFieldTypes {
     privilege: NexusGenEnums['AdminPrivilege'] // AdminPrivilege!
     updatedAt: Date // DateTime!
     username: string // String!
-  }
-  Assignment: {
-    // field return type
-    actions: NexusGenRootTypes['Action'][] // [Action!]!
-    address: string // String!
-    checkIn: Date | null // DateTime
-    checkOut: Date | null // DateTime
-    createdAt: Date // DateTime!
-    expired: boolean // Boolean!
-    id: string // ID!
-    preferTime: Date | null // DateTime
-    staffPrimary: NexusGenRootTypes['Staff'] // Staff!
-    staffSecondary: NexusGenRootTypes['Staff'] // Staff!
-    tasks: NexusGenRootTypes['Task'][] // [Task!]!
-    updatedAt: Date // DateTime!
   }
   Company: {
     // field return type
@@ -411,18 +415,25 @@ export interface NexusGenFieldTypes {
   }
   Job: {
     // field return type
-    assignments: NexusGenRootTypes['Assignment'][] // [Assignment!]!
+    actions: NexusGenRootTypes['Action'][] // [Action!]!
+    address: string // String!
+    checkIn: Date | null // DateTime
+    checkOut: Date | null // DateTime
     code: string // String!
     createdAt: Date // DateTime!
     customer: NexusGenRootTypes['Customer'] // Customer!
     id: string // ID!
+    preferTime: Date | null // DateTime
+    staffPrimary: NexusGenRootTypes['Staff'] // Staff!
+    staffSecondary: NexusGenRootTypes['Staff'] // Staff!
+    state: NexusGenEnums['JobState'] | null // JobState
+    tasks: NexusGenRootTypes['Task'][] // [Task!]!
     updatedAt: Date // DateTime!
   }
   Mutation: {
     // field return type
-    adminUpdateAssignment: NexusGenRootTypes['Assignment'] // Assignment!
+    adminUpdateJob: NexusGenRootTypes['Job'] // Job!
     createAdmin: NexusGenRootTypes['Admin'] // Admin!
-    createAssignment: NexusGenRootTypes['Assignment'] // Assignment!
     createCompany: NexusGenRootTypes['Company'] // Company!
     createCustomer: NexusGenRootTypes['Customer'] // Customer!
     createJob: NexusGenRootTypes['Job'] // Job!
@@ -437,17 +448,17 @@ export interface NexusGenFieldTypes {
     loginStaff: boolean // Boolean!
     logoutAdmin: boolean // Boolean!
     logoutStaff: boolean // Boolean!
+    reassignJob: NexusGenRootTypes['ReassignJobResponse'] // ReassignJobResponse!
     resetAdminPassword: boolean // Boolean!
     resetStaffDeviceId: boolean // Boolean!
     sendAdminResetPasswordEmail: boolean // Boolean!
     setActions: boolean // Boolean!
     setTasks: boolean // Boolean!
     setTasksDone: boolean // Boolean!
-    staffUpdateAssignment: NexusGenRootTypes['Assignment'] // Assignment!
+    staffUpdateJob: NexusGenRootTypes['Job'] // Job!
     updateAdmin: NexusGenRootTypes['Admin'] // Admin!
     updateAdminPassword: boolean // Boolean!
     updateCustomer: NexusGenRootTypes['Customer'] // Customer!
-    updateJob: NexusGenRootTypes['Job'] // Job!
     updateStaff: NexusGenRootTypes['Staff'] // Staff!
   }
   Query: {
@@ -464,6 +475,11 @@ export interface NexusGenFieldTypes {
     jobs: NexusGenRootTypes['Job'][] // [Job!]!
     staff: NexusGenRootTypes['Staff'] // Staff!
     staffs: NexusGenRootTypes['Staff'][] // [Staff!]!
+  }
+  ReassignJobResponse: {
+    // field return type
+    newJob: NexusGenRootTypes['Job'] // Job!
+    oriJob: NexusGenRootTypes['Job'] // Job!
   }
   Staff: {
     // field return type
@@ -488,19 +504,14 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenArgTypes {
   Mutation: {
-    adminUpdateAssignment: {
+    adminUpdateJob: {
       // args
-      data: NexusGenInputs['AdminAssignmentUpdateInput'] // AdminAssignmentUpdateInput!
+      data: NexusGenInputs['AdminJobUpdateInput'] // AdminJobUpdateInput!
       id: string // ID!
     }
     createAdmin: {
       // args
       data: NexusGenInputs['AdminCreateInput'] // AdminCreateInput!
-    }
-    createAssignment: {
-      // args
-      data: NexusGenInputs['AssignmentCreateInput'] // AssignmentCreateInput!
-      jobId: string // ID!
     }
     createCompany: {
       // args
@@ -552,6 +563,11 @@ export interface NexusGenArgTypes {
       // args
       deviceId: string // String!
     }
+    reassignJob: {
+      // args
+      data: NexusGenInputs['ReassignJobInput'] // ReassignJobInput!
+      jobCode: string // String!
+    }
     resetAdminPassword: {
       // args
       newPassword: string // String!
@@ -567,21 +583,21 @@ export interface NexusGenArgTypes {
     }
     setActions: {
       // args
-      assignmentId: string // ID!
       data: NexusGenInputs['ActionInput'][] // [ActionInput!]!
+      jobId: string // ID!
     }
     setTasks: {
       // args
-      assignmentId: string // ID!
       data: NexusGenInputs['TaskInput'][] // [TaskInput!]!
+      jobId: string // ID!
     }
     setTasksDone: {
       // args
       ids: string[] // [ID!]!
     }
-    staffUpdateAssignment: {
+    staffUpdateJob: {
       // args
-      data: NexusGenInputs['StaffAssignmentUpdateInput'] // StaffAssignmentUpdateInput!
+      data: NexusGenInputs['StaffJobUpdateInput'] // StaffJobUpdateInput!
       id: string // ID!
     }
     updateAdmin: {
@@ -598,11 +614,6 @@ export interface NexusGenArgTypes {
     updateCustomer: {
       // args
       data: NexusGenInputs['CustomerUpdateInput'] // CustomerUpdateInput!
-      id: string // ID!
-    }
-    updateJob: {
-      // args
-      data: NexusGenInputs['JobUpdateInput'] // JobUpdateInput!
       id: string // ID!
     }
     updateStaff: {
@@ -679,24 +690,23 @@ export interface NexusGenInheritedFields {}
 export type NexusGenObjectNames =
   | 'Action'
   | 'Admin'
-  | 'Assignment'
   | 'Company'
   | 'Customer'
   | 'Job'
   | 'Mutation'
   | 'Query'
+  | 'ReassignJobResponse'
   | 'Staff'
   | 'Task'
 
 export type NexusGenInputNames =
   | 'ActionInput'
-  | 'AdminAssignmentUpdateInput'
   | 'AdminCreateInput'
+  | 'AdminJobUpdateInput'
   | 'AdminOrderByInput'
   | 'AdminPrivilegeFilter'
   | 'AdminUpdateInput'
   | 'AdminWhereInput'
-  | 'AssignmentCreateInput'
   | 'BooleanFilter'
   | 'CompanyCreateInput'
   | 'CompanyOrderByInput'
@@ -710,10 +720,11 @@ export type NexusGenInputNames =
   | 'IntFilter'
   | 'JobCreateInput'
   | 'JobOrderByInput'
-  | 'JobUpdateInput'
+  | 'JobStateFilter'
   | 'JobWhereInput'
-  | 'StaffAssignmentUpdateInput'
+  | 'ReassignJobInput'
   | 'StaffCreateInput'
+  | 'StaffJobUpdateInput'
   | 'StaffOrderByInput'
   | 'StaffUpdateInput'
   | 'StaffWhereInput'
@@ -722,7 +733,11 @@ export type NexusGenInputNames =
   | 'TaskInput'
   | 'TaskTypeFilter'
 
-export type NexusGenEnumNames = 'AdminPrivilege' | 'OrderByArg' | 'TaskType'
+export type NexusGenEnumNames =
+  | 'AdminPrivilege'
+  | 'JobState'
+  | 'OrderByArg'
+  | 'TaskType'
 
 export type NexusGenInterfaceNames = never
 
