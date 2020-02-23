@@ -3,8 +3,8 @@ import { Customer } from '../models/Customer'
 import { UserInputError } from 'apollo-server-express'
 import { Job } from '../models/Job'
 
-export const clientTimezone = +getEnvVar('CLIENT_TIMEZONE')
-export const jobCodeCountPad = +getEnvVar('JOB_CODE_COUNT_PAD')
+export const CLIENT_TIMEZONE = +getEnvVar('CLIENT_TIMEZONE')
+export const JOB_CODE_COUNT_PAD = +getEnvVar('JOB_CODE_COUNT_PAD')
 
 export class JobService {
   async genJobCode(customerId: string): Promise<string> {
@@ -13,7 +13,7 @@ export class JobService {
     const todayJobCount = await this.getTodayJobCount()
     const currentJobCount = (todayJobCount + 1)
       .toString()
-      .padStart(jobCodeCountPad, '0')
+      .padStart(JOB_CODE_COUNT_PAD, '0')
 
     return `${alias}-${ddmmyy}-${currentJobCount}`
   }
@@ -63,7 +63,7 @@ export class JobService {
     return new Date(
       Date.now() +
         new Date().getTimezoneOffset() * 1000 +
-        clientTimezone * 60 * 1000
+        CLIENT_TIMEZONE * 60 * 1000
     )
   }
 }

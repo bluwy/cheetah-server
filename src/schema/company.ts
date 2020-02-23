@@ -3,7 +3,6 @@ import {
   arg,
   idArg,
   inputObjectType,
-  intArg,
   mutationField,
   objectType,
   queryField

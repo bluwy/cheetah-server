@@ -4,7 +4,6 @@ import {
   enumType,
   idArg,
   inputObjectType,
-  intArg,
   mutationField,
   objectType,
   queryField,
@@ -16,7 +15,7 @@ import { getEnvVar } from '../utils/common'
 import { addBaseModelFields, enumFilter, modelTyping } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
-const resetPasswordLink = getEnvVar('RESET_PASSWORD_LINK')
+const RESET_PASSWORD_LINK = getEnvVar('RESET_PASSWORD_LINK')
 
 export const admin = queryField('admin', {
   type: 'Admin',
@@ -133,7 +132,7 @@ export const sendAdminResetPasswordEmail = mutationField(
       if (admin != null) {
         const resetToken = await passwordService.generateResetToken(admin.id)
 
-        const newLink = resetPasswordLink + resetToken
+        const newLink = RESET_PASSWORD_LINK + resetToken
 
         await mailService.sendResetPasswordEmail(username, newLink)
 

@@ -3,7 +3,7 @@ import { Context } from '../context'
 
 type AuthRuleFn = (ctx: Context) => boolean | Error
 
-const authBypass = process.env['AUTH_BYPASS']
+const AUTH_BYPASS = process.env.AUTH_BYPASS
 
 /** Allows using an auth rule directly on the `authorize` preperty */
 export function ifUser(fn: AuthRuleFn) {
@@ -47,5 +47,5 @@ export const isAdminFull = authRule(({ sessionService }) => {
 })
 
 function authRule(fn: AuthRuleFn): AuthRuleFn {
-  return ctx => !!authBypass || fn(ctx)
+  return ctx => !!AUTH_BYPASS || fn(ctx)
 }

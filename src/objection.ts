@@ -8,7 +8,7 @@ export const knex = Knex({
   }
 })
 
-if (process.env['LOG_QUERY']) {
+if (process.env.LOG_QUERY) {
   knex.on('query', ({ sql, bindings }) => {
     console.log('[POSTGRES]')
     console.log('SQL:', sql)
