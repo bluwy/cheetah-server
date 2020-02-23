@@ -52,8 +52,7 @@ export class JobService {
 
     const result: any = await Job.query()
       .where('createdAt', '>=', clientDawnDate)
-      .count('id')
-      .as('count')
+      .count('id as count')
       .first()
 
     return result.count

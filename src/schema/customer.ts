@@ -22,12 +22,13 @@ export const customerCount = queryField('customerCount', {
   },
   authorize: ifUser(isAdmin),
   async resolve(_, { where }) {
-    const result = await Customer.query()
+    const result: any = await Customer.query()
       .alias('c')
       .modify(resolveWhereInput, where, 'c')
       .count('c.id as count')
+      .first()
 
-    return (result[0] as any).count
+    return result.count
   }
 })
 

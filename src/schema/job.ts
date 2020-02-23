@@ -34,12 +34,13 @@ export const jobCount = queryField('jobCount', {
   },
   authorize: ifUser(isAuthed),
   async resolve(_, { where }) {
-    const result = await Job.query()
+    const result: any = await Job.query()
       .alias('j')
       .modify(resolveWhereInput, where, 'j')
       .count('j.id as count')
+      .first()
 
-    return (result[0] as any).count
+    return result.count
   }
 })
 
