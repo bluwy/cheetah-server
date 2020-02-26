@@ -270,6 +270,7 @@ input JobWhereInput {
 
 type Mutation {
   adminUpdateJob(data: AdminJobUpdateInput!, id: ID!): Job!
+  checkAdminSession: Boolean!
   createAdmin(data: AdminCreateInput!): Admin!
   createCompany(data: CompanyCreateInput!): Company!
   createCustomer(data: CustomerCreateInput!): Customer!

@@ -432,6 +432,7 @@ export interface NexusGenFieldTypes {
   Mutation: {
     // field return type
     adminUpdateJob: NexusGenRootTypes['Job'] // Job!
+    checkAdminSession: boolean // Boolean!
     createAdmin: NexusGenRootTypes['Admin'] // Admin!
     createCompany: NexusGenRootTypes['Company'] // Company!
     createCustomer: NexusGenRootTypes['Customer'] // Customer!

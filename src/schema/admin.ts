@@ -197,9 +197,7 @@ export const updateAdminPassword = mutationField('updateAdminPassword', {
     const adminId =
       id != null ? id : sessionService.getSession(true).data.userId
 
-    const admin = await Admin.query()
-      .findById(adminId)
-      .select('hash')
+    const admin = await Admin.query().findById(adminId)
 
     if (admin == null) {
       throw new UserInputError(`Admin not found with id: ${adminId}`)
@@ -212,10 +210,28 @@ export const updateAdminPassword = mutationField('updateAdminPassword', {
         .findById(adminId)
         .patch({ hash: newHash })
 
+      await sessionService.logoutAll(adminId)
+
+      // Once logout all, current session will be invalid, so issue new one
+      await sessionService.login({
+        userId: admin.id,
+        type:
+          admin.privilege === AdminPrivilege.Full ? 'ADMIN_FULL' : 'ADMIN_BASIC'
+      })
+
       return true
     }
 
     throw new AuthenticationError('Invalid password')
+  }
+})
+
+export const checkAdminSession = mutationField('checkAdminSession', {
+  type: 'Boolean',
+  async resolve(_, __, { sessionService }) {
+    const sessionType = sessionService.getSession()?.data.type
+
+    return sessionType == 'ADMIN_BASIC' || sessionType == 'ADMIN_FULL'
   }
 })
 
