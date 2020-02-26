@@ -73,30 +73,6 @@ export const createAdmin = mutationField('createAdmin', {
   }
 })
 
-export const updateAdmin = mutationField('updateAdmin', {
-  type: 'Admin',
-  args: {
-    id: idArg(),
-    data: arg({
-      type: 'AdminUpdateInput',
-      required: true
-    })
-  },
-  authorize: (_, { id }, ctx) => (id != null ? isAdminFull(ctx) : isAdmin(ctx)),
-  async resolve(_, { id, data }, { sessionService }) {
-    const adminId =
-      id != null ? id : sessionService.getSession(true).data.userId
-
-    return Admin.query()
-      .findById(adminId)
-      .patch({
-        username: data.username ?? undefined
-      })
-      .returning('*')
-      .first()
-  }
-})
-
 export const deleteAdmin = mutationField('deleteAdmin', {
   type: 'Boolean',
   args: {
@@ -296,13 +272,6 @@ export const AdminCreateInput = inputObjectType({
     t.string('username', { required: true })
     t.string('password', { required: true })
     t.field('privilege', { type: 'AdminPrivilege', required: true })
-  }
-})
-
-export const AdminUpdateInput = inputObjectType({
-  name: 'AdminUpdateInput',
-  definition(t) {
-    t.string('username')
   }
 })
 

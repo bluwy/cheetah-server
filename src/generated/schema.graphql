@@ -55,10 +55,6 @@ input AdminPrivilegeFilter {
   notIn: [AdminPrivilege!]
 }
 
-input AdminUpdateInput {
-  username: String
-}
-
 input AdminWhereInput {
   AND: [AdminWhereInput!]
   NOT: [AdminWhereInput!]
@@ -295,7 +291,6 @@ type Mutation {
   setTasks(data: [TaskInput!]!, jobId: ID!): Boolean!
   setTasksDone(ids: [ID!]!): Boolean!
   staffUpdateJob(data: StaffJobUpdateInput!, id: ID!): Job!
-  updateAdmin(data: AdminUpdateInput!, id: ID): Admin!
   updateAdminPassword(
     id: ID
     newPassword: String!

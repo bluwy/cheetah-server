@@ -71,10 +71,6 @@ export interface NexusGenInputs {
     not?: NexusGenEnums['AdminPrivilege'] | null // AdminPrivilege
     notIn?: NexusGenEnums['AdminPrivilege'][] | null // [AdminPrivilege!]
   }
-  AdminUpdateInput: {
-    // input type
-    username?: string | null // String
-  }
   AdminWhereInput: {
     // input type
     AND?: NexusGenInputs['AdminWhereInput'][] | null // [AdminWhereInput!]
@@ -340,7 +336,6 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   AdminJobUpdateInput: NexusGenInputs['AdminJobUpdateInput']
   AdminOrderByInput: NexusGenInputs['AdminOrderByInput']
   AdminPrivilegeFilter: NexusGenInputs['AdminPrivilegeFilter']
-  AdminUpdateInput: NexusGenInputs['AdminUpdateInput']
   AdminWhereInput: NexusGenInputs['AdminWhereInput']
   BooleanFilter: NexusGenInputs['BooleanFilter']
   CompanyCreateInput: NexusGenInputs['CompanyCreateInput']
@@ -457,7 +452,6 @@ export interface NexusGenFieldTypes {
     setTasks: boolean // Boolean!
     setTasksDone: boolean // Boolean!
     staffUpdateJob: NexusGenRootTypes['Job'] // Job!
-    updateAdmin: NexusGenRootTypes['Admin'] // Admin!
     updateAdminPassword: boolean // Boolean!
     updateCustomer: NexusGenRootTypes['Customer'] // Customer!
     updateStaff: NexusGenRootTypes['Staff'] // Staff!
@@ -602,11 +596,6 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['StaffJobUpdateInput'] // StaffJobUpdateInput!
       id: string // ID!
     }
-    updateAdmin: {
-      // args
-      data: NexusGenInputs['AdminUpdateInput'] // AdminUpdateInput!
-      id?: string | null // ID
-    }
     updateAdminPassword: {
       // args
       id?: string | null // ID
@@ -707,7 +696,6 @@ export type NexusGenInputNames =
   | 'AdminJobUpdateInput'
   | 'AdminOrderByInput'
   | 'AdminPrivilegeFilter'
-  | 'AdminUpdateInput'
   | 'AdminWhereInput'
   | 'BooleanFilter'
   | 'CompanyCreateInput'
