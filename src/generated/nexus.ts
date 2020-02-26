@@ -486,7 +486,7 @@ export interface NexusGenFieldTypes {
     createdAt: Date // DateTime!
     fullName: string // String!
     id: string // ID!
-    linked: boolean // Boolean!
+    paired: boolean // Boolean!
     updatedAt: Date // DateTime!
     username: string // String!
   }

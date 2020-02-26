@@ -187,7 +187,7 @@ export const StaffType = objectType({
     t.string('username')
     t.string('fullName')
     t.boolean('active')
-    t.boolean('linked', root => root.deviceId != null)
+    t.boolean('paired', root => root.deviceId != null)
   },
   rootTyping: {
     path: '../models/Staff',
