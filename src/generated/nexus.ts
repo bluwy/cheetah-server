@@ -433,6 +433,7 @@ export interface NexusGenFieldTypes {
     // field return type
     adminUpdateJob: NexusGenRootTypes['Job'] // Job!
     checkAdminSession: boolean // Boolean!
+    checkStaffSession: boolean // Boolean!
     createAdmin: NexusGenRootTypes['Admin'] // Admin!
     createCompany: NexusGenRootTypes['Company'] // Company!
     createCustomer: NexusGenRootTypes['Customer'] // Customer!
@@ -447,7 +448,7 @@ export interface NexusGenFieldTypes {
     loginStaff: boolean // Boolean!
     logoutAdmin: boolean // Boolean!
     logoutStaff: boolean // Boolean!
-    pairStaff: boolean // Boolean!
+    pairStaffAndLogin: boolean // Boolean!
     reassignJob: NexusGenRootTypes['ReassignJobResponse'] // ReassignJobResponse!
     resetAdminPassword: boolean // Boolean!
     resetStaffPairing: boolean // Boolean!
@@ -557,8 +558,9 @@ export interface NexusGenArgTypes {
     loginStaff: {
       // args
       deviceId: string // String!
+      username: string // String!
     }
-    pairStaff: {
+    pairStaffAndLogin: {
       // args
       deviceId: string // String!
       username: string // String!

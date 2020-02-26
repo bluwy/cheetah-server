@@ -108,20 +108,28 @@ export const deleteStaff = mutationField('deleteStaff', {
   }
 })
 
-export const pairStaff = mutationField('pairStaff', {
+export const pairStaffAndLogin = mutationField('pairStaffAndLogin', {
   type: 'Boolean',
   args: {
     username: stringArg({ required: true }),
     deviceId: stringArg({ required: true })
   },
-  async resolve(_, { username, deviceId }) {
-    const updateCount = await Staff.query()
+  async resolve(_, { username, deviceId }, { sessionService }) {
+    const staff = await Staff.query()
       .patch({ deviceId })
       .where('username', username)
+      .whereNotNull('deviceId')
+      .returning('id')
+      .first()
 
-    if (updateCount <= 0) {
-      throw new UserInputError('Invalid username')
+    if (staff == null) {
+      throw new UserInputError('Invalid username or already paired')
     }
+
+    await sessionService.login({
+      type: 'STAFF',
+      userId: staff.id
+    })
 
     return true
   }
@@ -133,32 +141,47 @@ export const resetStaffPairing = mutationField('resetStaffPairing', {
     id: idArg({ required: true })
   },
   authorize: ifUser(isAdminFull),
-  async resolve(_, { id }) {
-    const updateCount = await Staff.query()
+  async resolve(_, { id }, { sessionService }) {
+    const staff = await Staff.query()
       .findById(id)
       .patch({ deviceId: null })
+      .returning('id')
+      .first()
 
-    if (updateCount <= 0) {
+    if (staff == null) {
       throw new UserInputError(`Staff not found with id: ${id}`)
     }
+
+    await sessionService.logoutAll(staff.id)
 
     return true
   }
 })
 
+export const checkStaffSession = mutationField('checkStaffSession', {
+  type: 'Boolean',
+  async resolve(_, __, { sessionService }) {
+    return sessionService.getSession()?.data.type == 'STAFF'
+  }
+})
+
+// This should only be called if the user had not login for a long time
+// and session had been disconnected
 export const loginStaff = mutationField('loginStaff', {
   type: 'Boolean',
   args: {
+    username: stringArg({ required: true }),
     deviceId: stringArg({ required: true })
   },
-  async resolve(_, { deviceId }, { sessionService }) {
+  async resolve(_, { username, deviceId }, { sessionService }) {
     const staff = await Staff.query()
       .select('id')
-      .where('deviceId', deviceId)
+      .where('username', username)
+      .andWhere('deviceId', deviceId)
       .first()
 
     if (staff == null) {
-      throw new AuthenticationError(`Invalid device id`)
+      throw new AuthenticationError(`Invalid username or device id`)
     }
 
     await sessionService.login({

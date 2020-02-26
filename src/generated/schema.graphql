@@ -271,6 +271,7 @@ input JobWhereInput {
 type Mutation {
   adminUpdateJob(data: AdminJobUpdateInput!, id: ID!): Job!
   checkAdminSession: Boolean!
+  checkStaffSession: Boolean!
   createAdmin(data: AdminCreateInput!): Admin!
   createCompany(data: CompanyCreateInput!): Company!
   createCustomer(data: CustomerCreateInput!): Customer!
@@ -282,10 +283,10 @@ type Mutation {
   deleteJob(id: ID!): Boolean!
   deleteStaff(id: ID): Boolean!
   loginAdmin(password: String!, username: String!): Boolean!
-  loginStaff(deviceId: String!): Boolean!
+  loginStaff(deviceId: String!, username: String!): Boolean!
   logoutAdmin: Boolean!
   logoutStaff: Boolean!
-  pairStaff(deviceId: String!, username: String!): Boolean!
+  pairStaffAndLogin(deviceId: String!, username: String!): Boolean!
   reassignJob(data: ReassignJobInput!, jobCode: String!): ReassignJobResponse!
   resetAdminPassword(newPassword: String!, resetToken: String!): Boolean!
   resetStaffPairing(id: ID!): Boolean!
