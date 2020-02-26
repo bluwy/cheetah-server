@@ -108,7 +108,7 @@ export const deleteStaff = mutationField('deleteStaff', {
   }
 })
 
-export const linkStaffDeviceId = mutationField('linkStaffDeviceId', {
+export const pairStaff = mutationField('pairStaff', {
   type: 'Boolean',
   args: {
     username: stringArg({ required: true }),
@@ -127,7 +127,7 @@ export const linkStaffDeviceId = mutationField('linkStaffDeviceId', {
   }
 })
 
-export const resetStaffDeviceId = mutationField('resetStaffDeviceId', {
+export const resetStaffPairing = mutationField('resetStaffPairing', {
   type: 'Boolean',
   args: {
     id: idArg({ required: true })

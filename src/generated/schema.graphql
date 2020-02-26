@@ -280,14 +280,14 @@ type Mutation {
   deleteCustomer(id: ID!): Boolean!
   deleteJob(id: ID!): Boolean!
   deleteStaff(id: ID): Boolean!
-  linkStaffDeviceId(deviceId: String!, username: String!): Boolean!
   loginAdmin(password: String!, username: String!): Boolean!
   loginStaff(deviceId: String!): Boolean!
   logoutAdmin: Boolean!
   logoutStaff: Boolean!
+  pairStaff(deviceId: String!, username: String!): Boolean!
   reassignJob(data: ReassignJobInput!, jobCode: String!): ReassignJobResponse!
   resetAdminPassword(newPassword: String!, resetToken: String!): Boolean!
-  resetStaffDeviceId(id: ID!): Boolean!
+  resetStaffPairing(id: ID!): Boolean!
   sendAdminResetPasswordEmail(username: String!): Boolean!
   setActions(data: [ActionInput!]!, jobId: ID!): Boolean!
   setTasks(data: [TaskInput!]!, jobId: ID!): Boolean!

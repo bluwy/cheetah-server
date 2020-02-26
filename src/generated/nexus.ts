@@ -442,14 +442,14 @@ export interface NexusGenFieldTypes {
     deleteCustomer: boolean // Boolean!
     deleteJob: boolean // Boolean!
     deleteStaff: boolean // Boolean!
-    linkStaffDeviceId: boolean // Boolean!
     loginAdmin: boolean // Boolean!
     loginStaff: boolean // Boolean!
     logoutAdmin: boolean // Boolean!
     logoutStaff: boolean // Boolean!
+    pairStaff: boolean // Boolean!
     reassignJob: NexusGenRootTypes['ReassignJobResponse'] // ReassignJobResponse!
     resetAdminPassword: boolean // Boolean!
-    resetStaffDeviceId: boolean // Boolean!
+    resetStaffPairing: boolean // Boolean!
     sendAdminResetPasswordEmail: boolean // Boolean!
     setActions: boolean // Boolean!
     setTasks: boolean // Boolean!
@@ -548,11 +548,6 @@ export interface NexusGenArgTypes {
       // args
       id?: string | null // ID
     }
-    linkStaffDeviceId: {
-      // args
-      deviceId: string // String!
-      username: string // String!
-    }
     loginAdmin: {
       // args
       password: string // String!
@@ -561,6 +556,11 @@ export interface NexusGenArgTypes {
     loginStaff: {
       // args
       deviceId: string // String!
+    }
+    pairStaff: {
+      // args
+      deviceId: string // String!
+      username: string // String!
     }
     reassignJob: {
       // args
@@ -572,7 +572,7 @@ export interface NexusGenArgTypes {
       newPassword: string // String!
       resetToken: string // String!
     }
-    resetStaffDeviceId: {
+    resetStaffPairing: {
       // args
       id: string // ID!
     }
