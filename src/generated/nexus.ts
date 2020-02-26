@@ -259,7 +259,6 @@ export interface NexusGenInputs {
     // input type
     active?: boolean | null // Boolean
     fullName?: string | null // String
-    username?: string | null // String
   }
   StaffWhereInput: {
     // input type

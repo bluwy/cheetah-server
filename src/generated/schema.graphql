@@ -376,7 +376,6 @@ input StaffOrderByInput {
 input StaffUpdateInput {
   active: Boolean
   fullName: String
-  username: String
 }
 
 input StaffWhereInput {

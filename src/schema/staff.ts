@@ -80,7 +80,6 @@ export const updateStaff = mutationField('updateStaff', {
     return Staff.query()
       .findById(staffId)
       .patch({
-        username: data.username ?? undefined,
         fullName: data.fullName ?? undefined,
         active: data.active ?? undefined
       })
@@ -207,7 +206,6 @@ export const StaffCreateInput = inputObjectType({
 export const StaffUpdateInput = inputObjectType({
   name: 'StaffUpdateInput',
   definition(t) {
-    t.string('username')
     t.string('fullName')
     t.boolean('active')
   }
