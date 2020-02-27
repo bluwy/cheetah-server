@@ -1,4 +1,5 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express'
+import { merge } from 'lodash'
 import {
   arg,
   enumType,
@@ -16,6 +17,28 @@ import { addBaseModelFields, enumFilter } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 const RESET_PASSWORD_LINK = getEnvVar('RESET_PASSWORD_LINK')
+
+export const adminCount = queryField('adminCount', {
+  type: 'Int',
+  args: {
+    query: stringArg(),
+    where: arg({ type: 'AdminWhereInput' })
+  },
+  authorize: ifUser(isAdminFull),
+  async resolve(_, { query, where }) {
+    if (query) {
+      merge(where, queryToWhereInput(query))
+    }
+
+    const result: any = await Admin.query()
+      .alias('a')
+      .modify(resolveWhereInput, where, 'a')
+      .count('a.id as count')
+      .first()
+
+    return result.count
+  }
+})
 
 export const admin = queryField('admin', {
   type: 'Admin',
@@ -35,11 +58,16 @@ export const admins = queryField('admins', {
   type: 'Admin',
   list: true,
   args: {
+    query: stringArg(),
     where: arg({ type: 'AdminWhereInput' }),
     orderBy: arg({ type: 'AdminOrderByInput' })
   },
   authorize: ifUser(isAdminFull),
-  async resolve(_, { where, orderBy }) {
+  async resolve(_, { query, where, orderBy }) {
+    if (query) {
+      merge(where, queryToWhereInput(query))
+    }
+
     return Admin.query()
       .alias('a')
       .modify(resolveWhereInput, where, 'a')
@@ -304,3 +332,9 @@ export const AdminPrivilegeEnum = enumType({
     name: 'AdminPrivilege'
   }
 })
+
+function queryToWhereInput(query: string) {
+  return {
+    username: { contains: query }
+  }
+}

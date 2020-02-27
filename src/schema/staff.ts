@@ -1,4 +1,5 @@
 import { AuthenticationError, UserInputError } from 'apollo-server-express'
+import { merge } from 'lodash'
 import {
   arg,
   idArg,
@@ -12,6 +13,28 @@ import { Staff } from '../models/Staff'
 import { ifUser, isAdmin, isAdminFull, isStaff } from '../utils/auth'
 import { addBaseModelFields } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
+
+export const staffCount = queryField('staffCount', {
+  type: 'Int',
+  args: {
+    query: stringArg(),
+    where: arg({ type: 'StaffWhereInput' })
+  },
+  authorize: ifUser(isAdmin),
+  async resolve(_, { query, where }) {
+    if (query) {
+      merge(where, queryToWhereInput(query))
+    }
+
+    const result: any = await Staff.query()
+      .alias('s')
+      .modify(resolveWhereInput, where, 's')
+      .count('s.id as count')
+      .first()
+
+    return result.count
+  }
+})
 
 export const staff = queryField('staff', {
   type: 'Staff',
@@ -31,11 +54,16 @@ export const staffs = queryField('staffs', {
   type: 'Staff',
   list: true,
   args: {
+    query: stringArg(),
     where: arg({ type: 'StaffWhereInput' }),
     orderBy: arg({ type: 'StaffOrderByInput' })
   },
   authorize: ifUser(isAdmin),
-  async resolve(_, { where, orderBy }) {
+  async resolve(_, { query, where, orderBy }) {
+    if (query) {
+      merge(where, queryToWhereInput(query))
+    }
+
     return Staff.query()
       .alias('s')
       .modify(resolveWhereInput, where, 's')
@@ -254,3 +282,10 @@ export const StaffOrderByInput = inputObjectType({
     t.field('active', { type: 'OrderByArg' })
   }
 })
+
+function queryToWhereInput(query: string) {
+  return {
+    username: { contains: query },
+    fullName: { contains: query }
+  }
+}

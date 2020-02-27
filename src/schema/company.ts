@@ -1,16 +1,40 @@
 import { UserInputError } from 'apollo-server-express'
+import { merge } from 'lodash'
 import {
   arg,
   idArg,
   inputObjectType,
   mutationField,
   objectType,
-  queryField
+  queryField,
+  stringArg
 } from 'nexus'
 import { Company } from '../models/Company'
 import { ifUser, isAdmin, isAdminFull } from '../utils/auth'
 import { addBaseModelFields } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
+
+export const companyCount = queryField('companyCount', {
+  type: 'Int',
+  args: {
+    query: stringArg(),
+    where: arg({ type: 'CompanyWhereInput' })
+  },
+  authorize: ifUser(isAdmin),
+  async resolve(_, { query, where }) {
+    if (query) {
+      merge(where, queryToWhereInput(query))
+    }
+
+    const result: any = await Company.query()
+      .alias('c')
+      .modify(resolveWhereInput, where, 'c')
+      .count('c.id as count')
+      .first()
+
+    return result.count
+  }
+})
 
 export const company = queryField('company', {
   type: 'Company',
@@ -27,11 +51,16 @@ export const companies = queryField('companies', {
   type: 'Company',
   list: true,
   args: {
+    query: stringArg(),
     where: arg({ type: 'CompanyWhereInput' }),
     orderBy: arg({ type: 'CompanyOrderByInput' })
   },
   authorize: ifUser(isAdmin),
-  async resolve(_, { where, orderBy }) {
+  async resolve(_, { query, where, orderBy }) {
+    if (query) {
+      merge(where, queryToWhereInput(query))
+    }
+
     return Company.query()
       .alias('c')
       .modify(resolveWhereInput, where, 'c')
@@ -108,3 +137,10 @@ export const CompanyOrderByInput = inputObjectType({
     t.field('alias', { type: 'OrderByArg' })
   }
 })
+
+function queryToWhereInput(query: string) {
+  return {
+    name: { contains: query },
+    alias: { contains: query }
+  }
+}

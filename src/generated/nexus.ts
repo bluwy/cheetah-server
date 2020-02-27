@@ -459,9 +459,11 @@ export interface NexusGenFieldTypes {
   Query: {
     // field return type
     admin: NexusGenRootTypes['Admin'] // Admin!
+    adminCount: number // Int!
     admins: NexusGenRootTypes['Admin'][] // [Admin!]!
     companies: NexusGenRootTypes['Company'][] // [Company!]!
     company: NexusGenRootTypes['Company'] // Company!
+    companyCount: number // Int!
     customer: NexusGenRootTypes['Customer'] // Customer!
     customerCount: number // Int!
     customers: NexusGenRootTypes['Customer'][] // [Customer!]!
@@ -469,6 +471,7 @@ export interface NexusGenFieldTypes {
     jobCount: number // Int!
     jobs: NexusGenRootTypes['Job'][] // [Job!]!
     staff: NexusGenRootTypes['Staff'] // Staff!
+    staffCount: number // Int!
     staffs: NexusGenRootTypes['Staff'][] // [Staff!]!
   }
   ReassignJobResponse: {
@@ -618,19 +621,31 @@ export interface NexusGenArgTypes {
       // args
       id?: string | null // ID
     }
+    adminCount: {
+      // args
+      query?: string | null // String
+      where?: NexusGenInputs['AdminWhereInput'] | null // AdminWhereInput
+    }
     admins: {
       // args
       orderBy?: NexusGenInputs['AdminOrderByInput'] | null // AdminOrderByInput
+      query?: string | null // String
       where?: NexusGenInputs['AdminWhereInput'] | null // AdminWhereInput
     }
     companies: {
       // args
       orderBy?: NexusGenInputs['CompanyOrderByInput'] | null // CompanyOrderByInput
+      query?: string | null // String
       where?: NexusGenInputs['CompanyWhereInput'] | null // CompanyWhereInput
     }
     company: {
       // args
       id: string // ID!
+    }
+    companyCount: {
+      // args
+      query?: string | null // String
+      where?: NexusGenInputs['CompanyWhereInput'] | null // CompanyWhereInput
     }
     customer: {
       // args
@@ -638,12 +653,14 @@ export interface NexusGenArgTypes {
     }
     customerCount: {
       // args
+      query?: string | null // String
       where?: NexusGenInputs['CustomerWhereInput'] | null // CustomerWhereInput
     }
     customers: {
       // args
       first?: number | null // Int
       orderBy?: NexusGenInputs['CustomerOrderByInput'] | null // CustomerOrderByInput
+      query?: string | null // String
       skip?: number | null // Int
       where?: NexusGenInputs['CustomerWhereInput'] | null // CustomerWhereInput
     }
@@ -653,12 +670,14 @@ export interface NexusGenArgTypes {
     }
     jobCount: {
       // args
+      query?: string | null // String
       where?: NexusGenInputs['JobWhereInput'] | null // JobWhereInput
     }
     jobs: {
       // args
       first?: number | null // Int
       orderBy?: NexusGenInputs['JobOrderByInput'] | null // JobOrderByInput
+      query?: string | null // String
       skip?: number | null // Int
       where?: NexusGenInputs['JobWhereInput'] | null // JobWhereInput
     }
@@ -666,9 +685,15 @@ export interface NexusGenArgTypes {
       // args
       id?: string | null // ID
     }
+    staffCount: {
+      // args
+      query?: string | null // String
+      where?: NexusGenInputs['StaffWhereInput'] | null // StaffWhereInput
+    }
     staffs: {
       // args
       orderBy?: NexusGenInputs['StaffOrderByInput'] | null // StaffOrderByInput
+      query?: string | null // String
       where?: NexusGenInputs['StaffWhereInput'] | null // StaffWhereInput
     }
   }

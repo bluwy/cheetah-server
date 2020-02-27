@@ -307,27 +307,44 @@ enum OrderByArg {
 
 type Query {
   admin(id: ID): Admin!
-  admins(orderBy: AdminOrderByInput, where: AdminWhereInput): [Admin!]!
-  companies(orderBy: CompanyOrderByInput, where: CompanyWhereInput): [Company!]!
+  adminCount(query: String, where: AdminWhereInput): Int!
+  admins(
+    orderBy: AdminOrderByInput
+    query: String
+    where: AdminWhereInput
+  ): [Admin!]!
+  companies(
+    orderBy: CompanyOrderByInput
+    query: String
+    where: CompanyWhereInput
+  ): [Company!]!
   company(id: ID!): Company!
+  companyCount(query: String, where: CompanyWhereInput): Int!
   customer(id: ID!): Customer!
-  customerCount(where: CustomerWhereInput): Int!
+  customerCount(query: String, where: CustomerWhereInput): Int!
   customers(
     first: Int = 10
     orderBy: CustomerOrderByInput
+    query: String
     skip: Int = 0
     where: CustomerWhereInput
   ): [Customer!]!
   job(id: ID!): Job!
-  jobCount(where: JobWhereInput): Int!
+  jobCount(query: String, where: JobWhereInput): Int!
   jobs(
     first: Int = 10
     orderBy: JobOrderByInput
+    query: String
     skip: Int = 0
     where: JobWhereInput
   ): [Job!]!
   staff(id: ID): Staff!
-  staffs(orderBy: StaffOrderByInput, where: StaffWhereInput): [Staff!]!
+  staffCount(query: String, where: StaffWhereInput): Int!
+  staffs(
+    orderBy: StaffOrderByInput
+    query: String
+    where: StaffWhereInput
+  ): [Staff!]!
 }
 
 input ReassignJobInput {

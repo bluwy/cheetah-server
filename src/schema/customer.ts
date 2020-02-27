@@ -1,4 +1,5 @@
 import { UserInputError } from 'apollo-server-express'
+import { merge } from 'lodash'
 import {
   arg,
   idArg,
@@ -6,7 +7,8 @@ import {
   intArg,
   mutationField,
   objectType,
-  queryField
+  queryField,
+  stringArg
 } from 'nexus'
 import { Company } from '../models/Company'
 import { Customer } from '../models/Customer'
@@ -18,10 +20,15 @@ import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 export const customerCount = queryField('customerCount', {
   type: 'Int',
   args: {
+    query: stringArg(),
     where: arg({ type: 'CustomerWhereInput' })
   },
   authorize: ifUser(isAdmin),
-  async resolve(_, { where }) {
+  async resolve(_, { query, where }) {
+    if (query) {
+      merge(where, queryToWhereInput(query))
+    }
+
     const result: any = await Customer.query()
       .alias('c')
       .modify(resolveWhereInput, where, 'c')
@@ -49,11 +56,12 @@ export const customers = queryField('customers', {
   args: {
     skip: intArg({ default: 0 }),
     first: intArg({ default: 10 }),
+    query: stringArg(),
     where: arg({ type: 'CustomerWhereInput' }),
     orderBy: arg({ type: 'CustomerOrderByInput' })
   },
   authorize: ifUser(isAdmin),
-  async resolve(_, { skip, first, where, orderBy }) {
+  async resolve(_, { skip, first, query, where, orderBy }) {
     if (skip == null) {
       skip = 0
     } else if (skip < 0) {
@@ -64,6 +72,10 @@ export const customers = queryField('customers', {
       first = 10
     } else if (first <= 0 || first > 30) {
       throw new UserInputError(`'first' must be > 0 and <= 30`)
+    }
+
+    if (query) {
+      merge(where, queryToWhereInput(query))
     }
 
     return Customer.query()
@@ -232,3 +244,12 @@ export const CustomerOrderByInput = inputObjectType({
     t.field('staffSecondary', { type: 'StaffOrderByInput' })
   }
 })
+
+function queryToWhereInput(query: string) {
+  return {
+    code: { contains: query },
+    name: { contains: query },
+    email: { contains: query },
+    phoneNumber: { contains: query }
+  }
+}

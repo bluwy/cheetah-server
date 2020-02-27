@@ -1,4 +1,5 @@
 import { UserInputError } from 'apollo-server-express'
+import { merge } from 'lodash'
 import {
   arg,
   enumType,
@@ -30,10 +31,15 @@ import {
 export const jobCount = queryField('jobCount', {
   type: 'Int',
   args: {
+    query: stringArg(),
     where: arg({ type: 'JobWhereInput' })
   },
   authorize: ifUser(isAuthed),
-  async resolve(_, { where }) {
+  async resolve(_, { query, where }) {
+    if (query) {
+      merge(where, queryToWhereInput(query))
+    }
+
     const result: any = await Job.query()
       .alias('j')
       .modify(resolveWhereInput, where, 'j')
@@ -61,11 +67,12 @@ export const jobs = queryField('jobs', {
   args: {
     skip: intArg({ default: 0 }),
     first: intArg({ default: 10 }),
+    query: stringArg(),
     where: arg({ type: 'JobWhereInput' }),
     orderBy: arg({ type: 'JobOrderByInput' })
   },
   authorize: ifUser(isAuthed),
-  async resolve(_, { skip, first, where, orderBy }) {
+  async resolve(_, { skip, first, query, where, orderBy }) {
     if (skip == null) {
       skip = 0
     } else if (skip < 0) {
@@ -76,6 +83,10 @@ export const jobs = queryField('jobs', {
       first = 10
     } else if (first <= 0 || first > 30) {
       throw new UserInputError(`'first' must be > 0 and <= 30`)
+    }
+
+    if (query) {
+      merge(where, queryToWhereInput(query))
     }
 
     return Job.query()
@@ -612,6 +623,13 @@ export const TaskTypeEnum = enumType({
     name: 'TaskType'
   }
 })
+
+function queryToWhereInput(query: string) {
+  return {
+    code: { contains: query },
+    address: { contains: query }
+  }
+}
 
 type TaskInput = NexusInput<'TaskInput'>
 type InsertTaskInput = RequiredRecordBy<
