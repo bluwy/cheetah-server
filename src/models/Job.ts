@@ -20,7 +20,7 @@ export enum JobState {
 export class Job extends BaseModel {
   code!: string
   address!: string
-  preferTime!: Date | null
+  startDate!: Date
   checkIn!: Date | null
   checkOut!: Date | null
   state!: JobState | null
@@ -39,14 +39,7 @@ export class Job extends BaseModel {
 
   static jsonSchema: JSONSchema = {
     type: 'object',
-    required: [
-      'code',
-      'address',
-      'customerId',
-      'address',
-      'staffPrimaryId',
-      'staffSecondaryId'
-    ],
+    required: ['code', 'address', 'startDate', 'customerId', 'staffPrimaryId'],
     properties: {
       code: { type: 'string' },
       address: { type: 'string' },

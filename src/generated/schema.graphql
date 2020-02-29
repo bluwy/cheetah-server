@@ -32,9 +32,9 @@ input AdminJobUpdateInput {
   checkIn: DateTime
   checkOut: DateTime
   customerId: ID
-  preferTime: DateTime
   staffPrimaryId: ID
   staffSecondaryId: ID
+  startDate: DateTime
   state: JobState
 }
 
@@ -206,9 +206,9 @@ type Job {
   createdAt: DateTime!
   customer: Customer!
   id: ID!
-  preferTime: DateTime
   staffPrimary: Staff!
   staffSecondary: Staff!
+  startDate: DateTime!
   state: JobState
   tasks: [Task!]!
   updatedAt: DateTime!
@@ -217,9 +217,9 @@ type Job {
 input JobCreateInput {
   address: String!
   customerId: ID!
-  preferTime: DateTime
   staffPrimaryId: ID!
   staffSecondaryId: ID
+  startDate: DateTime!
   tasks: [TaskCreateInput!]!
 }
 
@@ -229,9 +229,9 @@ input JobOrderByInput {
   checkOut: OrderByArg
   code: OrderByArg
   customer: CustomerOrderByInput
-  preferTime: OrderByArg
   staffPrimary: StaffOrderByInput
   staffSecondary: StaffOrderByInput
+  startDate: OrderByArg
   state: OrderByArg
 }
 
@@ -258,9 +258,9 @@ input JobWhereInput {
   customer: CustomerWhereInput
   NOT: [JobWhereInput!]
   OR: [JobWhereInput!]
-  preferTime: DateTimeFilter
   staffPrimary: StaffWhereInput
   staffSecondary: StaffWhereInput
+  startDate: DateTimeFilter
   state: JobStateFilter
 }
 
@@ -349,9 +349,9 @@ type Query {
 
 input ReassignJobInput {
   address: String!
-  preferTime: DateTime
   staffPrimaryId: ID!
   staffSecondaryId: ID
+  startDate: DateTime!
   tasks: [TaskCreateInput!]!
 }
 

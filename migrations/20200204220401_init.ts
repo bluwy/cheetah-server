@@ -79,7 +79,7 @@ export async function up(knex: Knex): Promise<void> {
       // Not unique for job reassignments
       t.text('code').notNullable()
       t.text('address').notNullable()
-      t.dateTime('preferTime')
+      t.dateTime('startDate').notNullable()
       t.dateTime('checkIn')
       t.dateTime('checkOut')
       t.string('state')

@@ -54,9 +54,9 @@ export interface NexusGenInputs {
     checkIn?: Date | null // DateTime
     checkOut?: Date | null // DateTime
     customerId?: string | null // ID
-    preferTime?: Date | null // DateTime
     staffPrimaryId?: string | null // ID
     staffSecondaryId?: string | null // ID
+    startDate?: Date | null // DateTime
     state?: NexusGenEnums['JobState'] | null // JobState
   }
   AdminOrderByInput: {
@@ -187,9 +187,9 @@ export interface NexusGenInputs {
     // input type
     address: string // String!
     customerId: string // ID!
-    preferTime?: Date | null // DateTime
     staffPrimaryId: string // ID!
     staffSecondaryId?: string | null // ID
+    startDate: Date // DateTime!
     tasks: NexusGenInputs['TaskCreateInput'][] // [TaskCreateInput!]!
   }
   JobOrderByInput: {
@@ -199,9 +199,9 @@ export interface NexusGenInputs {
     checkOut?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     code?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     customer?: NexusGenInputs['CustomerOrderByInput'] | null // CustomerOrderByInput
-    preferTime?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     staffPrimary?: NexusGenInputs['StaffOrderByInput'] | null // StaffOrderByInput
     staffSecondary?: NexusGenInputs['StaffOrderByInput'] | null // StaffOrderByInput
+    startDate?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     state?: NexusGenEnums['OrderByArg'] | null // OrderByArg
   }
   JobStateFilter: {
@@ -221,17 +221,17 @@ export interface NexusGenInputs {
     customer?: NexusGenInputs['CustomerWhereInput'] | null // CustomerWhereInput
     NOT?: NexusGenInputs['JobWhereInput'][] | null // [JobWhereInput!]
     OR?: NexusGenInputs['JobWhereInput'][] | null // [JobWhereInput!]
-    preferTime?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     staffPrimary?: NexusGenInputs['StaffWhereInput'] | null // StaffWhereInput
     staffSecondary?: NexusGenInputs['StaffWhereInput'] | null // StaffWhereInput
+    startDate?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     state?: NexusGenInputs['JobStateFilter'] | null // JobStateFilter
   }
   ReassignJobInput: {
     // input type
     address: string // String!
-    preferTime?: Date | null // DateTime
     staffPrimaryId: string // ID!
     staffSecondaryId?: string | null // ID
+    startDate: Date // DateTime!
     tasks: NexusGenInputs['TaskCreateInput'][] // [TaskCreateInput!]!
   }
   StaffCreateInput: {
@@ -417,9 +417,9 @@ export interface NexusGenFieldTypes {
     createdAt: Date // DateTime!
     customer: NexusGenRootTypes['Customer'] // Customer!
     id: string // ID!
-    preferTime: Date | null // DateTime
     staffPrimary: NexusGenRootTypes['Staff'] // Staff!
     staffSecondary: NexusGenRootTypes['Staff'] // Staff!
+    startDate: Date // DateTime!
     state: NexusGenEnums['JobState'] | null // JobState
     tasks: NexusGenRootTypes['Task'][] // [Task!]!
     updatedAt: Date // DateTime!

@@ -112,7 +112,7 @@ export const createJob = mutationField('createJob', {
         .insert({
           code,
           address: data.address,
-          preferTime: data.preferTime,
+          startDate: data.startDate,
           customerId: data.customerId,
           staffPrimaryId: data.staffPrimaryId,
           staffSecondaryId: data.staffSecondaryId
@@ -141,7 +141,7 @@ export const adminUpdateJob = mutationField('adminUpdateJob', {
       .patch({
         customerId: data.customerId ?? undefined,
         address: data.address ?? undefined,
-        preferTime: data.preferTime,
+        startDate: data.startDate ?? undefined,
         checkIn: data.checkIn,
         checkOut: data.checkOut,
         staffPrimaryId: data.staffPrimaryId ?? undefined,
@@ -216,7 +216,7 @@ export const reassignJob = mutationField('reassignJob', {
         .insert({
           code: oriJob.code,
           address: data.address,
-          preferTime: data.preferTime,
+          startDate: data.startDate,
           customerId: oriJob.customerId,
           staffPrimaryId: data.staffPrimaryId,
           staffSecondaryId: data.staffSecondaryId
@@ -410,7 +410,7 @@ export const JobType = objectType({
     addBaseModelFields(t)
     t.string('code')
     t.string('address')
-    t.date('preferTime', { nullable: true })
+    t.date('startDate')
     t.date('checkIn', { nullable: true })
     t.date('checkOut', { nullable: true })
     t.field('state', { type: 'JobState', nullable: true })
@@ -502,7 +502,7 @@ export const JobCreateInput = inputObjectType({
   definition(t) {
     t.id('customerId', { required: true })
     t.string('address', { required: true })
-    t.date('preferTime')
+    t.date('startDate', { required: true })
     t.id('staffPrimaryId', { required: true })
     t.id('staffSecondaryId')
     t.list.field('tasks', { type: 'TaskCreateInput', required: true })
@@ -514,7 +514,7 @@ export const AdminJobUpdateInput = inputObjectType({
   definition(t) {
     t.id('customerId')
     t.string('address')
-    t.date('preferTime')
+    t.date('startDate')
     t.date('checkIn')
     t.date('checkOut')
     t.field('state', { type: 'JobState' })
@@ -536,7 +536,7 @@ export const ReassignJobInput = inputObjectType({
   name: 'ReassignJobInput',
   definition(t) {
     t.string('address', { required: true })
-    t.date('preferTime')
+    t.date('startDate', { required: true })
     t.id('staffPrimaryId', { required: true })
     t.id('staffSecondaryId')
     t.list.field('tasks', { type: 'TaskCreateInput', required: true })
@@ -577,7 +577,7 @@ export const JobWhereInput = inputObjectType({
     t.list.field('NOT', { type: 'JobWhereInput' })
     t.field('code', { type: 'StringFilter' })
     t.field('address', { type: 'StringFilter' })
-    t.field('preferTime', { type: 'DateTimeFilter' })
+    t.field('startDate', { type: 'DateTimeFilter' })
     t.field('checkIn', { type: 'DateTimeFilter' })
     t.field('checkOut', { type: 'DateTimeFilter' })
     t.field('state', { type: 'JobStateFilter' })
@@ -592,7 +592,7 @@ export const JobOrderByInput = inputObjectType({
   definition(t) {
     t.field('code', { type: 'OrderByArg' })
     t.field('address', { type: 'OrderByArg' })
-    t.field('preferTime', { type: 'OrderByArg' })
+    t.field('startDate', { type: 'OrderByArg' })
     t.field('checkIn', { type: 'OrderByArg' })
     t.field('checkOut', { type: 'OrderByArg' })
     t.field('state', { type: 'OrderByArg' })
