@@ -283,7 +283,7 @@ type Mutation {
   logoutAdmin: Boolean!
   logoutStaff: Boolean!
   pairStaffAndLogin(deviceId: String!, username: String!): Boolean!
-  reassignJob(data: ReassignJobInput!, jobCode: String!): ReassignJobResponse!
+  reassignJob(data: ReassignJobInput!, id: ID!): ReassignJobResponse!
   resetAdminPassword(newPassword: String!, resetToken: String!): Boolean!
   resetStaffPairing(id: ID!): Boolean!
   sendAdminResetPasswordEmail(username: String!): Boolean!

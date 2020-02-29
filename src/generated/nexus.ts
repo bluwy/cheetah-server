@@ -565,7 +565,7 @@ export interface NexusGenArgTypes {
     reassignJob: {
       // args
       data: NexusGenInputs['ReassignJobInput'] // ReassignJobInput!
-      jobCode: string // String!
+      id: string // ID!
     }
     resetAdminPassword: {
       // args

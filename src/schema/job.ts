@@ -193,23 +193,23 @@ export const deleteJob = mutationField('deleteJob', {
 export const reassignJob = mutationField('reassignJob', {
   type: 'ReassignJobResponse',
   args: {
-    jobCode: stringArg({ required: true }),
+    id: idArg({ required: true }),
     data: arg({ type: 'ReassignJobInput', required: true })
   },
   authorize: ifUser(isAdmin),
-  async resolve(_, { jobCode, data }) {
+  async resolve(_, { id, data }) {
     return Job.transaction(async trx => {
       const oriJob = await Job.query(trx)
+        .findById(id)
         .patch({
           state: JobState.Expired
         })
-        .where('code', jobCode)
-        .andWhere('state', '!=', JobState.Expired)
+        .where('state', '!=', JobState.Expired)
         .returning('*')
         .first()
 
       if (oriJob == null) {
-        throw new UserInputError('Invalid job code or job already expired')
+        throw new UserInputError('Invalid job id or job already expired')
       }
 
       const newJob = await Job.query(trx)
