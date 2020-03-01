@@ -447,11 +447,12 @@ export interface NexusGenFieldTypes {
     reassignJob: NexusGenRootTypes['ReassignJobResponse'] // ReassignJobResponse!
     resetAdminPassword: boolean // Boolean!
     resetStaffPairing: boolean // Boolean!
-    sendAdminResetPasswordEmail: boolean // Boolean!
     setActions: boolean // Boolean!
     setTasks: boolean // Boolean!
     setTasksDone: boolean // Boolean!
     staffUpdateJob: NexusGenRootTypes['Job'] // Job!
+    sudoCreateAdmin: NexusGenRootTypes['Admin'] // Admin!
+    sudoGenAdminResetPasswordLink: string // String!
     updateAdminPassword: boolean // Boolean!
     updateCustomer: NexusGenRootTypes['Customer'] // Customer!
     updateStaff: NexusGenRootTypes['Staff'] // Staff!
@@ -576,10 +577,6 @@ export interface NexusGenArgTypes {
       // args
       id: string // ID!
     }
-    sendAdminResetPasswordEmail: {
-      // args
-      username: string // String!
-    }
     setActions: {
       // args
       data: NexusGenInputs['ActionInput'][] // [ActionInput!]!
@@ -598,6 +595,16 @@ export interface NexusGenArgTypes {
       // args
       data: NexusGenInputs['StaffJobUpdateInput'] // StaffJobUpdateInput!
       id: string // ID!
+    }
+    sudoCreateAdmin: {
+      // args
+      data: NexusGenInputs['AdminCreateInput'] // AdminCreateInput!
+      sudoPassword: string // String!
+    }
+    sudoGenAdminResetPasswordLink: {
+      // args
+      sudoPassword: string // String!
+      username: string // String!
     }
     updateAdminPassword: {
       // args

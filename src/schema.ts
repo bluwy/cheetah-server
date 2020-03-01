@@ -6,9 +6,10 @@ import * as company from './schema/company'
 import * as customer from './schema/customer'
 import * as job from './schema/job'
 import * as staff from './schema/staff'
+import * as sudo from './schema/sudo'
 
 export const schema = makeSchema({
-  types: [base, admin, company, customer, job, staff],
+  types: [base, admin, company, customer, job, staff, sudo],
   plugins: [fieldAuthorizePlugin()],
   outputs: {
     schema: path.join(__dirname, 'generated/schema.graphql'),

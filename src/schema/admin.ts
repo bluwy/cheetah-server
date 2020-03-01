@@ -12,11 +12,8 @@ import {
 } from 'nexus'
 import { Admin, AdminPrivilege } from '../models/Admin'
 import { ifUser, isAdmin, isAdminFull } from '../utils/auth'
-import { getEnvVar } from '../utils/common'
 import { addBaseModelFields, enumFilter } from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
-
-const RESET_PASSWORD_LINK = getEnvVar('RESET_PASSWORD_LINK')
 
 export const adminCount = queryField('adminCount', {
   type: 'Int',
@@ -120,33 +117,6 @@ export const deleteAdmin = mutationField('deleteAdmin', {
     return true
   }
 })
-
-export const sendAdminResetPasswordEmail = mutationField(
-  'sendAdminResetPasswordEmail',
-  {
-    type: 'Boolean',
-    args: {
-      username: stringArg({ required: true })
-    },
-    async resolve(_, { username }, { mailService, passwordService }) {
-      const admin = await Admin.query()
-        .findOne('username', username)
-        .select('id')
-
-      if (admin != null) {
-        const resetToken = await passwordService.generateResetToken(admin.id)
-
-        const newLink = RESET_PASSWORD_LINK + resetToken
-
-        await mailService.sendResetPasswordEmail(username, newLink)
-
-        return true
-      }
-
-      throw new UserInputError('Invalid username')
-    }
-  }
-)
 
 export const resetAdminPassword = mutationField('resetAdminPassword', {
   type: 'Boolean',
