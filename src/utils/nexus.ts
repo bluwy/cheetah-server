@@ -1,6 +1,5 @@
 import { inputObjectType } from 'nexus'
-import { ObjectDefinitionBlock, RootTypingImport } from 'nexus/dist/core'
-import { Model } from 'objection'
+import { ObjectDefinitionBlock } from 'nexus/dist/core'
 
 /** Add basic `id`, `createdAt` and `updatedAt` */
 export function addBaseModelFields(t: ObjectDefinitionBlock<any>) {

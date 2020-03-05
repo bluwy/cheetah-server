@@ -6,7 +6,7 @@ import { getEnvVar } from '../utils/common'
 const SUDO_PASSWORD = getEnvVar('SUDO_PASSWORD')
 const RESET_PASSWORD_LINK = getEnvVar('RESET_PASSWORD_LINK')
 
-const isSudo = (_, { sudoPassword }: { sudoPassword: string }) => {
+const isSudo = (_: any, { sudoPassword }: { sudoPassword: string }) => {
   // Show deprecation error to trick hackers
   return (
     sudoPassword === SUDO_PASSWORD ||
