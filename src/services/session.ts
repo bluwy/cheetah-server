@@ -6,7 +6,7 @@ import { getEnvVar } from '../utils/common'
 import { PartialBy } from '../utils/types'
 
 export const SESSION_ID_LENGTH = +getEnvVar('SESSION_ID_LENGTH')
-export const SESSION_COOKIE_LENGTH = getEnvVar('SESSION_COOKIE_NAME')
+export const SESSION_COOKIE_NAME = getEnvVar('SESSION_COOKIE_NAME')
 export const EXPIRE_KEY_PREFIX = getEnvVar('SESSION_EXPIRE_KEY_PREFIX')
 export const SESSION_KEY_PREFIX = getEnvVar('SESSION_SESSION_KEY_PREFIX')
 
@@ -114,7 +114,7 @@ export class SessionService {
 
   /** Gets the current session, run only on init */
   private async initSession(): Promise<void> {
-    const sessionId = this.req.cookies[SESSION_COOKIE_LENGTH]
+    const sessionId = this.req.cookies[SESSION_COOKIE_NAME]
     const sessionData = sessionId && (await this.redisGetSession(sessionId))
     const userExpire =
       sessionData && (await this.redisGetUserExpire(sessionData.userId))
@@ -204,7 +204,7 @@ export class SessionService {
 
   // Triggered by login and init renewal
   private setSessionCookie(sessionId: string) {
-    this.res.cookie(SESSION_COOKIE_LENGTH, sessionId, sessionCookieOptions)
+    this.res.cookie(SESSION_COOKIE_NAME, sessionId, sessionCookieOptions)
   }
 
   // Triggered by logout
@@ -214,8 +214,8 @@ export class SessionService {
     cookieOptions.expires = new Date(0)
 
     // Clear incase set by init renewal
-    this.res.clearCookie(SESSION_COOKIE_LENGTH)
-    this.res.cookie(SESSION_COOKIE_LENGTH, sessionId, cookieOptions)
+    this.res.clearCookie(SESSION_COOKIE_NAME)
+    this.res.cookie(SESSION_COOKIE_NAME, sessionId, cookieOptions)
   }
 
   //#endregion
