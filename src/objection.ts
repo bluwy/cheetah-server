@@ -13,6 +13,7 @@ if (process.env.LOG_QUERY) {
     console.log('[POSTGRES]')
     console.log('SQL:', sql)
     console.log('Bindings:', bindings)
+    console.log()
   })
 }
 

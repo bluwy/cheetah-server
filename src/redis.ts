@@ -11,6 +11,10 @@ export const redis = new Redis(process.env.REDIS_URL, { lazyConnect: true })
 if (process.env.LOG_REDIS) {
   redis.on('connect', async () => {
     const monitor = await redis.monitor()
-    monitor.on('monitor', (_, cmd) => console.log('[REDIS]', cmd.join(' ')))
+    monitor.on('monitor', (_, cmd) => {
+      console.log('[REDIS]')
+      console.log(cmd.join(' '))
+      console.log()
+    })
   })
 }
