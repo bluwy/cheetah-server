@@ -61,7 +61,9 @@ export interface NexusGenInputs {
   }
   AdminOrderByInput: {
     // input type
+    createdAt?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     privilege?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    updatedAt?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     username?: NexusGenEnums['OrderByArg'] | null // OrderByArg
   }
   AdminPrivilegeFilter: {
@@ -74,9 +76,11 @@ export interface NexusGenInputs {
   AdminWhereInput: {
     // input type
     AND?: NexusGenInputs['AdminWhereInput'][] | null // [AdminWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     NOT?: NexusGenInputs['AdminWhereInput'][] | null // [AdminWhereInput!]
     OR?: NexusGenInputs['AdminWhereInput'][] | null // [AdminWhereInput!]
     privilege?: NexusGenInputs['AdminPrivilegeFilter'] | null // AdminPrivilegeFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     username?: NexusGenInputs['StringFilter'] | null // StringFilter
   }
   BooleanFilter: {
@@ -92,15 +96,19 @@ export interface NexusGenInputs {
   CompanyOrderByInput: {
     // input type
     alias?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    createdAt?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     name?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    updatedAt?: NexusGenEnums['OrderByArg'] | null // OrderByArg
   }
   CompanyWhereInput: {
     // input type
     alias?: NexusGenInputs['StringFilter'] | null // StringFilter
     AND?: NexusGenInputs['CompanyWhereInput'][] | null // [CompanyWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     name?: NexusGenInputs['StringFilter'] | null // StringFilter
     NOT?: NexusGenInputs['CompanyWhereInput'][] | null // [CompanyWhereInput!]
     OR?: NexusGenInputs['CompanyWhereInput'][] | null // [CompanyWhereInput!]
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
   }
   CustomerCreateInput: {
     // input type
@@ -118,11 +126,13 @@ export interface NexusGenInputs {
     active?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     code?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     companyBelong?: NexusGenInputs['CompanyOrderByInput'] | null // CompanyOrderByInput
+    createdAt?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     email?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     name?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     phoneNumber?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     staffPrimary?: NexusGenInputs['StaffOrderByInput'] | null // StaffOrderByInput
     staffSecondary?: NexusGenInputs['StaffOrderByInput'] | null // StaffOrderByInput
+    updatedAt?: NexusGenEnums['OrderByArg'] | null // OrderByArg
   }
   CustomerUpdateInput: {
     // input type
@@ -142,6 +152,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['CustomerWhereInput'][] | null // [CustomerWhereInput!]
     code?: NexusGenInputs['StringFilter'] | null // StringFilter
     companyBelong?: NexusGenInputs['CompanyWhereInput'] | null // CompanyWhereInput
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null // StringFilter
     name?: NexusGenInputs['StringFilter'] | null // StringFilter
     NOT?: NexusGenInputs['CustomerWhereInput'][] | null // [CustomerWhereInput!]
@@ -149,6 +160,7 @@ export interface NexusGenInputs {
     phoneNumber?: NexusGenInputs['StringFilter'] | null // StringFilter
     staffPrimary?: NexusGenInputs['StaffWhereInput'] | null // StaffWhereInput
     staffSecondary?: NexusGenInputs['StaffWhereInput'] | null // StaffWhereInput
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
   }
   DateTimeFilter: {
     // input type
@@ -198,11 +210,13 @@ export interface NexusGenInputs {
     checkIn?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     checkOut?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     code?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    createdAt?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     customer?: NexusGenInputs['CustomerOrderByInput'] | null // CustomerOrderByInput
     staffPrimary?: NexusGenInputs['StaffOrderByInput'] | null // StaffOrderByInput
     staffSecondary?: NexusGenInputs['StaffOrderByInput'] | null // StaffOrderByInput
     startDate?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     state?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    updatedAt?: NexusGenEnums['OrderByArg'] | null // OrderByArg
   }
   JobStateFilter: {
     // input type
@@ -218,6 +232,7 @@ export interface NexusGenInputs {
     checkIn?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     checkOut?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     code?: NexusGenInputs['StringFilter'] | null // StringFilter
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     customer?: NexusGenInputs['CustomerWhereInput'] | null // CustomerWhereInput
     NOT?: NexusGenInputs['JobWhereInput'][] | null // [JobWhereInput!]
     OR?: NexusGenInputs['JobWhereInput'][] | null // [JobWhereInput!]
@@ -225,6 +240,7 @@ export interface NexusGenInputs {
     staffSecondary?: NexusGenInputs['StaffWhereInput'] | null // StaffWhereInput
     startDate?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     state?: NexusGenInputs['JobStateFilter'] | null // JobStateFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
   }
   ReassignJobInput: {
     // input type
@@ -248,7 +264,9 @@ export interface NexusGenInputs {
   StaffOrderByInput: {
     // input type
     active?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    createdAt?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     fullName?: NexusGenEnums['OrderByArg'] | null // OrderByArg
+    updatedAt?: NexusGenEnums['OrderByArg'] | null // OrderByArg
     username?: NexusGenEnums['OrderByArg'] | null // OrderByArg
   }
   StaffUpdateInput: {
@@ -260,9 +278,11 @@ export interface NexusGenInputs {
     // input type
     active?: NexusGenInputs['BooleanFilter'] | null // BooleanFilter
     AND?: NexusGenInputs['StaffWhereInput'][] | null // [StaffWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     fullName?: NexusGenInputs['StringFilter'] | null // StringFilter
     NOT?: NexusGenInputs['StaffWhereInput'][] | null // [StaffWhereInput!]
     OR?: NexusGenInputs['StaffWhereInput'][] | null // [StaffWhereInput!]
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null // DateTimeFilter
     username?: NexusGenInputs['StringFilter'] | null // StringFilter
   }
   StringFilter: {

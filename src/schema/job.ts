@@ -19,7 +19,12 @@ import { Staff } from '../models/Staff'
 import { Task, TaskType } from '../models/Task'
 import { ifUser, isAdmin, isAuthed, isStaff } from '../utils/auth'
 import { validateNonNullProps } from '../utils/common'
-import { addBaseModelFields, enumFilter } from '../utils/nexus'
+import {
+  addBaseModelFields,
+  addBaseModelOrderByFields,
+  addBaseModelWhereFields,
+  enumFilter
+} from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 import {
   NexusInput,
@@ -572,9 +577,7 @@ export const ActionInput = inputObjectType({
 export const JobWhereInput = inputObjectType({
   name: 'JobWhereInput',
   definition(t) {
-    t.list.field('AND', { type: 'JobWhereInput' })
-    t.list.field('OR', { type: 'JobWhereInput' })
-    t.list.field('NOT', { type: 'JobWhereInput' })
+    addBaseModelWhereFields(t)
     t.field('code', { type: 'StringFilter' })
     t.field('address', { type: 'StringFilter' })
     t.field('startDate', { type: 'DateTimeFilter' })
@@ -590,6 +593,7 @@ export const JobWhereInput = inputObjectType({
 export const JobOrderByInput = inputObjectType({
   name: 'JobOrderByInput',
   definition(t) {
+    addBaseModelOrderByFields(t)
     t.field('code', { type: 'OrderByArg' })
     t.field('address', { type: 'OrderByArg' })
     t.field('startDate', { type: 'OrderByArg' })

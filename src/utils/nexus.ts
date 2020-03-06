@@ -1,11 +1,25 @@
-import { inputObjectType } from 'nexus'
-import { ObjectDefinitionBlock } from 'nexus/dist/core'
+import { inputObjectType, core } from 'nexus'
 
-/** Add basic `id`, `createdAt` and `updatedAt` */
-export function addBaseModelFields(t: ObjectDefinitionBlock<any>) {
+/** Add `id`, `createdAt` and `updatedAt` */
+export function addBaseModelFields(t: core.ObjectDefinitionBlock<any>) {
   t.id('id')
   t.date('createdAt')
   t.date('updatedAt')
+}
+
+/** Add 'AND', 'OR', 'NOT', 'createdAt` and `updatedAt` */
+export function addBaseModelWhereFields(t: core.InputDefinitionBlock<any>) {
+  t.list.field('AND', { type: t.typeName as any })
+  t.list.field('OR', { type: t.typeName as any })
+  t.list.field('NOT', { type: t.typeName as any })
+  t.field('createdAt', { type: 'DateTimeFilter' })
+  t.field('updatedAt', { type: 'DateTimeFilter' })
+}
+
+/** Add 'createdAt` and `updatedAt` */
+export function addBaseModelOrderByFields(t: core.InputDefinitionBlock<any>) {
+  t.field('createdAt', { type: 'OrderByArg' })
+  t.field('updatedAt', { type: 'OrderByArg' })
 }
 
 export function enumFilter(name: string) {

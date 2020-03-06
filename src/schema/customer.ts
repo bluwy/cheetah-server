@@ -14,7 +14,11 @@ import { Company } from '../models/Company'
 import { Customer } from '../models/Customer'
 import { Staff } from '../models/Staff'
 import { ifUser, isAdmin } from '../utils/auth'
-import { addBaseModelFields } from '../utils/nexus'
+import {
+  addBaseModelFields,
+  addBaseModelOrderByFields,
+  addBaseModelWhereFields
+} from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const customerCount = queryField('customerCount', {
@@ -217,9 +221,7 @@ export const CustomerUpdateInput = inputObjectType({
 export const CustomerWhereInput = inputObjectType({
   name: 'CustomerWhereInput',
   definition(t) {
-    t.list.field('AND', { type: 'CustomerWhereInput' })
-    t.list.field('OR', { type: 'CustomerWhereInput' })
-    t.list.field('NOT', { type: 'CustomerWhereInput' })
+    addBaseModelWhereFields(t)
     t.field('code', { type: 'StringFilter' })
     t.field('name', { type: 'StringFilter' })
     t.field('active', { type: 'BooleanFilter' })
@@ -234,6 +236,7 @@ export const CustomerWhereInput = inputObjectType({
 export const CustomerOrderByInput = inputObjectType({
   name: 'CustomerOrderByInput',
   definition(t) {
+    addBaseModelOrderByFields(t)
     t.field('code', { type: 'OrderByArg' })
     t.field('name', { type: 'OrderByArg' })
     t.field('active', { type: 'OrderByArg' })

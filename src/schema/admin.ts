@@ -12,7 +12,12 @@ import {
 } from 'nexus'
 import { Admin, AdminPrivilege } from '../models/Admin'
 import { ifUser, isAdmin, isAdminFull } from '../utils/auth'
-import { addBaseModelFields, enumFilter } from '../utils/nexus'
+import {
+  addBaseModelFields,
+  addBaseModelOrderByFields,
+  addBaseModelWhereFields,
+  enumFilter
+} from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const adminCount = queryField('adminCount', {
@@ -276,9 +281,7 @@ export const AdminCreateInput = inputObjectType({
 export const AdminWhereInput = inputObjectType({
   name: 'AdminWhereInput',
   definition(t) {
-    t.list.field('AND', { type: 'AdminWhereInput' })
-    t.list.field('OR', { type: 'AdminWhereInput' })
-    t.list.field('NOT', { type: 'AdminWhereInput' })
+    addBaseModelWhereFields(t)
     t.field('username', { type: 'StringFilter' })
     t.field('privilege', { type: 'AdminPrivilegeFilter' })
   }
@@ -287,6 +290,7 @@ export const AdminWhereInput = inputObjectType({
 export const AdminOrderByInput = inputObjectType({
   name: 'AdminOrderByInput',
   definition(t) {
+    addBaseModelOrderByFields(t)
     t.field('username', { type: 'OrderByArg' })
     t.field('privilege', { type: 'OrderByArg' })
   }

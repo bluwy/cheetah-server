@@ -11,7 +11,11 @@ import {
 } from 'nexus'
 import { Staff } from '../models/Staff'
 import { ifUser, isAdmin, isAdminFull, isStaff } from '../utils/auth'
-import { addBaseModelFields } from '../utils/nexus'
+import {
+  addBaseModelFields,
+  addBaseModelOrderByFields,
+  addBaseModelWhereFields
+} from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const staffCount = queryField('staffCount', {
@@ -265,9 +269,7 @@ export const StaffUpdateInput = inputObjectType({
 export const StaffWhereInput = inputObjectType({
   name: 'StaffWhereInput',
   definition(t) {
-    t.list.field('AND', { type: 'StaffWhereInput' })
-    t.list.field('OR', { type: 'StaffWhereInput' })
-    t.list.field('NOT', { type: 'StaffWhereInput' })
+    addBaseModelWhereFields(t)
     t.field('username', { type: 'StringFilter' })
     t.field('fullName', { type: 'StringFilter' })
     t.field('active', { type: 'BooleanFilter' })
@@ -277,6 +279,7 @@ export const StaffWhereInput = inputObjectType({
 export const StaffOrderByInput = inputObjectType({
   name: 'StaffOrderByInput',
   definition(t) {
+    addBaseModelOrderByFields(t)
     t.field('username', { type: 'OrderByArg' })
     t.field('fullName', { type: 'OrderByArg' })
     t.field('active', { type: 'OrderByArg' })

@@ -11,7 +11,11 @@ import {
 } from 'nexus'
 import { Company } from '../models/Company'
 import { ifUser, isAdmin, isAdminFull } from '../utils/auth'
-import { addBaseModelFields } from '../utils/nexus'
+import {
+  addBaseModelFields,
+  addBaseModelOrderByFields,
+  addBaseModelWhereFields
+} from '../utils/nexus'
 import { resolveOrderByInput, resolveWhereInput } from '../utils/objection'
 
 export const companyCount = queryField('companyCount', {
@@ -122,9 +126,7 @@ export const CompanyCreateInput = inputObjectType({
 export const CompanyWhereInput = inputObjectType({
   name: 'CompanyWhereInput',
   definition(t) {
-    t.list.field('AND', { type: 'CompanyWhereInput' })
-    t.list.field('OR', { type: 'CompanyWhereInput' })
-    t.list.field('NOT', { type: 'CompanyWhereInput' })
+    addBaseModelWhereFields(t)
     t.field('name', { type: 'StringFilter' })
     t.field('alias', { type: 'StringFilter' })
   }
@@ -133,6 +135,7 @@ export const CompanyWhereInput = inputObjectType({
 export const CompanyOrderByInput = inputObjectType({
   name: 'CompanyOrderByInput',
   definition(t) {
+    addBaseModelOrderByFields(t)
     t.field('name', { type: 'OrderByArg' })
     t.field('alias', { type: 'OrderByArg' })
   }

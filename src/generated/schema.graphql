@@ -39,7 +39,9 @@ input AdminJobUpdateInput {
 }
 
 input AdminOrderByInput {
+  createdAt: OrderByArg
   privilege: OrderByArg
+  updatedAt: OrderByArg
   username: OrderByArg
 }
 
@@ -57,9 +59,11 @@ input AdminPrivilegeFilter {
 
 input AdminWhereInput {
   AND: [AdminWhereInput!]
+  createdAt: DateTimeFilter
   NOT: [AdminWhereInput!]
   OR: [AdminWhereInput!]
   privilege: AdminPrivilegeFilter
+  updatedAt: DateTimeFilter
   username: StringFilter
 }
 
@@ -83,15 +87,19 @@ input CompanyCreateInput {
 
 input CompanyOrderByInput {
   alias: OrderByArg
+  createdAt: OrderByArg
   name: OrderByArg
+  updatedAt: OrderByArg
 }
 
 input CompanyWhereInput {
   alias: StringFilter
   AND: [CompanyWhereInput!]
+  createdAt: DateTimeFilter
   name: StringFilter
   NOT: [CompanyWhereInput!]
   OR: [CompanyWhereInput!]
+  updatedAt: DateTimeFilter
 }
 
 type Customer {
@@ -124,11 +132,13 @@ input CustomerOrderByInput {
   active: OrderByArg
   code: OrderByArg
   companyBelong: CompanyOrderByInput
+  createdAt: OrderByArg
   email: OrderByArg
   name: OrderByArg
   phoneNumber: OrderByArg
   staffPrimary: StaffOrderByInput
   staffSecondary: StaffOrderByInput
+  updatedAt: OrderByArg
 }
 
 input CustomerUpdateInput {
@@ -148,6 +158,7 @@ input CustomerWhereInput {
   AND: [CustomerWhereInput!]
   code: StringFilter
   companyBelong: CompanyWhereInput
+  createdAt: DateTimeFilter
   email: StringFilter
   name: StringFilter
   NOT: [CustomerWhereInput!]
@@ -155,6 +166,7 @@ input CustomerWhereInput {
   phoneNumber: StringFilter
   staffPrimary: StaffWhereInput
   staffSecondary: StaffWhereInput
+  updatedAt: DateTimeFilter
 }
 
 """
@@ -228,11 +240,13 @@ input JobOrderByInput {
   checkIn: OrderByArg
   checkOut: OrderByArg
   code: OrderByArg
+  createdAt: OrderByArg
   customer: CustomerOrderByInput
   staffPrimary: StaffOrderByInput
   staffSecondary: StaffOrderByInput
   startDate: OrderByArg
   state: OrderByArg
+  updatedAt: OrderByArg
 }
 
 enum JobState {
@@ -255,6 +269,7 @@ input JobWhereInput {
   checkIn: DateTimeFilter
   checkOut: DateTimeFilter
   code: StringFilter
+  createdAt: DateTimeFilter
   customer: CustomerWhereInput
   NOT: [JobWhereInput!]
   OR: [JobWhereInput!]
@@ -262,6 +277,7 @@ input JobWhereInput {
   staffSecondary: StaffWhereInput
   startDate: DateTimeFilter
   state: JobStateFilter
+  updatedAt: DateTimeFilter
 }
 
 type Mutation {
@@ -387,7 +403,9 @@ input StaffJobUpdateInput {
 
 input StaffOrderByInput {
   active: OrderByArg
+  createdAt: OrderByArg
   fullName: OrderByArg
+  updatedAt: OrderByArg
   username: OrderByArg
 }
 
@@ -399,9 +417,11 @@ input StaffUpdateInput {
 input StaffWhereInput {
   active: BooleanFilter
   AND: [StaffWhereInput!]
+  createdAt: DateTimeFilter
   fullName: StringFilter
   NOT: [StaffWhereInput!]
   OR: [StaffWhereInput!]
+  updatedAt: DateTimeFilter
   username: StringFilter
 }
 
