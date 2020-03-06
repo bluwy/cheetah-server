@@ -19,13 +19,11 @@ export const SESSION_MAX_AGE = +getEnvVar('SESSION_MAX_AGE')
 // For Redis TTL
 const sessionTTL = SESSION_MAX_AGE / 1000
 
-const isProd = process.env.NODE_ENV === 'production'
-
 export const sessionCookieOptions: CookieOptions = {
   maxAge: SESSION_MAX_AGE,
-  httpOnly: isProd,
-  secure: isProd,
-  sameSite: isProd ? 'strict' : 'none'
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict'
 }
 
 export type SessionType = 'STAFF' | 'ADMIN_BASIC' | 'ADMIN_FULL'
@@ -54,7 +52,7 @@ export class SessionService {
   static async build(req: Request, res: Response): Promise<SessionService> {
     const instance = new SessionService(req, res)
 
-    instance.initSession()
+    await instance.initSession()
 
     return instance
   }

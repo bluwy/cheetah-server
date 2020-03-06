@@ -7,13 +7,21 @@ import './objection'
 
 const PORT = process.env.PORT ?? 4000
 
+const FRONTEND_URL = process.env.FRONTEND_URL ?? ''
+
 const app = express()
 
 app.use(cookieParser())
 
 const server = new ApolloServer({ schema, context })
 
-server.applyMiddleware({ app })
+server.applyMiddleware({
+  app,
+  cors: {
+    origin: FRONTEND_URL,
+    credentials: true
+  }
+})
 
 app.listen(PORT, () => {
   console.log(
