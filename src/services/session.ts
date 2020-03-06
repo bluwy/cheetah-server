@@ -207,9 +207,7 @@ export class SessionService {
 
   // Triggered by logout
   private deleteSessionCookie(sessionId: string) {
-    const cookieOptions = { ...sessionCookieOptions }
-    cookieOptions.maxAge = undefined
-    cookieOptions.expires = new Date(0)
+    const cookieOptions = { ...sessionCookieOptions, maxAge: 0 }
 
     // Clear incase set by init renewal
     this.res.clearCookie(SESSION_COOKIE_NAME)
