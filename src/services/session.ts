@@ -128,8 +128,8 @@ export class SessionService {
 
     // Renew session check
     if (Date.now() - sessionData.iat > RENEW_SESSION_INTERVAL) {
-      // Set new max age
-      const newData = { ...sessionData, maxAge: SESSION_MAX_AGE }
+      // Reset issue date
+      const newData = { ...sessionData, iat: Date.now() }
 
       await this.redisSetSession(sessionId, newData)
 
