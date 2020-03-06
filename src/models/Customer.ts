@@ -21,6 +21,8 @@ export class Customer extends BaseModel {
 
   static tableName = 'Customer'
 
+  static jsonAttributes = []
+
   static jsonSchema: JSONSchema = {
     type: 'object',
     required: [
