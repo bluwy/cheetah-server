@@ -424,7 +424,7 @@ export interface NexusGenFieldTypes {
     name: string // String!
     phoneNumber: string | null // String
     staffPrimary: NexusGenRootTypes['Staff'] // Staff!
-    staffSecondary: NexusGenRootTypes['Staff'] // Staff!
+    staffSecondary: NexusGenRootTypes['Staff'] | null // Staff
     updatedAt: Date // DateTime!
   }
   Job: {

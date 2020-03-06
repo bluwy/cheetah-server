@@ -30,8 +30,7 @@ export class Customer extends BaseModel {
       'name',
       'addresses',
       'companyBelongId',
-      'staffPrimaryId',
-      'staffSecondaryId'
+      'staffPrimaryId'
     ],
     properties: {
       code: { type: 'string' },

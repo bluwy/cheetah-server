@@ -176,6 +176,7 @@ export const CustomerType = objectType({
     })
     t.field('staffSecondary', {
       type: 'Staff',
+      nullable: true,
       resolve: async (root, _, { dataLoaderService }) => {
         return dataLoaderService
           .modelRelatedLoader<Customer, Staff>(Customer, 'staffSecondary')

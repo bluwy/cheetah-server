@@ -113,7 +113,7 @@ type Customer {
   name: String!
   phoneNumber: String
   staffPrimary: Staff!
-  staffSecondary: Staff!
+  staffSecondary: Staff
   updatedAt: DateTime!
 }
 
