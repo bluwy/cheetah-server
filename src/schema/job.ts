@@ -437,6 +437,7 @@ export const JobType = objectType({
     })
     t.field('staffSecondary', {
       type: 'Staff',
+      nullable: true,
       resolve: async (root, _, { dataLoaderService }) => {
         return dataLoaderService
           .modelRelatedLoader<Job, Staff>(Job, 'staffSecondary')

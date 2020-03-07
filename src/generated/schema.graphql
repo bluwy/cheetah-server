@@ -219,7 +219,7 @@ type Job {
   customer: Customer!
   id: ID!
   staffPrimary: Staff!
-  staffSecondary: Staff!
+  staffSecondary: Staff
   startDate: DateTime!
   state: JobState
   tasks: [Task!]!

@@ -438,7 +438,7 @@ export interface NexusGenFieldTypes {
     customer: NexusGenRootTypes['Customer'] // Customer!
     id: string // ID!
     staffPrimary: NexusGenRootTypes['Staff'] // Staff!
-    staffSecondary: NexusGenRootTypes['Staff'] // Staff!
+    staffSecondary: NexusGenRootTypes['Staff'] | null // Staff
     startDate: Date // DateTime!
     state: NexusGenEnums['JobState'] | null // JobState
     tasks: NexusGenRootTypes['Task'][] // [Task!]!
