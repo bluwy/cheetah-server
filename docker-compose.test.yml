@@ -9,6 +9,7 @@ services:
     - db:/var/lib/postgresql/data
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: test
   redis:
     image: redis:5-alpine
     restart: always
@@ -17,6 +18,3 @@ services:
     volumes:
     - redis:/var/lib/redis/data
     command: ["redis-server", "--appendonly", "yes"]
-volumes:
-  db:
-  redis:

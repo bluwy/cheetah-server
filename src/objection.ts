@@ -1,10 +1,15 @@
 import Knex from 'knex'
 import { Model } from 'objection'
 
+const DATABASE_URL =
+  process.env.NODE_ENV === 'test'
+    ? process.env.DATABASE_TEST_URL
+    : process.env.DATABASE_URL
+
 export const knex = Knex({
   client: 'pg',
   connection: {
-    connectionString: process.env.DATABASE_URL
+    connectionString: DATABASE_URL
   }
 })
 
