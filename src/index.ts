@@ -5,26 +5,28 @@ import { context } from './context'
 import { schema } from './schema'
 import './objection'
 
-const PORT = process.env.PORT ?? 4000
+export const server = new ApolloServer({ schema, context })
 
-const FRONTEND_URL = process.env.FRONTEND_URL ?? ''
+if (process.env.NODE_ENV !== 'test') {
+  const PORT = process.env.PORT ?? 4000
 
-const app = express()
+  const FRONTEND_URL = process.env.FRONTEND_URL ?? ''
 
-app.use(cookieParser())
+  const app = express()
 
-const server = new ApolloServer({ schema, context })
+  app.use(cookieParser())
 
-server.applyMiddleware({
-  app,
-  cors: {
-    origin: FRONTEND_URL,
-    credentials: true
-  }
-})
+  server.applyMiddleware({
+    app,
+    cors: {
+      origin: FRONTEND_URL,
+      credentials: true
+    }
+  })
 
-app.listen(PORT, () => {
-  console.log(
-    `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
-  )
-})
+  app.listen(PORT, () => {
+    console.log(
+      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+    )
+  })
+}

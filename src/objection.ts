@@ -13,7 +13,7 @@ export const knex = Knex({
   }
 })
 
-if (process.env.LOG_QUERY) {
+if (process.env.NODE_ENV === 'development' && process.env.LOG_QUERY) {
   knex.on('query', ({ sql, bindings }) => {
     console.log('[POSTGRES]')
     console.log('SQL:', sql)
@@ -22,4 +22,11 @@ if (process.env.LOG_QUERY) {
   })
 }
 
-Model.knex(knex)
+/*
+  NOTE: When testing, Model.knex will assigned to a random knex instance
+  connected to a random database. This above knex instance will instead
+  be used to create/drop the runtime-generated random database.
+*/
+if (process.env.NODE_ENV !== 'test') {
+  Model.knex(knex)
+}

@@ -14,6 +14,7 @@ export class DataLoaderService {
 
   private modelRelatedLoaders = new Map<string, DataLoader<any, any>>()
 
+  /** Get dataloader that loads by model id */
   modelLoader<T extends BaseModel>(
     model: ModelQueryable<T>
   ): DataLoader<MaybeCompositeId, T | undefined> {
@@ -34,6 +35,7 @@ export class DataLoaderService {
     return loader
   }
 
+  /** Get dataloader that loads by model, used to load its relation */
   modelRelatedLoader<T extends Model, V extends Model | Model[]>(
     model: typeof Model,
     relation: keyof T
