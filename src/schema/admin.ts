@@ -11,7 +11,7 @@ import {
   stringArg
 } from 'nexus'
 import { Admin, AdminPrivilege } from '../models/Admin'
-import { ifUser, isAdmin, isAdminFull } from '../utils/auth'
+import { ifIs, AuthType } from '../utils/auth'
 import {
   addBaseModelFields,
   addBaseModelOrderByFields,
@@ -26,7 +26,7 @@ export const adminCount = queryField('adminCount', {
     query: stringArg(),
     where: arg({ type: 'AdminWhereInput' })
   },
-  authorize: ifUser(isAdminFull),
+  authorize: ifIs(AuthType.AdminFull),
   async resolve(_, { query, where }) {
     if (query) {
       merge(where, queryToWhereInput(query))
@@ -47,7 +47,9 @@ export const admin = queryField('admin', {
   args: {
     id: idArg()
   },
-  authorize: (_, { id }, ctx) => (id != null ? isAdminFull(ctx) : isAdmin(ctx)),
+  authorize: ifIs((_, { id }) =>
+    id != null ? AuthType.AdminFull : AuthType.Admin
+  ),
   async resolve(_, { id }, { sessionService }) {
     const adminId =
       id != null ? id : sessionService.getSession(true).data.userId
@@ -64,7 +66,7 @@ export const admins = queryField('admins', {
     where: arg({ type: 'AdminWhereInput' }),
     orderBy: arg({ type: 'AdminOrderByInput' })
   },
-  authorize: ifUser(isAdminFull),
+  authorize: ifIs(AuthType.AdminFull),
   async resolve(_, { query, where, orderBy }) {
     if (query) {
       merge(where, queryToWhereInput(query))
@@ -85,7 +87,7 @@ export const createAdmin = mutationField('createAdmin', {
       required: true
     })
   },
-  authorize: ifUser(isAdminFull),
+  authorize: ifIs(AuthType.AdminFull),
   async resolve(_, { data }, { passwordService, sessionService }) {
     const hash = await passwordService.hashPassword(data.password)
 
@@ -108,7 +110,9 @@ export const deleteAdmin = mutationField('deleteAdmin', {
   args: {
     id: idArg()
   },
-  authorize: (_, { id }, ctx) => (id != null ? isAdminFull(ctx) : isAdmin(ctx)),
+  authorize: ifIs((_, { id }) =>
+    id != null ? AuthType.AdminFull : AuthType.Admin
+  ),
   async resolve(_, { id }, { sessionService }) {
     const adminId =
       id != null ? id : sessionService.getSession(true).data.userId
@@ -167,7 +171,9 @@ export const updateAdminPassword = mutationField('updateAdminPassword', {
     oldPassword: stringArg({ required: true }),
     newPassword: stringArg({ required: true })
   },
-  authorize: (_, { id }, ctx) => (id != null ? isAdminFull(ctx) : isAdmin(ctx)),
+  authorize: ifIs((_, { id }) =>
+    id != null ? AuthType.AdminFull : AuthType.Admin
+  ),
   async resolve(
     _,
     { id, oldPassword, newPassword },
@@ -248,7 +254,7 @@ export const loginAdmin = mutationField('loginAdmin', {
 
 export const logoutAdmin = mutationField('logoutAdmin', {
   type: 'Boolean',
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, __, { sessionService }) {
     await sessionService.logout()
 

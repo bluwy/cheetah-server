@@ -10,7 +10,7 @@ import {
   stringArg
 } from 'nexus'
 import { Staff } from '../models/Staff'
-import { ifUser, isAdmin, isAdminFull, isStaff } from '../utils/auth'
+import { ifIs, AuthType } from '../utils/auth'
 import {
   addBaseModelFields,
   addBaseModelOrderByFields,
@@ -24,7 +24,7 @@ export const staffCount = queryField('staffCount', {
     query: stringArg(),
     where: arg({ type: 'StaffWhereInput' })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { query, where }) {
     if (query) {
       merge(where, queryToWhereInput(query))
@@ -45,7 +45,9 @@ export const staff = queryField('staff', {
   args: {
     id: idArg()
   },
-  authorize: (_, { id }, ctx) => (id != null ? isAdmin(ctx) : isStaff(ctx)),
+  authorize: ifIs((_, { id }) =>
+    id != null ? AuthType.Admin : AuthType.Staff
+  ),
   async resolve(_, { id }, { sessionService }) {
     const staffId =
       id != null ? id : sessionService.getSession(true).data.userId
@@ -62,7 +64,7 @@ export const staffs = queryField('staffs', {
     where: arg({ type: 'StaffWhereInput' }),
     orderBy: arg({ type: 'StaffOrderByInput' })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { query, where, orderBy }) {
     if (query) {
       merge(where, queryToWhereInput(query))
@@ -83,7 +85,7 @@ export const createStaff = mutationField('createStaff', {
       required: true
     })
   },
-  authorize: ifUser(isAdminFull),
+  authorize: ifIs(AuthType.AdminFull),
   async resolve(_, { data }, { sessionService }) {
     const staff = await Staff.query()
       .insert(data)
@@ -104,7 +106,9 @@ export const updateStaff = mutationField('updateStaff', {
       required: true
     })
   },
-  authorize: (_, { id }, ctx) => (id != null ? isAdminFull(ctx) : isStaff(ctx)),
+  authorize: ifIs((_, { id }) =>
+    id != null ? AuthType.AdminFull : AuthType.Staff
+  ),
   async resolve(_, { id, data }, { sessionService }) {
     const staffId =
       id != null ? id : sessionService.getSession(true).data.userId
@@ -125,7 +129,9 @@ export const deleteStaff = mutationField('deleteStaff', {
   args: {
     id: idArg()
   },
-  authorize: (_, { id }, ctx) => (id != null ? isAdminFull(ctx) : isStaff(ctx)),
+  authorize: ifIs((_, { id }) =>
+    id != null ? AuthType.AdminFull : AuthType.Staff
+  ),
   async resolve(_, { id }, { sessionService }) {
     const staffId =
       id != null ? id : sessionService.getSession(true).data.userId
@@ -172,7 +178,7 @@ export const resetStaffPairing = mutationField('resetStaffPairing', {
   args: {
     id: idArg({ required: true })
   },
-  authorize: ifUser(isAdminFull),
+  authorize: ifIs(AuthType.AdminFull),
   async resolve(_, { id }, { sessionService }) {
     const staff = await Staff.query()
       .findById(id)
@@ -227,7 +233,7 @@ export const loginStaff = mutationField('loginStaff', {
 
 export const logoutStaff = mutationField('logoutStaff', {
   type: 'Boolean',
-  authorize: ifUser(isStaff),
+  authorize: ifIs(AuthType.Staff),
   async resolve(_, __, { sessionService }) {
     await sessionService.logout()
 

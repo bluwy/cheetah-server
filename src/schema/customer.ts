@@ -13,7 +13,7 @@ import {
 import { Company } from '../models/Company'
 import { Customer } from '../models/Customer'
 import { Staff } from '../models/Staff'
-import { ifUser, isAdmin } from '../utils/auth'
+import { ifIs, AuthType } from '../utils/auth'
 import {
   addBaseModelFields,
   addBaseModelOrderByFields,
@@ -27,7 +27,7 @@ export const customerCount = queryField('customerCount', {
     query: stringArg(),
     where: arg({ type: 'CustomerWhereInput' })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { query, where }) {
     if (query) {
       merge(where, queryToWhereInput(query))
@@ -48,7 +48,7 @@ export const customer = queryField('customer', {
   args: {
     id: idArg({ required: true })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { id }) {
     return Customer.query().findById(id)
   }
@@ -64,7 +64,7 @@ export const customers = queryField('customers', {
     where: arg({ type: 'CustomerWhereInput' }),
     orderBy: arg({ type: 'CustomerOrderByInput' })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { skip, first, query, where, orderBy }) {
     if (skip == null) {
       skip = 0
@@ -96,7 +96,7 @@ export const createCustomer = mutationField('createCustomer', {
   args: {
     data: arg({ type: 'CustomerCreateInput', required: true })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { data }) {
     return Customer.query()
       .insert(data)
@@ -110,7 +110,7 @@ export const updateCustomer = mutationField('updateCustomer', {
     id: idArg({ required: true }),
     data: arg({ type: 'CustomerUpdateInput', required: true })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { id, data }) {
     // Manual undefined to convert null to undefined for non-nullable columns
     return Customer.query()
@@ -136,7 +136,7 @@ export const deleteCustomer = mutationField('deleteCustomer', {
   args: {
     id: idArg({ required: true })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { id }) {
     const deleteCount = await Customer.query().deleteById(id)
 

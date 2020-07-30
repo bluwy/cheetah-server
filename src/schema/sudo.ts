@@ -1,18 +1,10 @@
-import { ForbiddenError, UserInputError } from 'apollo-server-express'
+import { UserInputError } from 'apollo-server-express'
 import { arg, mutationField, stringArg } from 'nexus'
 import { Admin } from '../models/Admin'
+import { ifIs, AuthType } from '../utils/auth'
 import { getEnvVar } from '../utils/common'
 
-const SUDO_PASSWORD = getEnvVar('SUDO_PASSWORD')
 const RESET_PASSWORD_LINK = getEnvVar('RESET_PASSWORD_LINK')
-
-const isSudo = (_: any, { sudoPassword }: { sudoPassword: string }) => {
-  // Show deprecation error to trick hackers
-  return (
-    sudoPassword === SUDO_PASSWORD ||
-    new ForbiddenError('Sudo password mutations are deprecated')
-  )
-}
 
 export const sudoCreateAdmin = mutationField('sudoCreateAdmin', {
   type: 'Admin',
@@ -23,7 +15,7 @@ export const sudoCreateAdmin = mutationField('sudoCreateAdmin', {
       required: true
     })
   },
-  authorize: isSudo,
+  authorize: ifIs(AuthType.Sudo),
   async resolve(_, { data }, { passwordService, sessionService }) {
     const hash = await passwordService.hashPassword(data.password)
 
@@ -49,7 +41,7 @@ export const sudoGenAdminResetPasswordLink = mutationField(
       sudoPassword: stringArg({ required: true }),
       username: stringArg({ required: true })
     },
-    authorize: isSudo,
+    authorize: ifIs(AuthType.Sudo),
     async resolve(_, { username }, { passwordService }) {
       const admin = await Admin.query()
         .findOne('username', username)

@@ -10,7 +10,7 @@ import {
   stringArg
 } from 'nexus'
 import { Company } from '../models/Company'
-import { ifUser, isAdmin, isAdminFull } from '../utils/auth'
+import { ifIs, AuthType } from '../utils/auth'
 import {
   addBaseModelFields,
   addBaseModelOrderByFields,
@@ -24,7 +24,7 @@ export const companyCount = queryField('companyCount', {
     query: stringArg(),
     where: arg({ type: 'CompanyWhereInput' })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { query, where }) {
     if (query) {
       merge(where, queryToWhereInput(query))
@@ -45,7 +45,7 @@ export const company = queryField('company', {
   args: {
     id: idArg({ required: true })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { id }) {
     return Company.query().findById(id)
   }
@@ -59,7 +59,7 @@ export const companies = queryField('companies', {
     where: arg({ type: 'CompanyWhereInput' }),
     orderBy: arg({ type: 'CompanyOrderByInput' })
   },
-  authorize: ifUser(isAdmin),
+  authorize: ifIs(AuthType.Admin),
   async resolve(_, { query, where, orderBy }) {
     if (query) {
       merge(where, queryToWhereInput(query))
@@ -77,7 +77,7 @@ export const createCompany = mutationField('createCompany', {
   args: {
     data: arg({ type: 'CompanyCreateInput', required: true })
   },
-  authorize: ifUser(isAdminFull),
+  authorize: ifIs(AuthType.AdminFull),
   async resolve(_, { data }) {
     return Company.query()
       .insert(data)
@@ -90,7 +90,7 @@ export const deleteCompany = mutationField('deleteCompany', {
   args: {
     id: idArg({ required: true })
   },
-  authorize: ifUser(isAdminFull),
+  authorize: ifIs(AuthType.AdminFull),
   async resolve(_, { id }) {
     const deleteCount = await Company.query().deleteById(id)
 

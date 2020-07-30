@@ -1,52 +1,68 @@
 import { ForbiddenError } from 'apollo-server-express'
-import { Context } from '../context'
+import { FieldAuthorizeResolver } from 'nexus'
+import { getEnvVar } from '../utils/common'
 
-type AuthRuleFn = (ctx: Context) => boolean | Error
+const SUDO_PASSWORD = getEnvVar('SUDO_PASSWORD')
 
 const AUTH_BYPASS =
   process.env.NODE_ENV === 'development' && !!process.env.AUTH_BYPASS
 
-/** Allows using an auth rule directly on the `authorize` preperty */
-export function ifUser(fn: AuthRuleFn) {
-  return (_: any, __: any, ctx: Context) => fn(ctx)
+export enum AuthType {
+  Authed = 'AUTHED',
+  Staff = 'STAFF',
+  Admin = 'ADMIN',
+  AdminBasic = 'ADMIN_BASIC',
+  AdminFull = 'ADMIN_FULL',
+  Sudo = 'SUDO'
 }
 
-export const isAuthed = authRule(({ sessionService }) => {
-  return (
-    sessionService.getSession() != null ||
-    new ForbiddenError('User is not authenticated')
-  )
-})
+export function ifIs<
+  T extends Parameters<FieldAuthorizeResolver<string, string>>
+>(rule: ((...args: T) => AuthType) | AuthType) {
+  return (...args: T) => {
+    // Ignore authorization in test
+    if (process.env.NODE_ENV === 'test' || AUTH_BYPASS) {
+      return true
+    }
 
-export const isStaff = authRule(({ sessionService }) => {
-  return (
-    sessionService.getSession()?.data.type === 'STAFF' ||
-    new ForbiddenError('User is not a staff')
-  )
-})
+    if (typeof rule === 'function') {
+      rule = rule(...args)
+    }
 
-export const isAdmin = authRule(({ sessionService }) => {
-  return (
-    sessionService.getSession()?.data.type === 'ADMIN_BASIC' ||
-    sessionService.getSession()?.data.type === 'ADMIN_FULL' ||
-    new ForbiddenError('User is not an admin')
-  )
-})
+    const [, arg, ctx] = args
 
-export const isAdminBasic = authRule(({ sessionService }) => {
-  return (
-    sessionService.getSession()?.data.type === 'ADMIN_BASIC' ||
-    new ForbiddenError('User is not an admin with basic privilege')
-  )
-})
-
-export const isAdminFull = authRule(({ sessionService }) => {
-  return (
-    sessionService.getSession()?.data.type === 'ADMIN_FULL' ||
-    new ForbiddenError('User is not an admin with full privilege')
-  )
-})
-
-function authRule(fn: AuthRuleFn): AuthRuleFn {
-  return ctx => AUTH_BYPASS || fn(ctx)
+    switch (rule) {
+      case AuthType.Authed:
+        return (
+          ctx.sessionService.getSession() != null ||
+          new ForbiddenError('User is not authenticated')
+        )
+      case AuthType.Staff:
+        return (
+          ctx.sessionService.getSession()?.data.type === 'STAFF' ||
+          new ForbiddenError('User is not a staff')
+        )
+      case AuthType.Admin:
+        return (
+          ctx.sessionService.getSession()?.data.type === 'ADMIN_BASIC' ||
+          ctx.sessionService.getSession()?.data.type === 'ADMIN_FULL' ||
+          new ForbiddenError('User is not an admin')
+        )
+      case AuthType.AdminBasic:
+        return (
+          ctx.sessionService.getSession()?.data.type === 'ADMIN_BASIC' ||
+          new ForbiddenError('User is not an admin with basic privilege')
+        )
+      case AuthType.AdminFull:
+        return (
+          ctx.sessionService.getSession()?.data.type === 'ADMIN_FULL' ||
+          new ForbiddenError('User is not an admin with full privilege')
+        )
+      case AuthType.Sudo:
+        return (
+          arg.sudoPassword === SUDO_PASSWORD ||
+          new ForbiddenError('Sudo password mutations are deprecated')
+        )
+    }
+  }
 }
