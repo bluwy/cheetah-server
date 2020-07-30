@@ -82,12 +82,15 @@ export const admins = queryField('admins', {
 export const createAdmin = mutationField('createAdmin', {
   type: 'Admin',
   args: {
+    sudoPassword: stringArg(),
     data: arg({
       type: 'AdminCreateInput',
       required: true
     })
   },
-  authorize: ifIs(AuthType.AdminFull),
+  authorize: ifIs((_, { sudoPassword }) =>
+    sudoPassword != null ? AuthType.Sudo : AuthType.AdminFull
+  ),
   async resolve(_, { data }, { passwordService, sessionService }) {
     const hash = await passwordService.hashPassword(data.password)
 
@@ -261,6 +264,29 @@ export const logoutAdmin = mutationField('logoutAdmin', {
     return true
   }
 })
+
+export const generateAdminResetPasswordToken = mutationField(
+  'generateAdminResetPasswordToken',
+  {
+    type: 'String',
+    args: {
+      sudoPassword: stringArg({ required: true }),
+      username: stringArg({ required: true })
+    },
+    authorize: ifIs(AuthType.Sudo),
+    async resolve(_, { username }, { passwordService }) {
+      const admin = await Admin.query()
+        .findOne('username', username)
+        .select('id')
+
+      if (admin != null) {
+        return await passwordService.generateResetToken(admin.id)
+      }
+
+      throw new UserInputError('Invalid username')
+    }
+  }
+)
 
 export const AdminType = objectType({
   name: 'Admin',

@@ -459,6 +459,7 @@ export interface NexusGenFieldTypes {
     deleteCustomer: boolean // Boolean!
     deleteJob: boolean // Boolean!
     deleteStaff: boolean // Boolean!
+    generateAdminResetPasswordToken: string // String!
     loginAdmin: boolean // Boolean!
     loginStaff: boolean // Boolean!
     logoutAdmin: boolean // Boolean!
@@ -471,8 +472,6 @@ export interface NexusGenFieldTypes {
     setTasks: boolean // Boolean!
     setTasksDone: boolean // Boolean!
     staffUpdateJob: NexusGenRootTypes['Job'] // Job!
-    sudoCreateAdmin: NexusGenRootTypes['Admin'] // Admin!
-    sudoGenAdminResetPasswordLink: string // String!
     updateAdminPassword: boolean // Boolean!
     updateCustomer: NexusGenRootTypes['Customer'] // Customer!
     updateStaff: NexusGenRootTypes['Staff'] // Staff!
@@ -531,6 +530,7 @@ export interface NexusGenArgTypes {
     createAdmin: {
       // args
       data: NexusGenInputs['AdminCreateInput'] // AdminCreateInput!
+      sudoPassword?: string | null // String
     }
     createCompany: {
       // args
@@ -567,6 +567,11 @@ export interface NexusGenArgTypes {
     deleteStaff: {
       // args
       id?: string | null // ID
+    }
+    generateAdminResetPasswordToken: {
+      // args
+      sudoPassword: string // String!
+      username: string // String!
     }
     loginAdmin: {
       // args
@@ -615,16 +620,6 @@ export interface NexusGenArgTypes {
       // args
       data: NexusGenInputs['StaffJobUpdateInput'] // StaffJobUpdateInput!
       id: string // ID!
-    }
-    sudoCreateAdmin: {
-      // args
-      data: NexusGenInputs['AdminCreateInput'] // AdminCreateInput!
-      sudoPassword: string // String!
-    }
-    sudoGenAdminResetPasswordLink: {
-      // args
-      sudoPassword: string // String!
-      username: string // String!
     }
     updateAdminPassword: {
       // args

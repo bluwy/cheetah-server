@@ -284,7 +284,7 @@ type Mutation {
   adminUpdateJob(data: AdminJobUpdateInput!, id: ID!): Job!
   checkAdminSession: Boolean!
   checkStaffSession: Boolean!
-  createAdmin(data: AdminCreateInput!): Admin!
+  createAdmin(data: AdminCreateInput!, sudoPassword: String): Admin!
   createCompany(data: CompanyCreateInput!): Company!
   createCustomer(data: CustomerCreateInput!): Customer!
   createJob(data: JobCreateInput!): Job!
@@ -294,6 +294,10 @@ type Mutation {
   deleteCustomer(id: ID!): Boolean!
   deleteJob(id: ID!): Boolean!
   deleteStaff(id: ID): Boolean!
+  generateAdminResetPasswordToken(
+    sudoPassword: String!
+    username: String!
+  ): String!
   loginAdmin(password: String!, username: String!): Boolean!
   loginStaff(deviceId: String!, username: String!): Boolean!
   logoutAdmin: Boolean!
@@ -306,11 +310,6 @@ type Mutation {
   setTasks(data: [TaskInput!]!, jobId: ID!): Boolean!
   setTasksDone(ids: [ID!]!): Boolean!
   staffUpdateJob(data: StaffJobUpdateInput!, id: ID!): Job!
-  sudoCreateAdmin(data: AdminCreateInput!, sudoPassword: String!): Admin!
-  sudoGenAdminResetPasswordLink(
-    sudoPassword: String!
-    username: String!
-  ): String!
   updateAdminPassword(
     id: ID
     newPassword: String!
