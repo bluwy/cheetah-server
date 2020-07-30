@@ -4,12 +4,8 @@
     "module": "CommonJS",
     "lib": ["ES2019"],
     "baseUrl": "./",
-    "paths": {
-      "@src/*": ["src/*"],
-      "@tests/*": ["__tests__/*"]
-    },
     "esModuleInterop": true,
-    "strict": true,
+    "strict": true
   },
   "exclude": ["node_modules", "dist"]
 }
