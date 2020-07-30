@@ -27,17 +27,6 @@ input AdminCreateInput {
   username: String!
 }
 
-input AdminJobUpdateInput {
-  address: String
-  checkIn: DateTime
-  checkOut: DateTime
-  customerId: ID
-  staffPrimaryId: ID
-  staffSecondaryId: ID
-  startDate: DateTime
-  state: JobState
-}
-
 input AdminOrderByInput {
   createdAt: OrderByArg
   privilege: OrderByArg
@@ -249,6 +238,19 @@ input JobOrderByInput {
   updatedAt: OrderByArg
 }
 
+input JobReassignInput {
+  address: String!
+  staffPrimaryId: ID!
+  staffSecondaryId: ID
+  startDate: DateTime!
+  tasks: [TaskCreateInput!]!
+}
+
+type JobReassignResponse {
+  newJob: Job!
+  oriJob: Job!
+}
+
 enum JobState {
   DONE
   EXPIRED
@@ -261,6 +263,23 @@ input JobStateFilter {
   in: [JobState!]
   not: JobState
   notIn: [JobState!]
+}
+
+input JobUpdateByAdmin {
+  address: String
+  checkIn: DateTime
+  checkOut: DateTime
+  customerId: ID
+  staffPrimaryId: ID
+  staffSecondaryId: ID
+  startDate: DateTime
+  state: JobState
+}
+
+input JobUpdateByStaff {
+  checkIn: DateTime
+  checkOut: DateTime
+  state: JobState
 }
 
 input JobWhereInput {
@@ -281,42 +300,39 @@ input JobWhereInput {
 }
 
 type Mutation {
-  adminUpdateJob(data: AdminJobUpdateInput!, id: ID!): Job!
-  checkAdminSession: Boolean!
-  checkStaffSession: Boolean!
-  createAdmin(data: AdminCreateInput!, sudoPassword: String): Admin!
-  createCompany(data: CompanyCreateInput!): Company!
-  createCustomer(data: CustomerCreateInput!): Customer!
-  createJob(data: JobCreateInput!): Job!
-  createStaff(data: StaffCreateInput!): Staff!
-  deleteAdmin(id: ID): Boolean!
-  deleteCompany(id: ID!): Boolean!
-  deleteCustomer(id: ID!): Boolean!
-  deleteJob(id: ID!): Boolean!
-  deleteStaff(id: ID): Boolean!
-  generateAdminResetPasswordToken(
-    sudoPassword: String!
-    username: String!
-  ): String!
-  loginAdmin(password: String!, username: String!): Boolean!
-  loginStaff(deviceId: String!, username: String!): Boolean!
-  logoutAdmin: Boolean!
-  logoutStaff: Boolean!
-  pairStaffAndLogin(deviceId: String!, username: String!): Boolean!
-  reassignJob(data: ReassignJobInput!, id: ID!): ReassignJobResponse!
-  resetAdminPassword(newPassword: String!, resetToken: String!): Boolean!
-  resetStaffPairing(id: ID!): Boolean!
-  setActions(data: [ActionInput!]!, jobId: ID!): Boolean!
-  setTasks(data: [TaskInput!]!, jobId: ID!): Boolean!
-  setTasksDone(ids: [ID!]!): Boolean!
-  staffUpdateJob(data: StaffJobUpdateInput!, id: ID!): Job!
-  updateAdminPassword(
+  adminCheckSession: Boolean!
+  adminCreate(data: AdminCreateInput!, sudoPassword: String): Admin!
+  adminDelete(id: ID): Boolean!
+  adminGetResetPasswordToken(sudoPassword: String!, username: String!): String!
+  adminLogin(password: String!, username: String!): Boolean!
+  adminLogout: Boolean!
+  adminResetPassword(newPassword: String!, resetToken: String!): Boolean!
+  adminUpdatePassword(
     id: ID
     newPassword: String!
     oldPassword: String!
   ): Boolean!
-  updateCustomer(data: CustomerUpdateInput!, id: ID!): Customer!
-  updateStaff(data: StaffUpdateInput!, id: ID): Staff!
+  companyCreate(data: CompanyCreateInput!): Company!
+  companyDelete(id: ID!): Boolean!
+  customerCreate(data: CustomerCreateInput!): Customer!
+  customerDelete(id: ID!): Boolean!
+  customerUpdate(data: CustomerUpdateInput!, id: ID!): Customer!
+  jobCreate(data: JobCreateInput!): Job!
+  jobDelete(id: ID!): Boolean!
+  jobReassign(data: JobReassignInput!, id: ID!): JobReassignResponse!
+  jobSetActions(data: [ActionInput!]!, jobId: ID!): Boolean!
+  jobSetTasks(data: [TaskInput!]!, jobId: ID!): Boolean!
+  jobSetTasksDone(ids: [ID!]!): Boolean!
+  jobUpdateByAdmin(data: JobUpdateByAdmin!, id: ID!): Job!
+  jobUpdateByStaff(data: JobUpdateByStaff!, id: ID!): Job!
+  staffCheckSession: Boolean!
+  staffCreate(data: StaffCreateInput!): Staff!
+  staffDelete(id: ID): Boolean!
+  staffLogin(deviceId: String!, username: String!): Boolean!
+  staffLogout: Boolean!
+  staffPairDevice(deviceId: String!, username: String!): Boolean!
+  staffResetPairing(id: ID!): Boolean!
+  staffUpdate(data: StaffUpdateInput!, id: ID): Staff!
 }
 
 enum OrderByArg {
@@ -366,19 +382,6 @@ type Query {
   ): [Staff!]!
 }
 
-input ReassignJobInput {
-  address: String!
-  staffPrimaryId: ID!
-  staffSecondaryId: ID
-  startDate: DateTime!
-  tasks: [TaskCreateInput!]!
-}
-
-type ReassignJobResponse {
-  newJob: Job!
-  oriJob: Job!
-}
-
 type Staff {
   active: Boolean!
   createdAt: DateTime!
@@ -392,12 +395,6 @@ type Staff {
 input StaffCreateInput {
   fullName: String!
   username: String!
-}
-
-input StaffJobUpdateInput {
-  checkIn: DateTime
-  checkOut: DateTime
-  state: JobState
 }
 
 input StaffOrderByInput {

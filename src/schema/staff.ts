@@ -77,7 +77,7 @@ export const staffs = queryField('staffs', {
   }
 })
 
-export const createStaff = mutationField('createStaff', {
+export const staffCreate = mutationField('staffCreate', {
   type: 'Staff',
   args: {
     data: arg({
@@ -97,7 +97,7 @@ export const createStaff = mutationField('createStaff', {
   }
 })
 
-export const updateStaff = mutationField('updateStaff', {
+export const staffUpdate = mutationField('staffUpdate', {
   type: 'Staff',
   args: {
     id: idArg(),
@@ -124,7 +124,7 @@ export const updateStaff = mutationField('updateStaff', {
   }
 })
 
-export const deleteStaff = mutationField('deleteStaff', {
+export const staffDelete = mutationField('staffDelete', {
   type: 'Boolean',
   args: {
     id: idArg()
@@ -146,7 +146,7 @@ export const deleteStaff = mutationField('deleteStaff', {
   }
 })
 
-export const pairStaffAndLogin = mutationField('pairStaffAndLogin', {
+export const staffPairDevice = mutationField('staffPairDevice', {
   type: 'Boolean',
   args: {
     username: stringArg({ required: true }),
@@ -173,7 +173,7 @@ export const pairStaffAndLogin = mutationField('pairStaffAndLogin', {
   }
 })
 
-export const resetStaffPairing = mutationField('resetStaffPairing', {
+export const staffResetPairing = mutationField('staffResetPairing', {
   type: 'Boolean',
   args: {
     id: idArg({ required: true })
@@ -196,7 +196,7 @@ export const resetStaffPairing = mutationField('resetStaffPairing', {
   }
 })
 
-export const checkStaffSession = mutationField('checkStaffSession', {
+export const staffCheckSession = mutationField('staffCheckSession', {
   type: 'Boolean',
   async resolve(_, __, { sessionService }) {
     return sessionService.getSession()?.data.type == 'STAFF'
@@ -205,7 +205,7 @@ export const checkStaffSession = mutationField('checkStaffSession', {
 
 // This should only be called if the user had not login for a long time
 // and session had been disconnected
-export const loginStaff = mutationField('loginStaff', {
+export const staffLogin = mutationField('staffLogin', {
   type: 'Boolean',
   args: {
     username: stringArg({ required: true }),
@@ -231,7 +231,7 @@ export const loginStaff = mutationField('loginStaff', {
   }
 })
 
-export const logoutStaff = mutationField('logoutStaff', {
+export const staffLogout = mutationField('staffLogout', {
   type: 'Boolean',
   authorize: ifIs(AuthType.Staff),
   async resolve(_, __, { sessionService }) {

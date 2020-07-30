@@ -72,7 +72,7 @@ export const companies = queryField('companies', {
   }
 })
 
-export const createCompany = mutationField('createCompany', {
+export const companyCreate = mutationField('companyCreate', {
   type: 'Company',
   args: {
     data: arg({ type: 'CompanyCreateInput', required: true })
@@ -85,7 +85,7 @@ export const createCompany = mutationField('createCompany', {
   }
 })
 
-export const deleteCompany = mutationField('deleteCompany', {
+export const companyDelete = mutationField('companyDelete', {
   type: 'Boolean',
   args: {
     id: idArg({ required: true })

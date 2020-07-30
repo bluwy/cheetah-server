@@ -50,7 +50,7 @@ describe('company', () => {
         }
       `
     })
-    expect(data?.company.name).toEqual(companies[0].name)
+    expect(data?.company.name).toEqual(testCompany.name)
   })
 
   it('should return all companies', async () => {
@@ -86,14 +86,14 @@ describe('company', () => {
     const { data } = await mutate({
       mutation: gql`
         mutation {
-          createCompany(data: { name: "a", alias: "a" }) {
+          companyCreate(data: { name: "a", alias: "a" }) {
             name
             alias
           }
         }
       `
     })
-    expect(data?.createCompany).toEqual({ name: 'a', alias: 'a' })
+    expect(data?.companyCreate).toEqual({ name: 'a', alias: 'a' })
     const findCompany = await Company.query().findOne({ name: 'a' })
     expect(findCompany).toBeDefined()
   })
@@ -108,11 +108,11 @@ describe('company', () => {
     const { data } = await mutate({
       mutation: gql`
         mutation {
-          deleteCompany(id: "${testCompany.id}")
+          companyDelete(id: "${testCompany.id}")
         }
       `
     })
-    expect(data?.deleteCompany).toEqual(true)
+    expect(data?.companyDelete).toEqual(true)
     const findCompany = await Company.query().findOne({ id: testCompany.id })
     expect(findCompany).toBeUndefined()
   })

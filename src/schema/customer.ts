@@ -91,7 +91,7 @@ export const customers = queryField('customers', {
   }
 })
 
-export const createCustomer = mutationField('createCustomer', {
+export const customerCreate = mutationField('customerCreate', {
   type: 'Customer',
   args: {
     data: arg({ type: 'CustomerCreateInput', required: true })
@@ -104,7 +104,7 @@ export const createCustomer = mutationField('createCustomer', {
   }
 })
 
-export const updateCustomer = mutationField('updateCustomer', {
+export const customerUpdate = mutationField('customerUpdate', {
   type: 'Customer',
   args: {
     id: idArg({ required: true }),
@@ -131,7 +131,7 @@ export const updateCustomer = mutationField('updateCustomer', {
   }
 })
 
-export const deleteCustomer = mutationField('deleteCustomer', {
+export const customerDelete = mutationField('customerDelete', {
   type: 'Boolean',
   args: {
     id: idArg({ required: true })

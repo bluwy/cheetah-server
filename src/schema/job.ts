@@ -103,7 +103,7 @@ export const jobs = queryField('jobs', {
   }
 })
 
-export const createJob = mutationField('createJob', {
+export const jobCreate = mutationField('jobCreate', {
   type: 'Job',
   args: {
     data: arg({ type: 'JobCreateInput', required: true })
@@ -133,11 +133,11 @@ export const createJob = mutationField('createJob', {
   }
 })
 
-export const adminUpdateJob = mutationField('adminUpdateJob', {
+export const jobUpdateByAdmin = mutationField('jobUpdateByAdmin', {
   type: 'Job',
   args: {
     id: idArg({ required: true }),
-    data: arg({ type: 'AdminJobUpdateInput', required: true })
+    data: arg({ type: 'JobUpdateByAdmin', required: true })
   },
   authorize: ifIs(AuthType.Admin),
   async resolve(_, { id, data }) {
@@ -158,11 +158,11 @@ export const adminUpdateJob = mutationField('adminUpdateJob', {
   }
 })
 
-export const staffUpdateJob = mutationField('staffUpdateJob', {
+export const jobUpdateByStaff = mutationField('jobUpdateByStaff', {
   type: 'Job',
   args: {
     id: idArg({ required: true }),
-    data: arg({ type: 'StaffJobUpdateInput', required: true })
+    data: arg({ type: 'JobUpdateByStaff', required: true })
   },
   authorize: ifIs(AuthType.Staff),
   async resolve(_, { id, data }) {
@@ -178,7 +178,7 @@ export const staffUpdateJob = mutationField('staffUpdateJob', {
   }
 })
 
-export const deleteJob = mutationField('deleteJob', {
+export const jobDelete = mutationField('jobDelete', {
   type: 'Boolean',
   args: {
     id: idArg({ required: true })
@@ -195,11 +195,11 @@ export const deleteJob = mutationField('deleteJob', {
   }
 })
 
-export const reassignJob = mutationField('reassignJob', {
-  type: 'ReassignJobResponse',
+export const jobReassign = mutationField('jobReassign', {
+  type: 'JobReassignResponse',
   args: {
     id: idArg({ required: true }),
-    data: arg({ type: 'ReassignJobInput', required: true })
+    data: arg({ type: 'JobReassignInput', required: true })
   },
   authorize: ifIs(AuthType.Admin),
   async resolve(_, { id, data }) {
@@ -241,7 +241,7 @@ export const reassignJob = mutationField('reassignJob', {
   }
 })
 
-export const setTasks = mutationField('setTasks', {
+export const jobSetTasks = mutationField('jobSetTasks', {
   type: 'Boolean',
   args: {
     jobId: idArg({ required: true }),
@@ -315,7 +315,7 @@ export const setTasks = mutationField('setTasks', {
   }
 })
 
-export const setTasksDone = mutationField('setTasksDone', {
+export const jobSetTasksDone = mutationField('jobSetTasksDone', {
   type: 'Boolean',
   args: {
     ids: idArg({ list: true, required: true })
@@ -336,7 +336,7 @@ export const setTasksDone = mutationField('setTasksDone', {
   }
 })
 
-export const setActions = mutationField('setActions', {
+export const jobSetActions = mutationField('jobSetActions', {
   type: 'Boolean',
   args: {
     jobId: idArg({ required: true }),
@@ -487,8 +487,8 @@ export const ActionType = objectType({
   }
 })
 
-export const ReassignJobResponse = objectType({
-  name: 'ReassignJobResponse',
+export const JobReassignResponse = objectType({
+  name: 'JobReassignResponse',
   definition(t) {
     t.field('oriJob', { type: 'Job' })
     t.field('newJob', { type: 'Job' })
@@ -507,8 +507,8 @@ export const JobCreateInput = inputObjectType({
   }
 })
 
-export const AdminJobUpdateInput = inputObjectType({
-  name: 'AdminJobUpdateInput',
+export const JobUpdateByAdmin = inputObjectType({
+  name: 'JobUpdateByAdmin',
   definition(t) {
     t.id('customerId')
     t.string('address')
@@ -521,8 +521,8 @@ export const AdminJobUpdateInput = inputObjectType({
   }
 })
 
-export const StaffJobUpdateInput = inputObjectType({
-  name: 'StaffJobUpdateInput',
+export const JobUpdateByStaff = inputObjectType({
+  name: 'JobUpdateByStaff',
   definition(t) {
     t.date('checkIn')
     t.date('checkOut')
@@ -530,8 +530,8 @@ export const StaffJobUpdateInput = inputObjectType({
   }
 })
 
-export const ReassignJobInput = inputObjectType({
-  name: 'ReassignJobInput',
+export const JobReassignInput = inputObjectType({
+  name: 'JobReassignInput',
   definition(t) {
     t.string('address', { required: true })
     t.date('startDate', { required: true })

@@ -79,7 +79,7 @@ export const admins = queryField('admins', {
   }
 })
 
-export const createAdmin = mutationField('createAdmin', {
+export const adminCreate = mutationField('adminCreate', {
   type: 'Admin',
   args: {
     sudoPassword: stringArg(),
@@ -108,7 +108,7 @@ export const createAdmin = mutationField('createAdmin', {
   }
 })
 
-export const deleteAdmin = mutationField('deleteAdmin', {
+export const adminDelete = mutationField('adminDelete', {
   type: 'Boolean',
   args: {
     id: idArg()
@@ -130,7 +130,7 @@ export const deleteAdmin = mutationField('deleteAdmin', {
   }
 })
 
-export const resetAdminPassword = mutationField('resetAdminPassword', {
+export const adminResetPassword = mutationField('adminResetPassword', {
   type: 'Boolean',
   args: {
     resetToken: stringArg({ required: true }),
@@ -167,7 +167,7 @@ export const resetAdminPassword = mutationField('resetAdminPassword', {
   }
 })
 
-export const updateAdminPassword = mutationField('updateAdminPassword', {
+export const adminUpdatePassword = mutationField('adminUpdatePassword', {
   type: 'Boolean',
   args: {
     id: idArg(),
@@ -214,7 +214,7 @@ export const updateAdminPassword = mutationField('updateAdminPassword', {
   }
 })
 
-export const checkAdminSession = mutationField('checkAdminSession', {
+export const adminCheckSession = mutationField('adminCheckSession', {
   type: 'Boolean',
   async resolve(_, __, { sessionService }) {
     const sessionType = sessionService.getSession()?.data.type
@@ -223,7 +223,7 @@ export const checkAdminSession = mutationField('checkAdminSession', {
   }
 })
 
-export const loginAdmin = mutationField('loginAdmin', {
+export const adminLogin = mutationField('adminLogin', {
   type: 'Boolean',
   args: {
     username: stringArg({ required: true }),
@@ -255,7 +255,7 @@ export const loginAdmin = mutationField('loginAdmin', {
   }
 })
 
-export const logoutAdmin = mutationField('logoutAdmin', {
+export const adminLogout = mutationField('adminLogout', {
   type: 'Boolean',
   authorize: ifIs(AuthType.Admin),
   async resolve(_, __, { sessionService }) {
@@ -265,8 +265,8 @@ export const logoutAdmin = mutationField('logoutAdmin', {
   }
 })
 
-export const generateAdminResetPasswordToken = mutationField(
-  'generateAdminResetPasswordToken',
+export const adminGetResetPasswordToken = mutationField(
+  'adminGetResetPasswordToken',
   {
     type: 'String',
     args: {
