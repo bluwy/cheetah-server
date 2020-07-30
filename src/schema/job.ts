@@ -259,13 +259,9 @@ export const setTasks = mutationField('setTasks', {
       const taskIds = tasks.map(v => v.id)
 
       // Force cast after `validateTasks`
-      const toInsertData = (data.filter(
-        v => v.id == null
-      ) as any) as InsertTaskInput[]
+      const toInsertData = data.filter(v => v.id == null) as InsertTaskInput[]
 
-      const toUpdateData = (data.filter(
-        v => v.id != null
-      ) as any) as UpdateTaskInput[]
+      const toUpdateData = data.filter(v => v.id != null) as UpdateTaskInput[]
 
       const toDeleteIds = taskIds.filter(
         v => !toUpdateData.some(w => w.id === v)
@@ -358,13 +354,9 @@ export const setActions = mutationField('setActions', {
       const actionIds = actions.map(v => v.id)
 
       // Force cast after `validateActions`
-      const toInsertData = (data.filter(
-        v => v.id == null
-      ) as any) as InsertActionInput[]
+      const toInsertData = data.filter(v => v.id == null) as InsertActionInput[]
 
-      const toUpdateData = (data.filter(
-        v => v.id != null
-      ) as any) as UpdateActionInput[]
+      const toUpdateData = data.filter(v => v.id != null) as UpdateActionInput[]
 
       const toDeleteIds = actionIds.filter(
         v => !toUpdateData.some(w => w.id === v)

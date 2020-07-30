@@ -191,26 +191,26 @@ export const updateAdminPassword = mutationField('updateAdminPassword', {
       throw new UserInputError(`Admin not found with id: ${adminId}`)
     }
 
-    if (await passwordService.verifyPassword(admin.hash, oldPassword)) {
-      const newHash = await passwordService.hashPassword(newPassword)
-
-      await Admin.query()
-        .findById(adminId)
-        .patch({ hash: newHash })
-
-      await sessionService.logoutAll(adminId)
-
-      // Once logout all, current session will be invalid, so issue new one
-      await sessionService.login({
-        userId: admin.id,
-        type:
-          admin.privilege === AdminPrivilege.Full ? 'ADMIN_FULL' : 'ADMIN_BASIC'
-      })
-
-      return true
+    if (!(await passwordService.verifyPassword(admin.hash, oldPassword))) {
+      throw new AuthenticationError('Invalid password')
     }
 
-    throw new AuthenticationError('Invalid password')
+    const newHash = await passwordService.hashPassword(newPassword)
+
+    await Admin.query()
+      .findById(adminId)
+      .patch({ hash: newHash })
+
+    await sessionService.logoutAll(adminId)
+
+    // Once logout all, current session will be invalid, so issue new one
+    await sessionService.login({
+      userId: admin.id,
+      type:
+        admin.privilege === AdminPrivilege.Full ? 'ADMIN_FULL' : 'ADMIN_BASIC'
+    })
+
+    return true
   }
 })
 
@@ -279,11 +279,11 @@ export const generateAdminResetPasswordToken = mutationField(
         .findOne('username', username)
         .select('id')
 
-      if (admin != null) {
-        return await passwordService.generateResetToken(admin.id)
+      if (admin == null) {
+        throw new UserInputError('Invalid username')
       }
 
-      throw new UserInputError('Invalid username')
+      return await passwordService.generateResetToken(admin.id)
     }
   }
 )
