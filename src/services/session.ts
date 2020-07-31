@@ -47,71 +47,10 @@ export interface Session {
 export class SessionService {
   private session?: Session
 
-  private constructor(private req: Request, private res: Response) {}
+  constructor(private req: Request, private res: Response) {}
 
-  static async build(req: Request, res: Response): Promise<SessionService> {
-    const instance = new SessionService(req, res)
-
-    await instance.initSession()
-
-    return instance
-  }
-
-  /** Gets the current session. DO NOT modify this. */
-  getSession(): Session | undefined
-  getSession(force: true): Session
-  getSession(force: false): Session | undefined
-  getSession(force?: boolean): Session | undefined {
-    if (force && this.session == null) {
-      throw new AuthenticationError('Session not authenticated')
-    }
-
-    return this.session
-  }
-
-  /**
-   * Only prepares user session expire. This should be called per user sign up.
-   * Otherwise, session will throw error if user not registered.
-   * This prevents potential tampering that causes random user creation.
-   * */
-  async signup(userId: string): Promise<void> {
-    await this.redisResetUserExpire(userId)
-  }
-
-  /**
-   * Creates a session in Redis and add required cookies for authentication.
-   * Only creates if there's no session in the request.
-   */
-  async login(data: PartialBy<SessionData, 'iat'>): Promise<void> {
-    if (this.session != null) {
-      throw new ForbiddenError('Cannot login because session already exists')
-    }
-
-    const sessionId = nanoid(SESSION_ID_LENGTH)
-    const newData = { ...data, iat: Date.now() }
-
-    await this.redisSetSession(sessionId, newData)
-
-    this.setSessionCookie(sessionId)
-  }
-
-  /** Deletes session in Redis and deletes session cookie */
-  async logout(): Promise<void> {
-    if (this.session == null) {
-      throw new ForbiddenError('Cannot logout because there is no session')
-    }
-
-    await this.redisDeleteSession(this.session.id)
-    this.deleteSessionCookie(this.session.id)
-  }
-
-  /** Logs user out of all sessions */
-  async logoutAll(userId: string): Promise<void> {
-    await this.redisResetUserExpire(userId)
-  }
-
-  /** Gets the current session, run only on init */
-  private async initSession(): Promise<void> {
+  /** Initialize session data. Must be called manually after instantiation */
+  async init() {
     const sessionId = this.req.cookies[SESSION_COOKIE_NAME]
     const sessionData = sessionId && (await this.redisGetSession(sessionId))
     const userExpire =
@@ -121,7 +60,8 @@ export class SessionService {
       return
     }
 
-    // If issue date less than user min expire time
+    // If issue date less than user expire time. The expire time is the baseline
+    // where anything before it is assumed expired. (Used to revoke sessions)
     if (sessionData.iat < userExpire) {
       return
     }
@@ -145,11 +85,62 @@ export class SessionService {
     }
   }
 
+  /** Gets the current session. DO NOT modify this. */
+  getSession(): Session | undefined
+  getSession(force: true): Session
+  getSession(force: false): Session | undefined
+  getSession(force?: boolean): Session | undefined {
+    if (force && this.session == null) {
+      throw new AuthenticationError('Session not authenticated')
+    }
+
+    return this.session
+  }
+
+  /**
+   * Only prepares user session expire. This should be called per user sign up.
+   * Otherwise, session will throw error if user not registered.
+   * This prevents potential tampering that causes random user creation.
+   * */
+  async signup(userId: string) {
+    await this.redisResetUserExpire(userId)
+  }
+
+  /**
+   * Creates a session in Redis and add required cookies for authentication.
+   * Only creates if there's no session in the request.
+   */
+  async login(data: PartialBy<SessionData, 'iat'>) {
+    if (this.session != null) {
+      throw new ForbiddenError('Cannot login because session already exists')
+    }
+
+    const sessionId = nanoid(SESSION_ID_LENGTH)
+    const newData = { ...data, iat: Date.now() }
+
+    await this.redisSetSession(sessionId, newData)
+
+    this.setSessionCookie(sessionId)
+  }
+
+  /** Deletes session in Redis and deletes session cookie */
+  async logout() {
+    if (this.session == null) {
+      throw new ForbiddenError('Cannot logout because there is no session')
+    }
+
+    await this.redisDeleteSession(this.session.id)
+    this.deleteSessionCookie(this.session.id)
+  }
+
+  /** Logs user out of all sessions */
+  async logoutAll(userId: string) {
+    await this.redisResetUserExpire(userId)
+  }
+
   //#region Redis
 
-  private async redisGetSession(
-    sessionId: string
-  ): Promise<SessionData | undefined> {
+  private async redisGetSession(sessionId: string) {
     const key = this.getSessionKey(sessionId)
 
     const result = await redis.get(key)
@@ -161,23 +152,20 @@ export class SessionService {
     return undefined
   }
 
-  private async redisSetSession(
-    sessionId: string,
-    data: SessionData
-  ): Promise<void> {
+  private async redisSetSession(sessionId: string, data: SessionData) {
     const key = this.getSessionKey(sessionId)
     const value = JSON.stringify(data)
 
     await redis.setex(key, sessionTTL, value)
   }
 
-  private async redisDeleteSession(sessionId: string): Promise<void> {
+  private async redisDeleteSession(sessionId: string) {
     const key = this.getSessionKey(sessionId)
 
     await redis.del(key)
   }
 
-  private async redisGetUserExpire(userId: string): Promise<number> {
+  private async redisGetUserExpire(userId: string) {
     const key = this.getExpireKey(userId)
     const expire = await redis.get(key)
 
@@ -190,7 +178,7 @@ export class SessionService {
     return +expire
   }
 
-  private async redisResetUserExpire(userId: string): Promise<void> {
+  private async redisResetUserExpire(userId: string) {
     const key = this.getExpireKey(userId)
 
     await redis.set(key, Date.now())

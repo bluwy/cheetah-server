@@ -12,10 +12,12 @@ export interface Context {
 }
 
 export async function context({ req, res }: ExpressContext): Promise<Context> {
+  const sessionService = new SessionService(req, res)
+  await sessionService.init()
   return {
     dataLoaderService: new DataLoaderService(),
     jobService: new JobService(),
     passwordService: new PasswordService(),
-    sessionService: await SessionService.build(req, res)
+    sessionService
   }
 }
