@@ -1,4 +1,4 @@
-import { Job, JobState } from '@src/models/Job'
+import { Job } from '@src/models/Job'
 import { Customer } from '@src/models/Customer'
 import { Staff } from '@src/models/Staff'
 import { TaskType } from '@src/models/Task'
@@ -66,5 +66,5 @@ export async function seedJob() {
     })
   )
 
-  await Job.query().insert([{}])
+  await Job.query().insertGraph(insertJobs)
 }

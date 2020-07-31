@@ -1,4 +1,3 @@
-import { hash } from 'argon2'
 import { Admin, AdminPrivilege } from '@src/models/Admin'
 
 export const admins = [
@@ -15,16 +14,13 @@ export const admins = [
 ]
 
 export async function seedAdmin() {
-  // Convert admins passwords to hashes
+  // Hash is same as password in tests
   const insertAdmins = await Promise.all(
-    admins.map(async admin => {
-      const { password, ...others } = admin
-
-      return {
-        ...others,
-        hash: await hash(password)
-      }
-    })
+    admins.map(async admin => ({
+      username: admin.username,
+      privilege: admin.privilege,
+      hash: admin.password
+    }))
   )
 
   await Admin.query().insert(insertAdmins)

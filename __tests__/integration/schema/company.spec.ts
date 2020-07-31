@@ -10,6 +10,7 @@ import {
 
 jest.setTimeout(10000)
 jest.mock('@src/services/session')
+jest.mock('@src/services/password')
 
 describe('company', () => {
   const { query, mutate } = newTestClient()
