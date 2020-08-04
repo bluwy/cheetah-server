@@ -265,7 +265,7 @@ input JobStateFilter {
   notIn: [JobState!]
 }
 
-input JobUpdateByAdmin {
+input JobUpdateByAdminInput {
   address: String
   checkIn: DateTime
   checkOut: DateTime
@@ -276,7 +276,7 @@ input JobUpdateByAdmin {
   state: JobState
 }
 
-input JobUpdateByStaff {
+input JobUpdateByStaffInput {
   checkIn: DateTime
   checkOut: DateTime
   state: JobState
@@ -323,8 +323,8 @@ type Mutation {
   jobSetActions(data: [ActionInput!]!, jobId: ID!): Boolean!
   jobSetTasks(data: [TaskInput!]!, jobId: ID!): Boolean!
   jobSetTasksDone(ids: [ID!]!): Boolean!
-  jobUpdateByAdmin(data: JobUpdateByAdmin!, id: ID!): Job!
-  jobUpdateByStaff(data: JobUpdateByStaff!, id: ID!): Job!
+  jobUpdateByAdmin(data: JobUpdateByAdminInput!, id: ID!): Job!
+  jobUpdateByStaff(data: JobUpdateByStaffInput!, id: ID!): Job!
   staffCheckSession: Boolean!
   staffCreate(data: StaffCreateInput!): Staff!
   staffDelete(id: ID): Boolean!

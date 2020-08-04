@@ -1,5 +1,5 @@
 {
-  "name": "e-job-server",
+  "name": "cheetah-server",
   "version": "1.0.0",
   "private": true,
   "main": "dist/index.js",
@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "ts-node-dev --no-notify --respawn --transpile-only -r dotenv/config src/index.ts",
+    "generate": "ts-node -T -r dotenv/config src/schema.ts",
     "build": "tsc --outDir dist",
     "lint": "eslint ./**/*.ts",
     "lint:fix": "eslint --fix ./**/*.ts",

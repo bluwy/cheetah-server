@@ -222,7 +222,7 @@ export interface NexusGenInputs {
     not?: NexusGenEnums['JobState'] | null // JobState
     notIn?: NexusGenEnums['JobState'][] | null // [JobState!]
   }
-  JobUpdateByAdmin: {
+  JobUpdateByAdminInput: {
     // input type
     address?: string | null // String
     checkIn?: Date | null // DateTime
@@ -233,7 +233,7 @@ export interface NexusGenInputs {
     startDate?: Date | null // DateTime
     state?: NexusGenEnums['JobState'] | null // JobState
   }
-  JobUpdateByStaff: {
+  JobUpdateByStaffInput: {
     // input type
     checkIn?: Date | null // DateTime
     checkOut?: Date | null // DateTime
@@ -371,8 +371,8 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   JobOrderByInput: NexusGenInputs['JobOrderByInput']
   JobReassignInput: NexusGenInputs['JobReassignInput']
   JobStateFilter: NexusGenInputs['JobStateFilter']
-  JobUpdateByAdmin: NexusGenInputs['JobUpdateByAdmin']
-  JobUpdateByStaff: NexusGenInputs['JobUpdateByStaff']
+  JobUpdateByAdminInput: NexusGenInputs['JobUpdateByAdminInput']
+  JobUpdateByStaffInput: NexusGenInputs['JobUpdateByStaffInput']
   JobWhereInput: NexusGenInputs['JobWhereInput']
   StaffCreateInput: NexusGenInputs['StaffCreateInput']
   StaffOrderByInput: NexusGenInputs['StaffOrderByInput']
@@ -602,12 +602,12 @@ export interface NexusGenArgTypes {
     }
     jobUpdateByAdmin: {
       // args
-      data: NexusGenInputs['JobUpdateByAdmin'] // JobUpdateByAdmin!
+      data: NexusGenInputs['JobUpdateByAdminInput'] // JobUpdateByAdminInput!
       id: string // ID!
     }
     jobUpdateByStaff: {
       // args
-      data: NexusGenInputs['JobUpdateByStaff'] // JobUpdateByStaff!
+      data: NexusGenInputs['JobUpdateByStaffInput'] // JobUpdateByStaffInput!
       id: string // ID!
     }
     staffCreate: {
@@ -758,8 +758,8 @@ export type NexusGenInputNames =
   | 'JobOrderByInput'
   | 'JobReassignInput'
   | 'JobStateFilter'
-  | 'JobUpdateByAdmin'
-  | 'JobUpdateByStaff'
+  | 'JobUpdateByAdminInput'
+  | 'JobUpdateByStaffInput'
   | 'JobWhereInput'
   | 'StaffCreateInput'
   | 'StaffOrderByInput'

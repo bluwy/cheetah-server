@@ -137,7 +137,7 @@ export const jobUpdateByAdmin = mutationField('jobUpdateByAdmin', {
   type: 'Job',
   args: {
     id: idArg({ required: true }),
-    data: arg({ type: 'JobUpdateByAdmin', required: true })
+    data: arg({ type: 'JobUpdateByAdminInput', required: true })
   },
   authorize: ifIs(AuthType.Admin),
   async resolve(_, { id, data }) {
@@ -162,7 +162,7 @@ export const jobUpdateByStaff = mutationField('jobUpdateByStaff', {
   type: 'Job',
   args: {
     id: idArg({ required: true }),
-    data: arg({ type: 'JobUpdateByStaff', required: true })
+    data: arg({ type: 'JobUpdateByStaffInput', required: true })
   },
   authorize: ifIs(AuthType.Staff),
   async resolve(_, { id, data }) {
@@ -507,8 +507,8 @@ export const JobCreateInput = inputObjectType({
   }
 })
 
-export const JobUpdateByAdmin = inputObjectType({
-  name: 'JobUpdateByAdmin',
+export const JobUpdateByAdminInput = inputObjectType({
+  name: 'JobUpdateByAdminInput',
   definition(t) {
     t.id('customerId')
     t.string('address')
@@ -521,8 +521,8 @@ export const JobUpdateByAdmin = inputObjectType({
   }
 })
 
-export const JobUpdateByStaff = inputObjectType({
-  name: 'JobUpdateByStaff',
+export const JobUpdateByStaffInput = inputObjectType({
+  name: 'JobUpdateByStaffInput',
   definition(t) {
     t.date('checkIn')
     t.date('checkOut')
