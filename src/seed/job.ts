@@ -48,23 +48,21 @@ export async function seedJob() {
   const customers = await Customer.query()
   const staffs = await Staff.query()
 
-  const insertJobs = await Promise.all(
-    jobs.map(async job => {
-      const {
-        customerIndex: ci,
-        staffPrimaryIndex: spi,
-        staffSecondaryIndex: ssi,
-        ...others
-      } = job
+  const insertJobs = jobs.map(job => {
+    const {
+      customerIndex: ci,
+      staffPrimaryIndex: spi,
+      staffSecondaryIndex: ssi,
+      ...others
+    } = job
 
-      return {
-        ...others,
-        customerId: customers[ci].id,
-        staffPrimaryId: staffs[spi].id,
-        staffSecondaryId: ssi ? staffs[ssi].id : null
-      }
-    })
-  )
+    return {
+      ...others,
+      customerId: customers[ci].id,
+      staffPrimaryId: staffs[spi].id,
+      staffSecondaryId: ssi ? staffs[ssi].id : null
+    }
+  })
 
   await Job.query().insertGraph(insertJobs)
 }

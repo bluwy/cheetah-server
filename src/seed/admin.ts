@@ -1,4 +1,5 @@
 import { Admin, AdminPrivilege } from '../models/Admin'
+import { PasswordService } from '../services/password'
 
 export const admins = [
   {
@@ -14,12 +15,15 @@ export const admins = [
 ]
 
 export async function seedAdmin() {
-  // Hash is same as password in tests
+  // Use service to hash so can be stub during tests.
+  // This also imitates production code.
+  const passwordService = new PasswordService()
+
   const insertAdmins = await Promise.all(
     admins.map(async admin => ({
       username: admin.username,
       privilege: admin.privilege,
-      hash: admin.password
+      hash: await passwordService.hashPassword(admin.password)
     }))
   )
 
