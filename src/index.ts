@@ -19,10 +19,17 @@ if (process.env.NODE_ENV !== 'test') {
   if (process.env.NODE_ENV === 'development') {
     // Manually re-seed database if needed. Make sure they're no queries running
     // on the database before calling this.
-    app.all('/reseed', () => reseedDatabase())
+    app.get('/reseed', (req, res) => {
+      reseedDatabase()
+      res.end()
+    })
+
     // Disconnect and drop the database. Since the PostgreSQL database created
     // with Docker is volatile, it isn't necessary to call this.
-    app.all('/cleanup', () => cleanupDatabase())
+    app.get('/cleanup', (req, res) => {
+      cleanupDatabase()
+      res.end()
+    })
   }
 
   server.applyMiddleware({
