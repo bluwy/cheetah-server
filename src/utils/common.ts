@@ -9,6 +9,13 @@ export function getEnvVar(name: string): string {
   return value
 }
 
+/** Just like console.log, but doesn't log when testing */
+export function log(...args: any[]) {
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(...args)
+  }
+}
+
 export type ValidateNonNullPropsOptions<T> = {
   /** Specify specific props to be asserted */
   props?: (keyof T)[]

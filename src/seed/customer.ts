@@ -1,6 +1,6 @@
-import { Customer } from '@src/models/Customer'
-import { Company } from '@src/models/Company'
-import { Staff } from '@src/models/Staff'
+import { Customer } from '../models/Customer'
+import { Company } from '../models/Company'
+import { Staff } from '../models/Staff'
 
 export const customers = [
   {

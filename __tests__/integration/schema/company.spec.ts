@@ -1,12 +1,8 @@
 import { gql } from 'apollo-server-express'
-import { companies } from '@tests/seed/company'
+import { cleanupAll, reseedDatabase, setupDatabase } from '@src/database'
 import { Company } from '@src/models/Company'
-import {
-  newTestClient,
-  initDatabase,
-  setupDatabase,
-  cleanupDatabase
-} from '@tests/utils'
+import { companies } from '@src/seed/company'
+import { newTestClient } from '@tests/utils'
 
 jest.setTimeout(10000)
 jest.mock('@src/services/session')
@@ -16,15 +12,15 @@ describe('company', () => {
   const { query, mutate } = newTestClient()
 
   beforeAll(async () => {
-    await initDatabase()
-  })
-
-  beforeEach(async () => {
     await setupDatabase()
   })
 
+  beforeEach(async () => {
+    await reseedDatabase()
+  })
+
   afterAll(async () => {
-    await cleanupDatabase()
+    await cleanupAll()
   })
 
   it('should provide company count', async () => {

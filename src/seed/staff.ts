@@ -1,4 +1,4 @@
-import { Staff } from '@src/models/Staff'
+import { Staff } from '../models/Staff'
 
 export const staffs = [
   {

@@ -1,7 +1,7 @@
-import { Job } from '@src/models/Job'
-import { Customer } from '@src/models/Customer'
-import { Staff } from '@src/models/Staff'
-import { TaskType } from '@src/models/Task'
+import { Job } from '../models/Job'
+import { Customer } from '../models/Customer'
+import { Staff } from '../models/Staff'
+import { TaskType } from '../models/Task'
 
 const jobs = [
   // Freshly created job

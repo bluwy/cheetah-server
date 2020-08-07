@@ -1,4 +1,4 @@
-import { Admin, AdminPrivilege } from '@src/models/Admin'
+import { Admin, AdminPrivilege } from '../models/Admin'
 
 export const admins = [
   {

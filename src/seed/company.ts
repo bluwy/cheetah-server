@@ -1,4 +1,4 @@
-import { Company } from '@src/models/Company'
+import { Company } from '../models/Company'
 
 export const companies = [
   {
