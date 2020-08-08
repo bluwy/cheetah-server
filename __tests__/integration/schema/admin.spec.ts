@@ -1,8 +1,12 @@
 import { gql } from 'apollo-server-express'
-import { cleanupAll, reseedDatabase, setupDatabase } from '@src/database'
 import { Admin } from '@src/models/Admin'
 import { admins } from '@src/seed/admin'
-import { newTestClient } from '@tests/utils'
+import {
+  cleanupDatabase,
+  initDatabase,
+  newTestClient,
+  setupDatabase
+} from '@tests/utils'
 
 const SUDO_PASSWORD = process.env.SUDO_PASSWORD
 
@@ -14,15 +18,15 @@ describe('admin', () => {
   const { query, mutate } = newTestClient()
 
   beforeAll(async () => {
-    await setupDatabase()
+    await initDatabase()
   })
 
   beforeEach(async () => {
-    await reseedDatabase()
+    await setupDatabase()
   })
 
   afterAll(async () => {
-    await cleanupAll()
+    await cleanupDatabase()
   })
 
   it('should provide admin count', async () => {
