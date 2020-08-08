@@ -6,12 +6,12 @@ import Redis from 'ioredis'
 // - Lazy because I don't want the console to be blasted with connection errors
 //   while writing Nexus code with Docker not upped
 
-const REDIS_URL =
-  process.env.NODE_ENV === 'test'
-    ? process.env.REDIS_TEST_URL
-    : process.env.REDIS_URL
+const REDIS_URL = process.env.REDIS_URL
 
-export const redis = new Redis(REDIS_URL, { lazyConnect: true })
+export const redis =
+  process.env.NODE_ENV === 'test'
+    ? new Redis({ lazyConnect: true })
+    : new Redis(REDIS_URL, { lazyConnect: true })
 
 if (process.env.NODE_ENV === 'development' && process.env.LOG_REDIS) {
   redis.on('connect', async () => {
