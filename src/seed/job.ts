@@ -7,10 +7,8 @@ const jobs = [
   // Freshly created job
   {
     address: 'ahhhh',
+    code: 'K1',
     startDate: new Date(),
-    checkIn: null,
-    checkOut: null,
-    state: null,
     customerIndex: 0,
     staffPrimaryIndex: 0,
     staffSecondaryIndex: 1,
@@ -26,13 +24,11 @@ const jobs = [
   // Current WIP job
   {
     address: 'ahhhh',
+    code: 'K2',
     startDate: new Date(),
     checkIn: new Date(),
-    checkOut: null,
-    state: null,
     customerIndex: 0,
     staffPrimaryIndex: 0,
-    staffSecondaryIndex: 1,
     tasks: [
       {
         type: TaskType.Service,
@@ -60,7 +56,7 @@ export async function seedJob() {
       ...others,
       customerId: customers[ci].id,
       staffPrimaryId: staffs[spi].id,
-      staffSecondaryId: ssi ? staffs[ssi].id : null
+      staffSecondaryId: ssi ? staffs[ssi].id : undefined
     }
   })
 
