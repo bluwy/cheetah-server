@@ -20,7 +20,6 @@ const masterKnex = Knex({
   client: 'pg',
   connection: DATABASE_URL.replace(/[^/]*$/, 'postgres')
 })
-
 ;(async () => {
   console.log(`Clean database: "${databaseName}".`)
 

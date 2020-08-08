@@ -22,7 +22,6 @@ const masterKnex = Knex({
   client: 'pg',
   connection: DATABASE_URL.replace(/[^/]*$/, 'postgres')
 })
-
 ;(async () => {
   console.log(`Setup database: "${databaseName}".`)
 
@@ -38,7 +37,7 @@ const masterKnex = Knex({
       connectionString: DATABASE_URL
     }
   })
-  
+
   console.log('Migrating database...')
   await targetKnex.migrate.latest()
 
