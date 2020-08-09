@@ -61,8 +61,11 @@ export class SessionService {
     }
 
     // If issue date less than user expire time. The expire time is the baseline
-    // where anything before it is assumed expired. (Used to revoke sessions)
+    // where anything before it is assumed expired.
     if (sessionData.iat < userExpire) {
+      // Revoke session (logout)
+      await this.redisDeleteSession(sessionId)
+      this.deleteSessionCookie(sessionId)
       return
     }
 
