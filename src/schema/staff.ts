@@ -77,6 +77,13 @@ export const staffs = queryField('staffs', {
   }
 })
 
+export const staffIsInSession = queryField('staffIsInSession', {
+  type: 'Boolean',
+  async resolve(_, __, { sessionService }) {
+    return sessionService.getSession()?.data.type == 'STAFF'
+  }
+})
+
 export const staffCreate = mutationField('staffCreate', {
   type: 'Staff',
   args: {
@@ -191,13 +198,6 @@ export const staffResetPairing = mutationField('staffResetPairing', {
     await sessionService.logoutAll(staff.id)
 
     return true
-  }
-})
-
-export const staffCheckSession = mutationField('staffCheckSession', {
-  type: 'Boolean',
-  async resolve(_, __, { sessionService }) {
-    return sessionService.getSession()?.data.type == 'STAFF'
   }
 })
 

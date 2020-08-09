@@ -451,7 +451,6 @@ export interface NexusGenFieldTypes {
   }
   Mutation: {
     // field return type
-    adminCheckSession: boolean // Boolean!
     adminCreate: NexusGenRootTypes['Admin'] // Admin!
     adminDelete: boolean // Boolean!
     adminGetResetPasswordToken: string // String!
@@ -472,7 +471,6 @@ export interface NexusGenFieldTypes {
     jobSetTasksDone: boolean // Boolean!
     jobUpdateByAdmin: NexusGenRootTypes['Job'] // Job!
     jobUpdateByStaff: NexusGenRootTypes['Job'] // Job!
-    staffCheckSession: boolean // Boolean!
     staffCreate: NexusGenRootTypes['Staff'] // Staff!
     staffDelete: boolean // Boolean!
     staffLogin: boolean // Boolean!
@@ -485,6 +483,7 @@ export interface NexusGenFieldTypes {
     // field return type
     admin: NexusGenRootTypes['Admin'] // Admin!
     adminCount: number // Int!
+    adminIsInSession: boolean // Boolean!
     admins: NexusGenRootTypes['Admin'][] // [Admin!]!
     companies: NexusGenRootTypes['Company'][] // [Company!]!
     company: NexusGenRootTypes['Company'] // Company!
@@ -497,6 +496,7 @@ export interface NexusGenFieldTypes {
     jobs: NexusGenRootTypes['Job'][] // [Job!]!
     staff: NexusGenRootTypes['Staff'] // Staff!
     staffCount: number // Int!
+    staffIsInSession: boolean // Boolean!
     staffs: NexusGenRootTypes['Staff'][] // [Staff!]!
   }
   Staff: {

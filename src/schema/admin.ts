@@ -79,6 +79,15 @@ export const admins = queryField('admins', {
   }
 })
 
+export const adminIsInSession = queryField('adminIsInSession', {
+  type: 'Boolean',
+  async resolve(_, __, { sessionService }) {
+    const sessionType = sessionService.getSession()?.data.type
+
+    return sessionType == 'ADMIN_BASIC' || sessionType == 'ADMIN_FULL'
+  }
+})
+
 export const adminCreate = mutationField('adminCreate', {
   type: 'Admin',
   args: {
@@ -209,15 +218,6 @@ export const adminUpdatePassword = mutationField('adminUpdatePassword', {
     })
 
     return true
-  }
-})
-
-export const adminCheckSession = mutationField('adminCheckSession', {
-  type: 'Boolean',
-  async resolve(_, __, { sessionService }) {
-    const sessionType = sessionService.getSession()?.data.type
-
-    return sessionType == 'ADMIN_BASIC' || sessionType == 'ADMIN_FULL'
   }
 })
 

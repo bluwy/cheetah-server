@@ -300,7 +300,6 @@ input JobWhereInput {
 }
 
 type Mutation {
-  adminCheckSession: Boolean!
   adminCreate(data: AdminCreateInput!, sudoPassword: String): Admin!
   adminDelete(id: ID): Boolean!
   adminGetResetPasswordToken(sudoPassword: String!, username: String!): String!
@@ -325,7 +324,6 @@ type Mutation {
   jobSetTasksDone(ids: [ID!]!): Boolean!
   jobUpdateByAdmin(data: JobUpdateByAdminInput!, id: ID!): Job!
   jobUpdateByStaff(data: JobUpdateByStaffInput!, id: ID!): Job!
-  staffCheckSession: Boolean!
   staffCreate(data: StaffCreateInput!): Staff!
   staffDelete(id: ID): Boolean!
   staffLogin(deviceId: String!, username: String!): Boolean!
@@ -343,6 +341,7 @@ enum OrderByArg {
 type Query {
   admin(id: ID): Admin!
   adminCount(query: String, where: AdminWhereInput): Int!
+  adminIsInSession: Boolean!
   admins(
     orderBy: AdminOrderByInput
     query: String
@@ -375,6 +374,7 @@ type Query {
   ): [Job!]!
   staff(id: ID): Staff!
   staffCount(query: String, where: StaffWhereInput): Int!
+  staffIsInSession: Boolean!
   staffs(
     orderBy: StaffOrderByInput
     query: String
