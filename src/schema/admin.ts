@@ -91,7 +91,7 @@ export const adminCreate = mutationField('adminCreate', {
   authorize: ifIs((_, { sudoPassword }) =>
     sudoPassword != null ? AuthType.Sudo : AuthType.AdminFull
   ),
-  async resolve(_, { data }, { passwordService, sessionService }) {
+  async resolve(_, { data }, { passwordService }) {
     const hash = await passwordService.hashPassword(data.password)
 
     const admin = await Admin.query()
@@ -101,8 +101,6 @@ export const adminCreate = mutationField('adminCreate', {
         hash
       })
       .returning('*')
-
-    await sessionService.signup(admin.id)
 
     return admin
   }

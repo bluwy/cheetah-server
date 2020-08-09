@@ -86,12 +86,10 @@ export const staffCreate = mutationField('staffCreate', {
     })
   },
   authorize: ifIs(AuthType.AdminFull),
-  async resolve(_, { data }, { sessionService }) {
+  async resolve(_, { data }) {
     const staff = await Staff.query()
       .insert(data)
       .returning('*')
-
-    await sessionService.signup(staff.id)
 
     return staff
   }

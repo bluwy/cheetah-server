@@ -98,15 +98,6 @@ export class SessionService {
   }
 
   /**
-   * Only prepares user session expire. This should be called per user sign up.
-   * Otherwise, session will throw error if user not registered.
-   * This prevents potential tampering that causes random user creation.
-   * */
-  async signup(userId: string) {
-    await this.redisResetUserExpire(userId)
-  }
-
-  /**
    * Creates a session in Redis and add required cookies for authentication.
    * Only creates if there's no session in the request.
    */
@@ -169,10 +160,10 @@ export class SessionService {
     const key = this.getExpireKey(userId)
     const expire = await redis.get(key)
 
-    // If user has no expire key, throw error
-    // Expire should be set on new user
+    // Initialize key if null. Usually on first login
     if (expire == null) {
-      throw new Error(`No expire key for user with id: ${userId}`)
+      this.redisResetUserExpire(userId)
+      return Date.now()
     }
 
     return +expire
