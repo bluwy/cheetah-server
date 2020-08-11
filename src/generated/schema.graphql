@@ -210,7 +210,7 @@ type Job {
   staffPrimary: Staff!
   staffSecondary: Staff
   startDate: DateTime!
-  state: JobState
+  state: JobState!
   tasks: [Task!]!
   updatedAt: DateTime!
 }
@@ -256,6 +256,7 @@ enum JobState {
   EXPIRED
   FOLLOW_UP
   REVIEWED
+  TODO
 }
 
 input JobStateFilter {

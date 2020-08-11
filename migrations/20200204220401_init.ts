@@ -83,6 +83,8 @@ export async function up(knex: Knex): Promise<void> {
       t.dateTime('checkIn')
       t.dateTime('checkOut')
       t.string('state')
+        .notNullable()
+        .defaultTo('TODO')
       t.uuid('customerId').notNullable()
       t.foreign('customerId')
         .references('Customer.id')

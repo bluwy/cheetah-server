@@ -410,7 +410,7 @@ export const JobType = objectType({
     t.date('startDate')
     t.date('checkIn', { nullable: true })
     t.date('checkOut', { nullable: true })
-    t.field('state', { type: 'JobState', nullable: true })
+    t.field('state', { type: 'JobState' })
     t.field('customer', {
       type: 'Customer',
       resolve: async (root, _, { dataLoaderService }) => {

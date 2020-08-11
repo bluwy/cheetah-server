@@ -440,7 +440,7 @@ export interface NexusGenFieldTypes {
     staffPrimary: NexusGenRootTypes['Staff'] // Staff!
     staffSecondary: NexusGenRootTypes['Staff'] | null // Staff
     startDate: Date // DateTime!
-    state: NexusGenEnums['JobState'] | null // JobState
+    state: NexusGenEnums['JobState'] // JobState!
     tasks: NexusGenRootTypes['Task'][] // [Task!]!
     updatedAt: Date // DateTime!
   }

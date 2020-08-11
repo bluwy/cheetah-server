@@ -7,6 +7,8 @@ import { Task } from './Task'
 
 // The final state should be either expired or reviewed
 export enum JobState {
+  // Initial state
+  Todo = 'TODO',
   // Done, no further action needed except to be reviewed
   Done = 'DONE',
   // Done but needs follow up
@@ -23,7 +25,7 @@ export class Job extends BaseModel {
   startDate!: Date
   checkIn!: Date | null
   checkOut!: Date | null
-  state!: JobState | null
+  state!: JobState
 
   customerId!: string
   staffPrimaryId!: string
