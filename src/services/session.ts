@@ -52,17 +52,22 @@ export class SessionService {
   /** Initialize session data. Must be called manually after instantiation */
   async init() {
     const sessionId = this.req.cookies[SESSION_COOKIE_NAME]
-    const sessionData = sessionId && (await this.redisGetSession(sessionId))
-    const userExpire =
-      sessionData && (await this.redisGetUserExpire(sessionData.userId))
 
-    if (sessionId == null || sessionData == null || userExpire == null) {
+    if (sessionId == null) {
       return
     }
 
-    // If issue date less than user expire time. The expire time is the baseline
-    // where anything before it is assumed expired.
-    if (sessionData.iat < userExpire) {
+    const sessionData = await this.redisGetSession(sessionId)
+
+    if (sessionData == null) {
+      this.deleteSessionCookie(sessionId)
+      return
+    }
+
+    // The expire time is the baseline where anything before it is assumed expired
+    const userExpire = await this.redisGetUserExpire(sessionData.userId)
+
+    if (userExpire == null || sessionData.iat < userExpire) {
       // Revoke session (logout)
       await this.redisDeleteSession(sessionId)
       this.deleteSessionCookie(sessionId)
@@ -80,7 +85,7 @@ export class SessionService {
       this.setSessionCookie(sessionId)
     }
 
-    // Set session here. Nowhere else should modify this
+    // Set session here. Nowhere else should mutate this
     // (Caveat of non-async constructor)
     this.session = {
       id: sessionId,
@@ -109,6 +114,9 @@ export class SessionService {
       throw new ForbiddenError('Cannot login because session already exists')
     }
 
+    // If user has no expire set, init
+    await redis.setnx(this.getExpireKey(data.userId), Date.now())
+
     const sessionId = nanoid(SESSION_ID_LENGTH)
     const newData = { ...data, iat: Date.now() }
 
@@ -129,21 +137,21 @@ export class SessionService {
 
   /** Logs user out of all sessions */
   async logoutAll(userId: string) {
-    await this.redisResetUserExpire(userId)
+    const key = this.getExpireKey(userId)
+    await redis.set(key, Date.now())
   }
 
   //#region Redis
 
   private async redisGetSession(sessionId: string) {
     const key = this.getSessionKey(sessionId)
-
     const result = await redis.get(key)
 
-    if (result != null) {
-      return JSON.parse(result) as SessionData
+    if (result == null) {
+      return
     }
 
-    return undefined
+    return JSON.parse(result) as SessionData
   }
 
   private async redisSetSession(sessionId: string, data: SessionData) {
@@ -163,19 +171,11 @@ export class SessionService {
     const key = this.getExpireKey(userId)
     const expire = await redis.get(key)
 
-    // Initialize key if null. Usually on first login
     if (expire == null) {
-      this.redisResetUserExpire(userId)
-      return Date.now()
+      return
     }
 
     return +expire
-  }
-
-  private async redisResetUserExpire(userId: string) {
-    const key = this.getExpireKey(userId)
-
-    await redis.set(key, Date.now())
   }
 
   //#endregion
