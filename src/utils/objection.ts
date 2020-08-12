@@ -161,7 +161,7 @@ export class WhereInputResolver {
             builder.andWhere(key, v)
             break
           case 'not':
-            builder.andWhere(key, '!=', v)
+            builder.whereNot(key, v)
             break
           case 'in':
             builder.andWhere(key, 'in', v)
