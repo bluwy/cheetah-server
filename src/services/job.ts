@@ -10,7 +10,7 @@ export class JobService {
   async genJobCode(customerId: string): Promise<string> {
     const alias = await this.getCustomerCompanyAlias(customerId)
     const ddmmyy = formatDDMMYY(getClientDate())
-    const nextJobCount = this.getNextJobCountString()
+    const nextJobCount = await this.getNextJobCountString()
 
     return `${alias}-${ddmmyy}-${nextJobCount}`
   }
