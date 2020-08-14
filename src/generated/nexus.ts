@@ -465,6 +465,7 @@ export interface NexusGenFieldTypes {
     customerUpdate: NexusGenRootTypes['Customer'] // Customer!
     jobCreate: NexusGenRootTypes['Job'] // Job!
     jobDelete: boolean // Boolean!
+    jobFinish: NexusGenRootTypes['Job'] // Job!
     jobReassign: NexusGenRootTypes['JobReassignResponse'] // JobReassignResponse!
     jobSetActions: boolean // Boolean!
     jobSetTasks: boolean // Boolean!
@@ -578,6 +579,10 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['JobCreateInput'] // JobCreateInput!
     }
     jobDelete: {
+      // args
+      id: string // ID!
+    }
+    jobFinish: {
       // args
       id: string // ID!
     }

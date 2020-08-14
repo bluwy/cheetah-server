@@ -241,6 +241,23 @@ export const jobReassign = mutationField('jobReassign', {
   }
 })
 
+export const jobFinish = mutationField('jobFinish', {
+  type: 'Job',
+  args: {
+    id: idArg({ required: true })
+  },
+  authorize: ifIs(AuthType.Admin),
+  async resolve(_, { id }) {
+    return Job.query()
+      .findById(id)
+      .patch({
+        state: JobState.Reviewed
+      })
+      .returning('*')
+      .first()
+  }
+})
+
 export const jobSetTasks = mutationField('jobSetTasks', {
   type: 'Boolean',
   args: {

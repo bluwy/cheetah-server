@@ -319,6 +319,7 @@ type Mutation {
   customerUpdate(data: CustomerUpdateInput!, id: ID!): Customer!
   jobCreate(data: JobCreateInput!): Job!
   jobDelete(id: ID!): Boolean!
+  jobFinish(id: ID!): Job!
   jobReassign(data: JobReassignInput!, id: ID!): JobReassignResponse!
   jobSetActions(data: [ActionInput!]!, jobId: ID!): Boolean!
   jobSetTasks(data: [TaskInput!]!, jobId: ID!): Boolean!
