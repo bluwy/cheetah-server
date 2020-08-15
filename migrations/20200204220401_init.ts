@@ -2,57 +2,35 @@ import Knex from 'knex'
 
 function baseTableColumns(knex: Knex, t: Knex.CreateTableBuilder) {
   t.uuid('id').primary()
-  t.dateTime('createdAt')
-    .notNullable()
-    .defaultTo(knex.raw('now()'))
-  t.dateTime('updatedAt')
-    .notNullable()
-    .defaultTo(knex.raw('now()'))
+  t.dateTime('createdAt').notNullable().defaultTo(knex.raw('now()'))
+  t.dateTime('updatedAt').notNullable().defaultTo(knex.raw('now()'))
 }
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema
-    .createTable('Company', t => {
+    .createTable('Company', (t) => {
       baseTableColumns(knex, t)
-      t.text('name')
-        .notNullable()
-        .unique()
-      t.text('alias')
-        .notNullable()
-        .unique()
+      t.text('name').notNullable().unique()
+      t.text('alias').notNullable().unique()
     })
-    .createTable('Admin', t => {
+    .createTable('Admin', (t) => {
       baseTableColumns(knex, t)
-      t.text('username')
-        .notNullable()
-        .unique()
+      t.text('username').notNullable().unique()
       t.text('hash').notNullable()
       t.text('privilege').notNullable()
     })
-    .createTable('Staff', t => {
+    .createTable('Staff', (t) => {
       baseTableColumns(knex, t)
-      t.text('username')
-        .notNullable()
-        .unique()
-      t.text('fullName')
-        .notNullable()
-        .unique()
+      t.text('username').notNullable().unique()
+      t.text('fullName').notNullable().unique()
       t.text('deviceId').unique()
-      t.boolean('active')
-        .notNullable()
-        .defaultTo(true)
+      t.boolean('active').notNullable().defaultTo(true)
     })
-    .createTable('Customer', t => {
+    .createTable('Customer', (t) => {
       baseTableColumns(knex, t)
-      t.text('code')
-        .notNullable()
-        .unique()
-      t.text('name')
-        .notNullable()
-        .unique()
-      t.boolean('active')
-        .notNullable()
-        .defaultTo(true)
+      t.text('code').notNullable().unique()
+      t.text('name').notNullable().unique()
+      t.boolean('active').notNullable().defaultTo(true)
       t.specificType('addresses', 'TEXT[]')
         .notNullable()
         .defaultTo(knex.raw(`'{}'`))
@@ -74,7 +52,7 @@ export async function up(knex: Knex): Promise<void> {
         .onUpdate('CASCADE')
         .onDelete('RESTRICT')
     })
-    .createTable('Job', t => {
+    .createTable('Job', (t) => {
       baseTableColumns(knex, t)
       // Not unique for job reassignments
       t.text('code').notNullable()
@@ -82,9 +60,7 @@ export async function up(knex: Knex): Promise<void> {
       t.dateTime('startDate').notNullable()
       t.dateTime('checkIn')
       t.dateTime('checkOut')
-      t.string('state')
-        .notNullable()
-        .defaultTo('TODO')
+      t.string('state').notNullable().defaultTo('TODO')
       t.uuid('customerId').notNullable()
       t.foreign('customerId')
         .references('Customer.id')
@@ -101,20 +77,18 @@ export async function up(knex: Knex): Promise<void> {
         .onUpdate('CASCADE')
         .onDelete('RESTRICT')
     })
-    .createTable('Task', t => {
+    .createTable('Task', (t) => {
       baseTableColumns(knex, t)
       t.text('type').notNullable()
       t.text('remarks').notNullable()
-      t.boolean('done')
-        .notNullable()
-        .defaultTo(false)
+      t.boolean('done').notNullable().defaultTo(false)
       t.uuid('jobId').notNullable()
       t.foreign('jobId')
         .references('Job.id')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
     })
-    .createTable('Action', t => {
+    .createTable('Action', (t) => {
       baseTableColumns(knex, t)
       t.text('remarks').notNullable()
       t.uuid('jobId').notNullable()
