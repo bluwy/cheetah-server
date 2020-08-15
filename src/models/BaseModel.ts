@@ -1,5 +1,5 @@
 import { Model } from 'objection'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 
 /** Add basic `id`, `createdAt` and `updatedAt` */
 export class BaseModel extends Model {

@@ -1,6 +1,6 @@
 import { AuthenticationError, ForbiddenError } from 'apollo-server-express'
 import { CookieOptions, Request, Response } from 'express'
-import nanoid from 'nanoid'
+import { nanoid } from 'nanoid'
 import { redis } from '../redis'
 import { getEnvVar } from '../utils/common'
 import { PartialBy } from '../utils/types'

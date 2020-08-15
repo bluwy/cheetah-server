@@ -1,4 +1,4 @@
-import nanoid from 'nanoid/non-secure'
+import { nanoid } from 'nanoid/non-secure'
 
 const resetTokenMap = new Map<string, string>()
 

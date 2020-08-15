@@ -1,6 +1,6 @@
 import { createTestClient } from 'apollo-server-testing'
 import Knex from 'knex'
-import nanoid from 'nanoid/non-secure'
+import { nanoid } from 'nanoid/non-secure'
 import { Model } from 'objection'
 import { server } from '@src/index'
 import { seedDatabase } from '@src/seed'
