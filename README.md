@@ -26,6 +26,9 @@ $ yarn db:setup
 # Cleans the database. Make sure there's no connection to it.
 # Process: drop -> create
 $ yarn db:clean
+
+# Clears all Redis keys
+$ yarn rd:clean
 ```
 
 ### Testing workflow
