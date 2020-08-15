@@ -1059,6 +1059,16 @@ ajv@^6.10.0, ajv@^6.10.2, ajv@^6.5.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+ajv@^6.12.0:
+  version "6.12.4"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.4.tgz#0614facc4522127fa713445c6bfd3ebd376e2234"
+  integrity sha512-eienB2c9qVQs2KWexhkrdMLVDoIQCz5KSeLxwg9Lzk4DOfBtIK9PQwwufcsn1jjGuf9WZmqPMbGxOzfcuphJCQ==
+  dependencies:
+    fast-deep-equal "^3.1.1"
+    fast-json-stable-stringify "^2.0.0"
+    json-schema-traverse "^0.4.1"
+    uri-js "^4.2.2"
+
 ansi-escapes@^4.2.1:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-4.3.0.tgz#a4ce2b33d6b214b7950d8595c212f12ac9cc569d"
@@ -4711,12 +4721,12 @@ object.pick@^1.2.0, object.pick@^1.3.0:
   dependencies:
     isobject "^3.0.1"
 
-objection@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/objection/-/objection-2.1.3.tgz#ca90675d4f6489766bbbf806af973d86aaf6036f"
-  integrity sha512-aKr28HntHoX6wPiFw3BWLx0Ufqmu4h4Ygj/xCYgFXrgftxB7+lWtAA/J13zcLlSmLl9Jifs6HEJFMjFrbH358w==
+objection@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/objection/-/objection-2.2.2.tgz#1a3c9010270e3677940d2bc91aeaeb3c0f103800"
+  integrity sha512-+1Ap7u9NQRochzDW5/BggUlKi94JfZGTJwQJuNXo8DwmAb8czEirvxcWBcX91/MmQq0BQUJjM4RPSiZhnkkWQw==
   dependencies:
-    ajv "^6.10.2"
+    ajv "^6.12.0"
     db-errors "^0.2.3"
 
 on-finished@~2.3.0:

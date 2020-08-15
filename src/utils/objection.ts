@@ -138,7 +138,7 @@ export class WhereInputResolver {
   ) {
     return (builder: Objection.QueryBuilder<any>) => {
       notInput.forEach(input => {
-        builder.whereNot(this.resolveWhereInputFn(input, relation))
+        builder.andWhereNot(this.resolveWhereInputFn(input, relation))
       })
     }
   }
@@ -161,7 +161,7 @@ export class WhereInputResolver {
             builder.andWhere(key, v)
             break
           case 'not':
-            builder.whereNot(key, v)
+            builder.andWhereNot(key, v)
             break
           case 'in':
             builder.andWhere(key, 'in', v)
