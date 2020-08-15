@@ -1,4 +1,4 @@
-import { core } from 'nexus'
+import { core } from '@nexus/schema'
 
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 

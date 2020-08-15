@@ -8,7 +8,7 @@ import {
   objectType,
   queryField,
   stringArg
-} from 'nexus'
+} from '@nexus/schema'
 import { Company } from '../models/Company'
 import { ifIs, AuthType } from '../utils/auth'
 import {

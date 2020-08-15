@@ -9,7 +9,7 @@ import {
   objectType,
   queryField,
   stringArg
-} from 'nexus'
+} from '@nexus/schema'
 import { Company } from '../models/Company'
 import { Customer } from '../models/Customer'
 import { Staff } from '../models/Staff'

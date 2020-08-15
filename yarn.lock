@@ -504,6 +504,14 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@nexus/schema@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@nexus/schema/-/schema-0.15.0.tgz#4f444417a1163a09d732e5b3b203f22780f4ae63"
+  integrity sha512-Q3JYHlxvQ24z5vGfDbEOT7Q+zIFYvnuPv14jNdQ/KCRk6YQODPD/nSQilfFJW+9CBIhZhWZACjbeALRKFLCwjg==
+  dependencies:
+    iterall "^1.2.2"
+    tslib "^1.9.3"
+
 "@phc/format@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@phc/format/-/format-0.5.0.tgz#a99d27a83d78b3100a191412adda04315e2e3aba"
@@ -4469,14 +4477,6 @@ next-tick@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
-
-nexus@^0.12.0-rc.13:
-  version "0.12.0-rc.13"
-  resolved "https://registry.yarnpkg.com/nexus/-/nexus-0.12.0-rc.13.tgz#f6696b4d903e7c2a12b56875b122c8003be1ba31"
-  integrity sha512-RugEHXQyQXYg1i0PX0y9T/ZXliJidOnlmJxl4OeDqxedWM5QEl2qSA6Y0cOyd7p+xFh4y37zlDVh/nXw8LMnHg==
-  dependencies:
-    iterall "^1.2.2"
-    tslib "^1.9.3"
 
 nice-try@^1.0.4:
   version "1.0.5"

@@ -10,7 +10,7 @@ import {
   objectType,
   queryField,
   stringArg
-} from 'nexus'
+} from '@nexus/schema'
 import { raw } from 'objection'
 import { Action } from '../models/Action'
 import { Customer } from '../models/Customer'

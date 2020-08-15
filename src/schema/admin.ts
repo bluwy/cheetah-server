@@ -9,7 +9,7 @@ import {
   objectType,
   queryField,
   stringArg
-} from 'nexus'
+} from '@nexus/schema'
 import { Admin, AdminPrivilege } from '../models/Admin'
 import { ifIs, AuthType } from '../utils/auth'
 import {

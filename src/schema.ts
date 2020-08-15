@@ -1,5 +1,5 @@
 import path from 'path'
-import { fieldAuthorizePlugin, makeSchema } from 'nexus'
+import { fieldAuthorizePlugin, makeSchema } from '@nexus/schema'
 import * as base from './schema/base'
 import * as admin from './schema/admin'
 import * as company from './schema/company'

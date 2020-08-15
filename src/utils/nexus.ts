@@ -1,4 +1,4 @@
-import { inputObjectType, core } from 'nexus'
+import { inputObjectType, core } from '@nexus/schema'
 
 /** Add `id`, `createdAt` and `updatedAt` */
 export function addBaseModelFields(t: core.ObjectDefinitionBlock<any>) {

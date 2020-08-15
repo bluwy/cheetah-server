@@ -1,5 +1,5 @@
 import { ForbiddenError } from 'apollo-server-express'
-import { FieldAuthorizeResolver } from 'nexus'
+import { FieldAuthorizeResolver } from '@nexus/schema'
 import { getEnvVar } from '../utils/common'
 
 const SUDO_PASSWORD = getEnvVar('SUDO_PASSWORD')
