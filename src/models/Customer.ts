@@ -41,7 +41,7 @@ export class Customer extends BaseModel {
       phoneNumber: { type: ['string', 'null'] },
       companyBelongId: { type: 'string' },
       staffPrimaryId: { type: 'string' },
-      staffSecondaryId: { type: 'string' }
+      staffSecondaryId: { type: ['string', 'null'] }
     }
   }
 

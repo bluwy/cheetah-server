@@ -48,7 +48,7 @@ export class Job extends BaseModel {
       state: { type: 'string', enum: Object.values(JobState) },
       customerId: { type: 'string' },
       staffPrimaryId: { type: 'string' },
-      staffSecondaryId: { type: 'string' }
+      staffSecondaryId: { type: ['string', 'null'] }
     }
   }
 
