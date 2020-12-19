@@ -2,6 +2,11 @@
 
 A server built by yours truly.
 
+This repo is part of the Cheetah system:
+
+1. Admin Client: https://github.com/bluwy/cheetah-client-admin/
+2. Server: https://github.com/bluwy/cheetah-server
+
 ## Development
 
 Make sure environment variables are set before doing anything. See [`.env.example`](./.env.example) for example setup.
